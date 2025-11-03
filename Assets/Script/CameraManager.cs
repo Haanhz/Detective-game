@@ -1,33 +1,58 @@
 using UnityEngine;
 
-public class CameraMove2D : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
-    [Header("Tốc độ di chuyển của camera")]
-    public float moveSpeed = 5f;
+    [Header("Player cần theo dõi")]
+    public Transform player;
 
-    [Header("Giới hạn vùng di chuyển (tuỳ chọn)")]
-    public bool limitMovement = false;
-    public Vector2 minPosition; // Giới hạn vị trí nhỏ nhất (X, Y)
-    public Vector2 maxPosition; // Giới hạn vị trí lớn nhất (X, Y)
+    [Header("Tốc độ di chuyển mượt")]
+    public float smoothSpeed = 5f;
 
-    void Update()
+    [Header("Độ lệch so với player")]
+    public Vector3 offset;
+
+    // Giới hạn camera hiện tại (nếu có)
+    private BoxCollider2D currentRoomBounds;
+
+    private void LateUpdate()
     {
-        // Nhận input bàn phím
-        float moveX = Input.GetAxis("Horizontal"); // A/D hoặc mũi tên trái/phải
-        float moveY = Input.GetAxis("Vertical");   // W/S hoặc mũi tên lên/xuống
+        if (player == null) return;
 
-        // Tạo vector di chuyển
-        Vector3 move = new Vector3(moveX, moveY, 0f) * moveSpeed * Time.deltaTime;
+        Vector3 targetPos = new Vector3(
+            player.position.x + offset.x,
+            player.position.y + offset.y,
+            transform.position.z
+        );
 
-        // Cập nhật vị trí
-        transform.position += move;
-
-        // Nếu có bật giới hạn vùng di chuyển
-        if (limitMovement)
+        // Nếu camera đang trong một phòng → giới hạn trong vùng đó
+        if (currentRoomBounds != null)
         {
-            float clampedX = Mathf.Clamp(transform.position.x, minPosition.x, maxPosition.x);
-            float clampedY = Mathf.Clamp(transform.position.y, minPosition.y, maxPosition.y);
-            transform.position = new Vector3(clampedX, clampedY, transform.position.z);
+            Bounds bounds = currentRoomBounds.bounds;
+            float camHeight = Camera.main.orthographicSize;
+            float camWidth = camHeight * Camera.main.aspect;
+
+            targetPos.x = Mathf.Clamp(targetPos.x,
+                bounds.min.x + camWidth,
+                bounds.max.x - camWidth);
+
+            targetPos.y = Mathf.Clamp(targetPos.y,
+                bounds.min.y + camHeight,
+                bounds.max.y - camHeight);
         }
+
+        transform.position = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
+    }
+
+    // Khi player vào phòng
+    public void SetCurrentRoom(BoxCollider2D roomBounds)
+    {
+        currentRoomBounds = roomBounds;
+    }
+
+    // Khi player rời khỏi phòng
+    public void ClearCurrentRoom(BoxCollider2D roomBounds)
+    {
+        if (currentRoomBounds == roomBounds)
+            currentRoomBounds = null;
     }
 }

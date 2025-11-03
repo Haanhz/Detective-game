@@ -45,11 +45,11 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.LeftArrow))
         {
-            moveY = -1f;
+            moveX = -1f;
         }
         if (Input.GetKey(KeyCode.D) | Input.GetKey(KeyCode.RightArrow))
         {
-            moveY = +1f;
+            moveX = +1f;
         }
 
         Vector2 moveDir = new Vector2(moveX, moveY).normalized;
