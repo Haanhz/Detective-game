@@ -6,29 +6,35 @@ public class Player : MonoBehaviour
 {
     public float maxStamina = 100f;
     public float currentStamina;
-    public float moveSpeed = 5f;
-    public float runSpeed = 8f;
-    public float tiredSpeed = 3.5f;
+    public float moveSpeed = 4f;
+    public float runSpeed = 15f;
+    public float tiredSpeed = 1f;
     public float staminaMoveSpeed = 0.1f;
     public float staminaRunSpeed = 0.15f;
+    public bool idle = true;
     private Rigidbody2D rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         currentStamina = maxStamina;
-        Console.WriteLine("current stamina: ", currentStamina);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move(moveSpeed);
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKey(KeyCode.X))
         {
             Run();
+            idle = false;
+        }
+        else
+        {
+            Move(moveSpeed);
+            idle = true;
         }
     }
+
 
     public void Move(float speed)
     {
@@ -45,24 +51,36 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.LeftArrow))
         {
-            moveY = -1f;
+            moveX = -1f;
         }
         if (Input.GetKey(KeyCode.D) | Input.GetKey(KeyCode.RightArrow))
         {
-            moveY = +1f;
+            moveX = +1f;
         }
 
         Vector2 moveDir = new Vector2(moveX, moveY).normalized;
-        rb.linearVelocity = moveDir * speed;
+        transform.Translate(moveDir * speed * Time.deltaTime);
 
-        currentStamina -= staminaMoveSpeed * Time.deltaTime;
-        Console.WriteLine("current stamina: ", currentStamina);
+        if (IsMoving())
+        {
+            currentStamina -= staminaMoveSpeed * Time.deltaTime;
+        }
     }
-    
+
     public void Run()
     {
         Move(runSpeed);
-        currentStamina -= staminaRunSpeed * Time.deltaTime;
-        Console.WriteLine("current stamina: ", currentStamina);
+        if (IsMoving())
+        {
+            currentStamina -= staminaRunSpeed * Time.deltaTime;
+        }
+    }
+    
+    private bool IsMoving()
+    {
+    return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) ||
+           Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) ||
+           Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) ||
+           Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
     }
 }
