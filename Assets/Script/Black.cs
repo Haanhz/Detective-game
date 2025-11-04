@@ -1,19 +1,20 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class Black : MonoBehaviour
 {
     public float moveSpeed = 15f;
-    public float spawnDistance = 5f;
+    public float spawnDistance = 3f;
     public float chaseDur = 10f;
     public float chaseDelay = 2f;
     public int currentState = 2;
     public GameObject black;
     private float timer = 0f;
+    public bool blackSpawned = false;
     private Dictionary<string, int> state = new Dictionary<string, int>()
     {
-        ["Appear"] = 0,
+        ["SpawnBlack"] = 0,
         ["Chase"] = 1,
         ["EndChase"] = 2
     };
@@ -22,21 +23,30 @@ public class Black : MonoBehaviour
     void Start()
     {
         currentState = state["EndChase"];
+        StartCoroutine(CheckAppear());
     }
 
-    // Update is called once per frame
+    IEnumerator CheckAppear()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(3f); // mỗi 3s mới check 1 lần
+            if (currentState == state["EndChase"] && ChaseManager.instance.isNight)
+            {
+                if (Random.value < ChaseManager.instance.probAppear)
+                {
+                    currentState = state["SpawnBlack"];
+                }
+            }
+        }
+    }
+
     void Update()
     {
-        
-        //nếu random 1 value nhỏ hơn probAppear thì black xuất hiện
-        if (Random.value < ChaseManager.instance.probAppear && currentState == 2 && ChaseManager.instance.isNight)
-        {
-            currentState = state["Appear"];
-        }
         switch (currentState)
         {
             case 0:
-                Appear();
+                SpawnBlack();
                 break;
             case 1:
                 Chase();
@@ -46,15 +56,21 @@ public class Black : MonoBehaviour
                 break;
         }
     }
+  
 
-    void Appear()
+    void SpawnBlack()
     {
-        Vector3 playerPos = ChaseManager.instance.player.transform.position;
-        //float rad = spawnAngle * Mathf.Deg2Rad;
-        float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-        Vector3 offset = new Vector3(Mathf.Cos(rad), 0, Mathf.Sin(rad)) * spawnDistance;
-        transform.position = playerPos + offset;
-        black.SetActive(true);
+        if (!blackSpawned)
+        {
+            Vector3 playerPos = ChaseManager.instance.player.transform.position;
+            float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+            Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
+            Vector3 offset = direction * spawnDistance;
+            transform.position = playerPos + offset;
+            black.SetActive(true);
+            blackSpawned = true;
+        }
+        
         timer += Time.deltaTime;
         if (timer >= chaseDelay)
         {
@@ -79,5 +95,6 @@ public class Black : MonoBehaviour
     void EndChase()
     {
         black.SetActive(false);
+        blackSpawned = false;
     }
 }

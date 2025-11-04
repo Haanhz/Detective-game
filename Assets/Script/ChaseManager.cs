@@ -37,7 +37,8 @@ public class ChaseManager : MonoBehaviour
             if (isNight)
             {
                 timeAtNight += Time.deltaTime;
-                probAppear = Mathf.Pow(1.22f, timeAtNight / 60f) / 100f;
+                //probAppear = Mathf.Pow(1.22f, timeAtNight / 60f) / 100f;
+                probAppear = 0.5f;
                 if (timeAtNight >= nightLength)
                 {
                     isNight = false;

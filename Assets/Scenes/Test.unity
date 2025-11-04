@@ -2475,7 +2475,7 @@ MonoBehaviour:
   black: {fileID: 115876088}
   probAppear: 0
   timeAtNight: 0
-  nightLength: 0
+  nightLength: 100
   isNight: 1
 --- !u!4 &1654016419
 Transform:
