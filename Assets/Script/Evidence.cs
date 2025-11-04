@@ -3,6 +3,7 @@ using UnityEngine;
 public class Evidence : MonoBehaviour
 {
     public GameObject evidence;
+    private bool collected = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,10 +16,22 @@ public class Evidence : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag == "Player")
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if (other.tag == "Player")
+    //     {
+    //         evidence.SetActive(false);
+    //         ScoreBoard.scoreValue += 1;
+    //         Debug.Log("Get 1 evidence, Score: " + ScoreBoard.scoreValue);
+    //     }
+    // }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && Input.GetKey(KeyCode.F) && !collected)
         {
-            evidence.SetActive(false);
+            collected = true;
+            gameObject.SetActive(false);
             ScoreBoard.scoreValue += 1;
             Debug.Log("Get 1 evidence, Score: " + ScoreBoard.scoreValue);
         }
