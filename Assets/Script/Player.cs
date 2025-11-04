@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
+    public Vector2Int direction = Vector2Int.right;// (1,0)
+    private Vector2Int input;
     public float maxStamina = 100f;
     public float currentStamina;
     public float moveSpeed = 4f;
@@ -11,59 +13,75 @@ public class Player : MonoBehaviour
     public float tiredSpeed = 1f;
     public float staminaMoveSpeed = 0.1f;
     public float staminaRunSpeed = 0.15f;
-    public bool idle = true;
-    private Rigidbody2D rb;
+    public bool dead = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         currentStamina = maxStamina;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.X))
+        if (IsMoving())
         {
-            Run();
-            idle = false;
+            if (Input.GetKey(KeyCode.X))
+            {
+                Run();
+            }
+            else
+            {
+                Move(moveSpeed);
+            }
         }
-        else
-        {
-            Move(moveSpeed);
-            idle = true;
-        }
+        
     }
-
 
     public void Move(float speed)
     {
-        float moveX = 0f;
-        float moveY = 0f;
-        //Khi người chơi ấn phím thì nhân vật di chuyển
-        if (Input.GetKey(KeyCode.W) | Input.GetKey(KeyCode.UpArrow))
-        {
-            moveY = 1f;
-        }
-        if (Input.GetKey(KeyCode.S) | Input.GetKey(KeyCode.DownArrow))
-        {
-            moveY = -1f;
-        }
-        if (Input.GetKey(KeyCode.A) | Input.GetKey(KeyCode.LeftArrow))
-        {
-            moveX = -1f;
-        }
-        if (Input.GetKey(KeyCode.D) | Input.GetKey(KeyCode.RightArrow))
-        {
-            moveX = +1f;
-        }
 
-        Vector2 moveDir = new Vector2(moveX, moveY).normalized;
-        transform.Translate(moveDir * speed * Time.deltaTime);
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            input = Vector2Int.up;
+        }
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            input = Vector2Int.down;
+        }
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            input = Vector2Int.right;
+        }
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            input = Vector2Int.left;
+        }
+    
+        // Set the new direction based on the input
+        if (input != Vector2Int.zero) {
+            direction = input;
+        }
+        float x = transform.position.x + direction.x * speed * Time.deltaTime;//cơ chế đi là lấy vector position+ vector hướng 
+        float y = transform.position.y + direction.y * speed * Time.deltaTime;
+        transform.position = new Vector2(x, y) ;
+        RotateHead();
 
         if (IsMoving())
         {
             currentStamina -= staminaMoveSpeed * Time.deltaTime;
+        }
+    }
+    
+    void RotateHead() {
+        if (direction == Vector2Int.up) {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        } else if (direction == Vector2Int.down) {
+            transform.rotation = Quaternion.Euler(0, 0, 180);
+        } else if (direction == Vector2Int.left) {
+            transform.rotation = Quaternion.Euler(0, 0, 90);
+        } else if (direction == Vector2Int.right) {
+            transform.rotation = Quaternion.Euler(0, 0, -90);
         }
     }
 

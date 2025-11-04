@@ -13640,7 +13640,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -13717,6 +13717,7 @@ MonoBehaviour:
   tiredSpeed: 3.5
   staminaMoveSpeed: 0.1
   staminaRunSpeed: 0.15
+  idle: 1
 --- !u!1 &1639753979
 GameObject:
   m_ObjectHideFlags: 0
