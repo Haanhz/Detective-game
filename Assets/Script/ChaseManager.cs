@@ -5,6 +5,7 @@ public class ChaseManager : MonoBehaviour
 {
     public Player player;
     public GameObject black;
+    public Evidence evidence;
     public float probAppear;
     public float timeAtNight = 0f;
     public float nightLength = 300f;
@@ -62,7 +63,7 @@ public class ChaseManager : MonoBehaviour
             case State.EndChase:
                 //EndChase(); 
                 break;
-    
+
         }
     }
 
