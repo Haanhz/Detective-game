@@ -9360,8 +9360,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timePlayedText: {fileID: 549200896}
   chaseTimerText: {fileID: 1200126776}
+  evidenceText: {fileID: 0}
   probSlider: {fileID: 835375932}
   staminaSlider: {fileID: 1096027150}
+  loseText: {fileID: 0}
+  fullColor: {r: 0, g: 1, b: 0, a: 1}
+  midColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  lowColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &990689665
 Transform:
   m_ObjectHideFlags: 0
@@ -18147,9 +18152,11 @@ MonoBehaviour:
   moveSpeed: 5
   runSpeed: 8
   tiredSpeed: 3.5
-  staminaMoveSpeed: 0.1
-  staminaRunSpeed: 0.15
+  staminaMoveSpeed: 0.3
+  staminaRunSpeed: 0.5
   dead: 0
+  runDuration: 5
+  cooldown: 5
 --- !u!212 &1913955322
 SpriteRenderer:
   m_ObjectHideFlags: 0

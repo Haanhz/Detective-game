@@ -30,7 +30,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!IsMoving()) return;
+        if (!IsMoving())
+        {
+            currentStamina += 0.2f;
+        }
+        
 
         if (Input.GetKey(KeyCode.X) && canRun)
         {
