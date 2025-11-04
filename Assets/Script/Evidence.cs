@@ -19,7 +19,7 @@ public class Evidence : MonoBehaviour
         if (other.tag == "Player")
         {
             evidence.SetActive(false);
-            ScoreBoard.scoreValue += 10;
+            ScoreBoard.scoreValue += 1;
             Debug.Log("Get 1 evidence, Score: " + ScoreBoard.scoreValue);
         }
     }
