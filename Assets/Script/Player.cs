@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public float maxStamina = 100f;
     public float currentStamina;
     public float moveSpeed = 4f;
-    public float runSpeed = 15f;
+    public float runSpeed = 10f;
     public float tiredSpeed = 1f;
     public float staminaMoveSpeed = 0.1f;
     public float staminaRunSpeed = 0.15f;

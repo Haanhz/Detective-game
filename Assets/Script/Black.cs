@@ -1,41 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Callbacks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Black : MonoBehaviour
 {
-    public float moveSpeed = 15f;
+    public float moveSpeed = 5f;
     public float spawnDistance = 3f;
     public float chaseDur = 10f;
     public float chaseDelay = 2f;
-    public int currentState = 2;
-    public GameObject black;
     private float timer = 0f;
     public bool blackSpawned = false;
-    private Dictionary<string, int> state = new Dictionary<string, int>()
+    private Rigidbody2D rb;
+    private Transform target;
+    private enum State
     {
-        ["SpawnBlack"] = 0,
-        ["Chase"] = 1,
-        ["EndChase"] = 2
-    };
+        EndChase,
+        SpawnBlack,
+        Chase
+    }
+    private State currentState = State.EndChase;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentState = state["EndChase"];
+        rb = ChaseManager.instance.black.GetComponent<Rigidbody2D>();
+        target = ChaseManager.instance.player.transform;
+        EndChase();
         StartCoroutine(CheckAppear());
     }
 
     IEnumerator CheckAppear()
     {
+        WaitForSeconds waitTime = new WaitForSeconds(3f); // Cache to avoid GC
+        
         while (true)
         {
-            yield return new WaitForSeconds(3f); // mỗi 3s mới check 1 lần
-            if (currentState == state["EndChase"] && ChaseManager.instance.isNight)
+            yield return waitTime;
+            
+            if (currentState == State.EndChase && ChaseManager.instance.isNight)
             {
                 if (Random.value < ChaseManager.instance.probAppear)
                 {
-                    currentState = state["SpawnBlack"];
+                    currentState = State.SpawnBlack; 
                 }
             }
         }
@@ -45,14 +53,14 @@ public class Black : MonoBehaviour
     {
         switch (currentState)
         {
-            case 0:
+            case State.SpawnBlack:
                 SpawnBlack();
                 break;
-            case 1:
+            case State.Chase:
                 Chase();
                 break;
-            case 2:
-                EndChase();
+            case State.EndChase:
+                //EndChase(); 
                 break;
         }
     }
@@ -62,12 +70,13 @@ public class Black : MonoBehaviour
     {
         if (!blackSpawned)
         {
-            Vector3 playerPos = ChaseManager.instance.player.transform.position;
+            timer = 0f;
+            Vector3 playerPos = target.position;
             float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
             Vector3 offset = direction * spawnDistance;
-            transform.position = playerPos + offset;
-            black.SetActive(true);
+            ChaseManager.instance.black.transform.position = playerPos + offset;
+            ChaseManager.instance.black.SetActive(true);
             blackSpawned = true;
         }
         
@@ -75,7 +84,7 @@ public class Black : MonoBehaviour
         if (timer >= chaseDelay)
         {
             timer = 0f;
-            currentState = state["Chase"];
+            currentState = State.Chase;
         }
     }
 
@@ -83,18 +92,26 @@ public class Black : MonoBehaviour
     void Chase()
     {
         //......chase logic
+        Vector3 direction = (target.position - ChaseManager.instance.black.transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        rb.rotation = angle;
+        rb.linearVelocity = new Vector2(direction.x, direction.y) * moveSpeed;
+        
         timer += Time.deltaTime;
         if (timer >= chaseDur)
         {
             timer = 0f;
-            currentState = state["EndChase"];
+            rb.linearVelocity = Vector2.zero;
+            EndChase();
+            currentState = State.EndChase; 
         }
         
     }
     
     void EndChase()
     {
-        black.SetActive(false);
+        ChaseManager.instance.black.SetActive(false);
         blackSpawned = false;
+        timer = 0f;
     }
 }

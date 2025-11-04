@@ -4,7 +4,7 @@ using UnityEngine;
 public class ChaseManager : MonoBehaviour
 {
     public Player player;
-    public Black black;
+    public GameObject black;
     public float probAppear;
     public float timeAtNight = 0f;
     public float nightLength = 300f;
