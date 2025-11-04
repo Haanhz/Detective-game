@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,6 +15,11 @@ public class Player : MonoBehaviour
     public float staminaMoveSpeed = 0.1f;
     public float staminaRunSpeed = 0.15f;
     public bool dead = false;
+    private float timer = 0f;
+    private bool canRun = true;
+    private bool isRunning = false;
+    public float runDuration = 5f;
+    public float cooldown = 5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,19 +30,41 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (IsMoving())
+        if (!IsMoving()) return;
+
+        if (Input.GetKey(KeyCode.X) && canRun)
         {
-            if (Input.GetKey(KeyCode.X))
+            // Bắt đầu chạy
+            isRunning = true;
+            timer += Time.deltaTime;
+            Move(runSpeed);
+
+            // Hết thời gian chạy
+            if (timer >= runDuration)
             {
-                Run();
-            }
-            else
-            {
-                Move(moveSpeed);
+                canRun = false;
+                isRunning = false;
+                timer = 0f;
             }
         }
-        
+        else
+        {
+            if (isRunning) isRunning = false;
+            Move(moveSpeed);
+
+            // Hồi khả năng chạy
+            if (!canRun)
+            {
+                timer += Time.deltaTime;
+                if (timer >= cooldown)
+                {
+                    canRun = true;
+                    timer = 0f;
+                }
+            }
+        }
     }
+
 
     public void Move(float speed)
     {
