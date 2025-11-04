@@ -1,14 +1,25 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
     public TextMeshProUGUI timePlayedText;
     public TextMeshProUGUI chaseTimerText;
+    public TextMeshProUGUI evidenceText;
     public Slider probSlider;
     public Slider staminaSlider;
 
+    public TextMeshProUGUI loseText;
+
+    // Color stamina
+    public Color fullColor = Color.green;
+    public Color midColor = Color.yellow;
+    public Color lowColor = Color.red;
+
+    private Image staminaFill;
+    private bool isFlashing = false;
     private float playTime = 0f;
 
     private ChaseManager chase => ChaseManager.instance;
@@ -19,12 +30,20 @@ public class UIManager : MonoBehaviour
     private float delayTimer = 0f;
     private bool waitingForChase = false;
 
+    void Start()
+    {
+        // Lấy Fill của slider
+        staminaFill = staminaSlider.fillRect.GetComponent<Image>();
+    }
+
     void Update()
     {
         UpdatePlayTime();
         UpdateChaseState();
         UpdateProbBar();
         UpdateStamina();
+        CheckPlayerDeath();
+        UpdateEvidenceUI();
     }
 
     // 🕒 Thời gian chơi
@@ -99,6 +118,12 @@ public class UIManager : MonoBehaviour
         probSlider.value = chase.probAppear;
     }
 
+    void UpdateEvidenceUI()
+    {
+        int current = ScoreBoard.scoreValue;
+        evidenceText.text = $"evidences: {current}/4";
+    }
+
     // Reset về mặc định
     void ResetChaseUI()
     {
@@ -114,5 +139,44 @@ public class UIManager : MonoBehaviour
     {
         staminaSlider.maxValue = chase.player.maxStamina;
         staminaSlider.value = chase.player.currentStamina;
+
+        float pct = chase.player.currentStamina / chase.player.maxStamina;
+
+        // ĐỔI MÀU
+        if (pct > 0.6f)
+            staminaFill.color = fullColor;
+        else if (pct > 0.3f)
+            staminaFill.color = midColor;
+        else
+            staminaFill.color = lowColor;
+
+        // NHẤP NHÁY KHI SẮP HẾT (dưới 20%)
+        if (pct < 0.2f && !isFlashing)
+            StartCoroutine(FlashStaminaBar());
     }
+
+    IEnumerator FlashStaminaBar()
+    {
+        isFlashing = true;
+
+        for (int i = 0; i < 6; i++)   // nháy 3 lần
+        {
+            staminaFill.enabled = false;
+            yield return new WaitForSeconds(0.15f);
+
+            staminaFill.enabled = true;
+            yield return new WaitForSeconds(0.15f);
+        }
+
+        isFlashing = false;
+    }
+
+    void CheckPlayerDeath()
+    {
+        if (chase.player.dead)
+        {
+            loseText.gameObject.SetActive(true);
+        }
+    }
+
 }
