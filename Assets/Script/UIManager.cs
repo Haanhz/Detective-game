@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI timePlayedText;
     public TextMeshProUGUI chaseTimerText;
     public TextMeshProUGUI evidenceText;
+    public TextMeshProUGUI missionText;
     public Slider probSlider;
     public Slider staminaSlider;
 
@@ -121,7 +122,11 @@ public class UIManager : MonoBehaviour
     void UpdateEvidenceUI()
     {
         int current = ScoreBoard.scoreValue;
-        evidenceText.text = $"evidences: {current}/4";
+        evidenceText.text = $"evidences: {current}/7";
+        if (current == 7)
+        {
+            missionText.gameObject.SetActive(true);
+        }
     }
 
     // Reset về mặc định
@@ -170,6 +175,7 @@ public class UIManager : MonoBehaviour
 
         isFlashing = false;
     }
+
 
     void CheckPlayerDeath()
     {
