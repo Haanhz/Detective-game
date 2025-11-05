@@ -18,6 +18,7 @@ public class Black : MonoBehaviour
         {
             ChaseManager.instance.player.gameObject.SetActive(false);
             ChaseManager.instance.player.dead = true;
+            ScoreBoard.scoreValue = 0;
             Debug.Log("You died!");
         }
     }

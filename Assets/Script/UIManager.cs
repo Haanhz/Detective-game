@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement; // 🔹 thêm để load lại scene
 
 public class UIManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class UIManager : MonoBehaviour
     public Slider staminaSlider;
 
     public TextMeshProUGUI loseText;
+    public Button replayButton; // 🔹 thêm nút Replay
 
     // Color stamina
     public Color fullColor = Color.green;
@@ -35,6 +37,14 @@ public class UIManager : MonoBehaviour
     {
         // Lấy Fill của slider
         staminaFill = staminaSlider.fillRect.GetComponent<Image>();
+
+        // 🔹 Ẩn LoseText và ReplayButton lúc đầu
+        if (loseText != null) loseText.gameObject.SetActive(false);
+        if (replayButton != null)
+        {
+            replayButton.gameObject.SetActive(false);
+            replayButton.onClick.AddListener(ReplayScene);
+        }
     }
 
     void Update()
@@ -59,22 +69,19 @@ public class UIManager : MonoBehaviour
     // 😈 Đếm ngược chase
     void UpdateChaseState()
     {
-        // Nếu player chết
         if (chase.player.dead)
         {
             ResetChaseUI();
             return;
         }
 
-        // Khi Black vừa spawn → bắt đầu đếm delay
         if (chase.blackSpawned && !isChasing && !waitingForChase)
         {
             waitingForChase = true;
-            delayTimer = chase.chaseDelay; // ví dụ 2s delay trước khi bắt đầu chase
+            delayTimer = chase.chaseDelay;
             chaseTimerText.text = $"chase in: {Mathf.CeilToInt(delayTimer)}s";
         }
 
-        // Khi đang chờ delay
         if (waitingForChase)
         {
             delayTimer -= Time.deltaTime;
@@ -87,11 +94,10 @@ public class UIManager : MonoBehaviour
             {
                 waitingForChase = false;
                 isChasing = true;
-                chaseCountdown = chase.chaseDur; // 10s chase
+                chaseCountdown = chase.chaseDur;
             }
         }
 
-        // Khi đang chase
         if (isChasing)
         {
             chaseCountdown -= Time.deltaTime;
@@ -99,21 +105,18 @@ public class UIManager : MonoBehaviour
             if (sec < 0) sec = 0;
             chaseTimerText.text = $"chase: {sec}s";
 
-            // Kết thúc chase
             if (!chase.blackSpawned || sec <= 0)
             {
                 ResetChaseUI();
             }
         }
 
-        // Khi không chase và không spawn quái
         if (!chase.blackSpawned && !isChasing && !waitingForChase)
         {
             chaseTimerText.text = "chase: --";
         }
     }
 
-    // Thanh xác suất
     void UpdateProbBar()
     {
         probSlider.value = chase.probAppear;
@@ -129,7 +132,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Reset về mặc định
     void ResetChaseUI()
     {
         isChasing = false;
@@ -139,7 +141,6 @@ public class UIManager : MonoBehaviour
         chaseTimerText.text = "chase: --";
     }
 
-    //Thanh stamina
     void UpdateStamina()
     {
         staminaSlider.maxValue = chase.player.maxStamina;
@@ -147,7 +148,6 @@ public class UIManager : MonoBehaviour
 
         float pct = chase.player.currentStamina / chase.player.maxStamina;
 
-        // ĐỔI MÀU
         if (pct > 0.6f)
             staminaFill.color = fullColor;
         else if (pct > 0.3f)
@@ -155,7 +155,6 @@ public class UIManager : MonoBehaviour
         else
             staminaFill.color = lowColor;
 
-        // NHẤP NHÁY KHI SẮP HẾT (dưới 20%)
         if (pct < 0.2f && !isFlashing)
             StartCoroutine(FlashStaminaBar());
     }
@@ -164,7 +163,7 @@ public class UIManager : MonoBehaviour
     {
         isFlashing = true;
 
-        for (int i = 0; i < 6; i++)   // nháy 3 lần
+        for (int i = 0; i < 6; i++)
         {
             staminaFill.enabled = false;
             yield return new WaitForSeconds(0.15f);
@@ -176,13 +175,20 @@ public class UIManager : MonoBehaviour
         isFlashing = false;
     }
 
-
+    // 🔹 Khi player chết
     void CheckPlayerDeath()
     {
         if (chase.player.dead)
         {
-            loseText.gameObject.SetActive(true);
+            if (loseText != null) loseText.gameObject.SetActive(true);
+            if (replayButton != null) replayButton.gameObject.SetActive(true);
         }
     }
 
+    // 🔁 Hàm replay scene
+    void ReplayScene()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentScene);
+    }
 }

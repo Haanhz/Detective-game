@@ -32,11 +32,12 @@ public class Player : MonoBehaviour
     {
         if (!IsMoving())
         {
-            currentStamina += 0.2f;
+            currentStamina += 0.01f;
         }
-        
 
-        if (Input.GetKey(KeyCode.X) && canRun)
+        else
+        {
+             if (Input.GetKey(KeyCode.X) && canRun)
         {
             // Bắt đầu chạy
             isRunning = true;
@@ -56,17 +57,27 @@ public class Player : MonoBehaviour
             if (isRunning) isRunning = false;
             Move(moveSpeed);
 
-            // Hồi khả năng chạy
-            if (!canRun)
-            {
-                timer += Time.deltaTime;
-                if (timer >= cooldown)
+                // Hồi khả năng chạy
+                if (!canRun)
                 {
-                    canRun = true;
-                    timer = 0f;
+                    timer += Time.deltaTime;
+                    if (timer >= cooldown)
+                    {
+                        canRun = true;
+                        timer = 0f;
+                    }
                 }
+            if (currentStamina <= 0.3f * maxStamina)
+            {
+                Move(tiredSpeed);
             }
+            
+            
         }
+        }
+        
+
+       
     }
 
 
