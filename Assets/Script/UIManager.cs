@@ -125,8 +125,8 @@ public class UIManager : MonoBehaviour
     void UpdateEvidenceUI()
     {
         int current = ScoreBoard.scoreValue;
-        evidenceText.text = $"evidences: {current}/7";
-        if (current == 7)
+        evidenceText.text = $"evidences: {current}/5";
+        if (current == 5)
         {
             missionText.gameObject.SetActive(true);
         }
