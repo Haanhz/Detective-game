@@ -24,22 +24,50 @@ public class CameraManager : MonoBehaviour
             transform.position.z
         );
 
-        // Nếu camera đang trong một phòng → giới hạn trong vùng đó
         if (currentRoomBounds != null)
         {
             Bounds bounds = currentRoomBounds.bounds;
             float camHeight = Camera.main.orthographicSize;
             float camWidth = camHeight * Camera.main.aspect;
 
-            targetPos.x = Mathf.Clamp(targetPos.x,
-                bounds.min.x + camWidth,
-                bounds.max.x - camWidth);
+            // 🔹 Kiểm tra nếu phòng nhỏ hơn vùng nhìn của camera
+            bool roomTooSmallX = (bounds.size.x <= camWidth * 2);
+            bool roomTooSmallY = (bounds.size.y <= camHeight * 2);
 
-            targetPos.y = Mathf.Clamp(targetPos.y,
-                bounds.min.y + camHeight,
-                bounds.max.y - camHeight);
+            if (roomTooSmallX && roomTooSmallY)
+            {
+                // Phòng nhỏ cả 2 chiều → camera ở giữa phòng
+                targetPos.x = bounds.center.x;
+                targetPos.y = bounds.center.y;
+            }
+            else
+            {
+                // 🔹 Chỉ clamp nếu phòng lớn hơn camera
+                if (!roomTooSmallX)
+                {
+                    targetPos.x = Mathf.Clamp(targetPos.x,
+                        bounds.min.x + camWidth,
+                        bounds.max.x - camWidth);
+                }
+                else
+                {
+                    targetPos.x = bounds.center.x;
+                }
+
+                if (!roomTooSmallY)
+                {
+                    targetPos.y = Mathf.Clamp(targetPos.y,
+                        bounds.min.y + camHeight,
+                        bounds.max.y - camHeight);
+                }
+                else
+                {
+                    targetPos.y = bounds.center.y;
+                }
+            }
         }
 
+        // Di chuyển mượt đến vị trí mới
         transform.position = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
     }
 
