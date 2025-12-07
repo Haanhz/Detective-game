@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8a055211f269a614ebe73f30c73b6f75
+guid: 3a20017786895bf4aa337c5b3ad6c3af
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1455739361726002933
-    second: TopDownHouse_FloorsAndWalls_OpenDoors_0
+      213: 4017413158287410379
+    second: NobleManFrontWalk1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TopDownHouse_FloorsAndWalls_OpenDoors_0
+      name: NobleManFrontWalk1_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 8
         y: 0
-        width: 128
-        height: 48
+        width: 16
+        height: 30
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b0984ca63cc2ccbe0800000000000000
-      internalID: -1455739361726002933
+      spriteID: bc483b77bf7b0c730800000000000000
+      internalID: 4017413158287410379
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TopDownHouse_FloorsAndWalls_OpenDoors_0: -1455739361726002933
+      NobleManFrontWalk1_0: 4017413158287410379
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

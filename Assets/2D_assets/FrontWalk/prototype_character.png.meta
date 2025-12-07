@@ -1,10 +1,106 @@
 fileFormatVersion: 2
-guid: 246863b56d4d2eb498502b2e6c237a9d
+guid: fcd8ae38c04bbc049b601c1af33abb08
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7722737241686514572
-    second: Walls_and_Floot_Bonus_0
+      213: 2666167170978389918
+    second: prototype_character_0
+  - first:
+      213: 8562117810355511841
+    second: prototype_character_1
+  - first:
+      213: 3702279806774835496
+    second: prototype_character_2
+  - first:
+      213: -7489708013853389806
+    second: prototype_character_3
+  - first:
+      213: 5238044292592336801
+    second: prototype_character_4
+  - first:
+      213: 4584923541809903837
+    second: prototype_character_5
+  - first:
+      213: 4035579806969883910
+    second: prototype_character_6
+  - first:
+      213: -5271382852046822507
+    second: prototype_character_7
+  - first:
+      213: -184105131462546879
+    second: prototype_character_8
+  - first:
+      213: -7011284309700727766
+    second: prototype_character_9
+  - first:
+      213: -1090819813129615499
+    second: prototype_character_10
+  - first:
+      213: 2217606924859224871
+    second: prototype_character_11
+  - first:
+      213: -752699591769107352
+    second: prototype_character_12
+  - first:
+      213: -2529445605319588213
+    second: prototype_character_13
+  - first:
+      213: -7949243693952722254
+    second: prototype_character_14
+  - first:
+      213: -138100264685337175
+    second: prototype_character_15
+  - first:
+      213: -5168199242891519072
+    second: prototype_character_16
+  - first:
+      213: -884389940240779271
+    second: prototype_character_17
+  - first:
+      213: -2802201352367287666
+    second: prototype_character_18
+  - first:
+      213: 2657297898897751053
+    second: prototype_character_19
+  - first:
+      213: -8787180670893268497
+    second: prototype_character_20
+  - first:
+      213: -3495551688070268332
+    second: prototype_character_21
+  - first:
+      213: 1386933050049096041
+    second: prototype_character_22
+  - first:
+      213: 2020310850248002084
+    second: prototype_character_23
+  - first:
+      213: -4381023856897657659
+    second: prototype_character_24
+  - first:
+      213: -8800713528243343766
+    second: prototype_character_25
+  - first:
+      213: 4693669256740232284
+    second: prototype_character_26
+  - first:
+      213: -3992138497773211457
+    second: prototype_character_27
+  - first:
+      213: -5874971370176989219
+    second: prototype_character_28
+  - first:
+      213: -4280462947151646352
+    second: prototype_character_29
+  - first:
+      213: -8693093938180812259
+    second: prototype_character_30
+  - first:
+      213: 1316622561570692573
+    second: prototype_character_31
+  - first:
+      213: 5989437124650179988
+    second: prototype_character_32
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -75,7 +171,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,12 +196,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_0
+      name: prototype_character_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 48
-        width: 16
+        x: 9
+        y: 360
+        width: 14
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -115,19 +211,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c8b9760ca9cac2b60800000000000000
-      internalID: 7722737241686514572
+      spriteID: e9f99f18ae0200520800000000000000
+      internalID: 2666167170978389918
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_1
+      name: prototype_character_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 48
-        width: 16
+        x: 41
+        y: 360
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1222943d8c0c2d670800000000000000
+      internalID: 8562117810355511841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prototype_character_2
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 328
+        width: 13
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -135,21 +253,43 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 5a27a1055b7f62a4fbfd7ee12ca30202
-      internalID: 1367878397
+      spriteID: 8297ae56ed3216330800000000000000
+      internalID: 3702279806774835496
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_2
+      name: prototype_character_3
       rect:
         serializedVersion: 2
-        x: 32
-        y: 48
-        width: 16
+        x: 41
+        y: 328
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21c4fda5e363f0890800000000000000
+      internalID: -7489708013853389806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prototype_character_4
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 296
+        width: 14
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -157,21 +297,43 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1a3aef04d8861414991fc874070dab8b
-      internalID: -926887915
+      spriteID: 1af7ab1288541b840800000000000000
+      internalID: 5238044292592336801
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_3
+      name: prototype_character_5
       rect:
         serializedVersion: 2
-        x: 48
-        y: 48
-        width: 16
+        x: 41
+        y: 296
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd8b7e75babe0af30800000000000000
+      internalID: 4584923541809903837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prototype_character_6
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 264
+        width: 12
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -179,21 +341,43 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3bc83ddb127e4a94eb4377b06344fb1e
-      internalID: 411068086
+      spriteID: 60ded29f372410830800000000000000
+      internalID: 4035579806969883910
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_4
+      name: prototype_character_7
       rect:
         serializedVersion: 2
-        x: 64
-        y: 48
-        width: 16
+        x: 41
+        y: 264
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 593e9ac993948d6b0800000000000000
+      internalID: -5271382852046822507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prototype_character_8
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 264
+        width: 12
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -201,21 +385,65 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 00d774cbd0154ba46b2b579d39d2d9e0
-      internalID: -184434432
+      spriteID: 14a29ddbb5de17df0800000000000000
+      internalID: -184105131462546879
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_5
+      name: prototype_character_9
       rect:
         serializedVersion: 2
-        x: 80
-        y: 48
-        width: 16
+        x: 105
+        y: 264
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2ca405511ae2be90800000000000000
+      internalID: -7011284309700727766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prototype_character_10
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 232
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 577837cc821acd0f0800000000000000
+      internalID: -1090819813129615499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prototype_character_11
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 232
+        width: 12
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -223,21 +451,43 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 88c5467930f18ca49bc986713cd580ca
-      internalID: 1854542109
+      spriteID: 7233eafafb586ce10800000000000000
+      internalID: 2217606924859224871
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_6
+      name: prototype_character_12
       rect:
         serializedVersion: 2
-        x: 96
-        y: 48
-        width: 16
+        x: 74
+        y: 232
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 864550295bfdd85f0800000000000000
+      internalID: -752699591769107352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prototype_character_13
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 232
+        width: 11
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -245,21 +495,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 8cec9be816be7f94aab1b51853be59f2
-      internalID: 1330104998
+      spriteID: b86c040af9a95ecd0800000000000000
+      internalID: -2529445605319588213
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_7
+      name: prototype_character_14
       rect:
         serializedVersion: 2
-        x: 112
-        y: 48
-        width: 16
+        x: 10
+        y: 200
+        width: 13
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -267,21 +517,43 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1d0af5b6d8e69bd4e9b23e966addbef8
-      internalID: 839245008
+      spriteID: 2ba1fec2afc9ea190800000000000000
+      internalID: -7949243693952722254
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_8
+      name: prototype_character_15
       rect:
         serializedVersion: 2
-        x: 128
-        y: 48
-        width: 16
+        x: 41
+        y: 200
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a50b0c7a8e551ef0800000000000000
+      internalID: -138100264685337175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prototype_character_16
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 200
+        width: 13
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -289,21 +561,43 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3124f644535f49947a9a3a0cea980cd5
-      internalID: 841422071
+      spriteID: 0ab120fbb2ed648b0800000000000000
+      internalID: -5168199242891519072
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_9
+      name: prototype_character_17
       rect:
         serializedVersion: 2
-        x: 144
-        y: 48
-        width: 16
+        x: 105
+        y: 200
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f7f409f8040ab3f0800000000000000
+      internalID: -884389940240779271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prototype_character_18
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 168
+        width: 14
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -311,21 +605,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: f5e067948420544429430aceba81212d
-      internalID: 652299202
+      spriteID: e82570b77b49c19d0800000000000000
+      internalID: -2802201352367287666
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_10
+      name: prototype_character_19
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
-        width: 16
+        x: 41
+        y: 168
+        width: 14
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -333,21 +627,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3ddd09538f7c48f4e83c83ff8a7c4fbb
-      internalID: 1855007233
+      spriteID: d0c313e2c5e90e420800000000000000
+      internalID: 2657297898897751053
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_11
+      name: prototype_character_20
       rect:
         serializedVersion: 2
-        x: 16
-        y: 32
-        width: 16
+        x: 8
+        y: 136
+        width: 13
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -355,21 +649,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: f20029c4917385042b9b6e86e6bfc298
-      internalID: 1314125934
+      spriteID: fe16a3e7cb9ad0680800000000000000
+      internalID: -8787180670893268497
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_12
+      name: prototype_character_21
       rect:
         serializedVersion: 2
-        x: 32
-        y: 32
-        width: 16
+        x: 40
+        y: 136
+        width: 13
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -377,604 +671,252 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6aba4cb2268d14444acf444c102d4bf4
-      internalID: 2067109593
+      spriteID: 45afd8a824e4d7fc0800000000000000
+      internalID: -3495551688070268332
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_13
+      name: prototype_character_22
       rect:
         serializedVersion: 2
-        x: 48
-        y: 32
-        width: 16
-        height: 16
+        x: 9
+        y: 104
+        width: 14
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 9909fe81d101b80479ffba714769dabf
-      internalID: 2138955479
+      spriteID: 969ec6fb2406f3310800000000000000
+      internalID: 1386933050049096041
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_14
+      name: prototype_character_23
       rect:
         serializedVersion: 2
-        x: 64
-        y: 32
-        width: 16
-        height: 16
+        x: 41
+        y: 104
+        width: 14
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ab5af923f50647640a9d926f2fe974d8
-      internalID: -683798745
+      spriteID: 42a46e4a306990c10800000000000000
+      internalID: 2020310850248002084
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_15
+      name: prototype_character_24
       rect:
         serializedVersion: 2
-        x: 80
-        y: 32
+        x: 8
+        y: 72
         width: 16
-        height: 16
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 8a5ea8572fafab044aecc39ec40a46a9
-      internalID: -1772089646
+      spriteID: 5c47a19830a7333c0800000000000000
+      internalID: -4381023856897657659
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_16
+      name: prototype_character_25
       rect:
         serializedVersion: 2
-        x: 96
-        y: 32
+        x: 40
+        y: 72
         width: 16
-        height: 16
+        height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: c5f1b6417f96ba84fa4c3f566873c639
-      internalID: -2102822282
+      spriteID: a6ea41b9ca59dd580800000000000000
+      internalID: -8800713528243343766
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_17
+      name: prototype_character_26
       rect:
         serializedVersion: 2
-        x: 112
-        y: 32
+        x: 72
+        y: 72
         width: 16
-        height: 16
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: b2197b45b2643ec46adcc44856611357
-      internalID: 248091023
+      spriteID: c5c5c252253432140800000000000000
+      internalID: 4693669256740232284
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_18
+      name: prototype_character_27
       rect:
         serializedVersion: 2
-        x: 128
-        y: 32
-        width: 16
-        height: 16
+        x: 10
+        y: 40
+        width: 15
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: dd630a07bb0867749831707b20e3e5ad
-      internalID: 824924661
+      spriteID: fb0f01200331998c0800000000000000
+      internalID: -3992138497773211457
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_19
+      name: prototype_character_28
       rect:
         serializedVersion: 2
-        x: 144
-        y: 32
-        width: 16
-        height: 16
+        x: 42
+        y: 40
+        width: 17
+        height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 8819e7eb66aff19499dcfb607960de85
-      internalID: 1167190516
+      spriteID: dd7b20f6aa8e77ea0800000000000000
+      internalID: -5874971370176989219
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_20
+      name: prototype_character_29
       rect:
         serializedVersion: 2
-        x: 0
-        y: 16
-        width: 16
-        height: 16
+        x: 74
+        y: 40
+        width: 17
+        height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 31f01785b7fc25e4cbc592aaacf0d719
-      internalID: -1268856470
+      spriteID: 071fdc0e0adb894c0800000000000000
+      internalID: -4280462947151646352
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_21
+      name: prototype_character_30
       rect:
         serializedVersion: 2
-        x: 16
-        y: 16
-        width: 16
-        height: 16
+        x: 7
+        y: 8
+        width: 15
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: fa37d327542288d47a940df5c6615f8a
-      internalID: 335198809
+      spriteID: d1291a70f1deb5780800000000000000
+      internalID: -8693093938180812259
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_22
+      name: prototype_character_31
       rect:
         serializedVersion: 2
-        x: 32
-        y: 16
-        width: 16
-        height: 16
+        x: 37
+        y: 8
+        width: 17
+        height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e18506522ccaa9f47be05165bf9d9d11
-      internalID: -392587620
+      spriteID: ddd9fa57e35954210800000000000000
+      internalID: 1316622561570692573
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_23
+      name: prototype_character_32
       rect:
         serializedVersion: 2
-        x: 48
-        y: 16
-        width: 16
-        height: 16
+        x: 69
+        y: 8
+        width: 17
+        height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 139fde7c1ff31a943a6eaf462a618318
-      internalID: -279400943
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_24
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f96cd6c12e914ef47bb262b5a455b83d
-      internalID: 1338288200
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_25
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ca41f409d148ffa43b72357a7607565c
-      internalID: 135736033
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_26
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f30c420dc8bc0ed4bbaeb470d9115227
-      internalID: -564317963
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_27
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cebe09eae7166f14a9b4c534e55c3b46
-      internalID: -1027747746
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_28
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d05dad60b11dda94986902b63f7c299f
-      internalID: -1252460460
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_29
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1af5b91ecbbdd0a4daf9fcc3d720a5c8
-      internalID: 708609101
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_30
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1890a310f2383d9419865ff942d8b744
-      internalID: 1983660427
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_31
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3dab8442b15f3a04089dd14442539c26
-      internalID: 2110619048
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_32
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6d707210a8440ea478218f071f104d62
-      internalID: -233912938
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_33
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fa986df80c0c52440944c9ff2c966ec0
-      internalID: -1942797527
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_34
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 94f5612f5ff3d8748a3ce7d2d766e60a
-      internalID: -1351895499
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_35
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b169eb7d204a0fb4c9abb3f41453e251
-      internalID: -1087323872
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_36
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fc06db7ef97adfe4089e0e7a6fa4f34a
-      internalID: 1457999754
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_37
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7c777506863815a458e005f2e5ccd9a3
-      internalID: -1468773004
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_38
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 706bc32c69e9566418bbc2acdbc39773
-      internalID: -973323915
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Walls_and_Floot_Bonus_39
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 10638e9f23970de4f920b0442e515a28
-      internalID: -987972770
+      spriteID: 49d9f4bd451ce1350800000000000000
+      internalID: 5989437124650179988
       vertices: []
       indices: 
       edges: []
@@ -983,7 +925,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5f2ec66c78ccb6c4dbfcc7b074e70630
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -991,50 +933,41 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      Walls_and_Floot_Bonus_0: 7722737241686514572
-      Walls_and_Floot_Bonus_1: 1367878397
-      Walls_and_Floot_Bonus_10: 1855007233
-      Walls_and_Floot_Bonus_11: 1314125934
-      Walls_and_Floot_Bonus_12: 2067109593
-      Walls_and_Floot_Bonus_13: 2138955479
-      Walls_and_Floot_Bonus_14: -683798745
-      Walls_and_Floot_Bonus_15: -1772089646
-      Walls_and_Floot_Bonus_16: -2102822282
-      Walls_and_Floot_Bonus_17: 248091023
-      Walls_and_Floot_Bonus_18: 824924661
-      Walls_and_Floot_Bonus_19: 1167190516
-      Walls_and_Floot_Bonus_2: -926887915
-      Walls_and_Floot_Bonus_20: -1268856470
-      Walls_and_Floot_Bonus_21: 335198809
-      Walls_and_Floot_Bonus_22: -392587620
-      Walls_and_Floot_Bonus_23: -279400943
-      Walls_and_Floot_Bonus_24: 1338288200
-      Walls_and_Floot_Bonus_25: 135736033
-      Walls_and_Floot_Bonus_26: -564317963
-      Walls_and_Floot_Bonus_27: -1027747746
-      Walls_and_Floot_Bonus_28: -1252460460
-      Walls_and_Floot_Bonus_29: 708609101
-      Walls_and_Floot_Bonus_3: 411068086
-      Walls_and_Floot_Bonus_30: 1983660427
-      Walls_and_Floot_Bonus_31: 2110619048
-      Walls_and_Floot_Bonus_32: -233912938
-      Walls_and_Floot_Bonus_33: -1942797527
-      Walls_and_Floot_Bonus_34: -1351895499
-      Walls_and_Floot_Bonus_35: -1087323872
-      Walls_and_Floot_Bonus_36: 1457999754
-      Walls_and_Floot_Bonus_37: -1468773004
-      Walls_and_Floot_Bonus_38: -973323915
-      Walls_and_Floot_Bonus_39: -987972770
-      Walls_and_Floot_Bonus_4: -184434432
-      Walls_and_Floot_Bonus_5: 1854542109
-      Walls_and_Floot_Bonus_6: 1330104998
-      Walls_and_Floot_Bonus_7: 839245008
-      Walls_and_Floot_Bonus_8: 841422071
-      Walls_and_Floot_Bonus_9: 652299202
+      prototype_character_0: 2666167170978389918
+      prototype_character_1: 8562117810355511841
+      prototype_character_10: -1090819813129615499
+      prototype_character_11: 2217606924859224871
+      prototype_character_12: -752699591769107352
+      prototype_character_13: -2529445605319588213
+      prototype_character_14: -7949243693952722254
+      prototype_character_15: -138100264685337175
+      prototype_character_16: -5168199242891519072
+      prototype_character_17: -884389940240779271
+      prototype_character_18: -2802201352367287666
+      prototype_character_19: 2657297898897751053
+      prototype_character_2: 3702279806774835496
+      prototype_character_20: -8787180670893268497
+      prototype_character_21: -3495551688070268332
+      prototype_character_22: 1386933050049096041
+      prototype_character_23: 2020310850248002084
+      prototype_character_24: -4381023856897657659
+      prototype_character_25: -8800713528243343766
+      prototype_character_26: 4693669256740232284
+      prototype_character_27: -3992138497773211457
+      prototype_character_28: -5874971370176989219
+      prototype_character_29: -4280462947151646352
+      prototype_character_3: -7489708013853389806
+      prototype_character_30: -8693093938180812259
+      prototype_character_31: 1316622561570692573
+      prototype_character_32: 5989437124650179988
+      prototype_character_4: 5238044292592336801
+      prototype_character_5: 4584923541809903837
+      prototype_character_6: 4035579806969883910
+      prototype_character_7: -5271382852046822507
+      prototype_character_8: -184105131462546879
+      prototype_character_9: -7011284309700727766
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
