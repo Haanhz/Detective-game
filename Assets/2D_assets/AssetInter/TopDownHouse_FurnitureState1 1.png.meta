@@ -535,9 +535,9 @@ TextureImporter:
       name: TopDownHouse_FurnitureState1_15
       rect:
         serializedVersion: 2
-        x: 112
+        x: 113
         y: 223
-        width: 48
+        width: 15
         height: 33
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1323,6 +1323,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: TopDownHouse_FurnitureState1 1_0
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 240
+        width: 30
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b17403d94632aa740a5742582444949d
+      internalID: 1534061585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -1337,6 +1359,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      TopDownHouse_FurnitureState1 1_0: 1534061585
       TopDownHouse_FurnitureState1_0: 5280097977772955952
       TopDownHouse_FurnitureState1_1: -8440415529595329880
       TopDownHouse_FurnitureState1_10: 2904015818217375649

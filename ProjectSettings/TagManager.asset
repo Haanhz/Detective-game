@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - LivingCorner
+  - Ultimatum
+  - HangPhone
+  - HangNoteBook
+  - Limit1
+  - Limit2
+  - Hide
   layers:
   - Default
   - TransparentFX

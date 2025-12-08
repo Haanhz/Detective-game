@@ -148,375 +148,551 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: interior free1_0
+      name: interior free1 1_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 31
-        width: 32
-        height: 39
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6429fa81874de8150800000000000000
-      internalID: 5876868176040399430
+      spriteID: 6762476bb8ec7844486360217a06515e
+      internalID: -2142844842
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_1
+      name: interior free1 1_1
       rect:
         serializedVersion: 2
-        x: 31
-        y: 47
-        width: 18
-        height: 17
+        x: 16
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 890529f8879de2c20800000000000000
-      internalID: 3183721098425553048
+      spriteID: 026d269d92457734390788ea36a6184c
+      internalID: 1986519501
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_2
+      name: interior free1 1_2
       rect:
         serializedVersion: 2
         x: 48
-        y: 47
-        width: 15
-        height: 21
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4463dcd0761a2d070800000000000000
-      internalID: 8129737741342422596
+      spriteID: 510ebeeedc40377419272b0373ae8c25
+      internalID: 360850606
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_3
+      name: interior free1 1_3
       rect:
         serializedVersion: 2
         x: 64
-        y: 47
-        width: 14
-        height: 21
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 565bba580a9bd6e20800000000000000
-      internalID: 3345534197294675301
+      spriteID: 2d0b5efc0daf7574b80719584c20ced4
+      internalID: 1542065185
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_4
+      name: interior free1 1_4
       rect:
         serializedVersion: 2
-        x: 82
-        y: 47
-        width: 14
-        height: 21
+        x: 80
+        y: 64
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9b39dc31c959cbab0800000000000000
-      internalID: -4990949789453675591
+      spriteID: 6674609836d9ac04d8a4a289434c383f
+      internalID: -538105184
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_5
+      name: interior free1 1_5
       rect:
         serializedVersion: 2
-        x: 96
-        y: 31
-        width: 15
-        height: 34
+        x: 0
+        y: 48
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 259d97194ffcc4fd0800000000000000
-      internalID: -2356279855701960366
+      spriteID: 25cd761cff9ee2545aa5ce2427aa6507
+      internalID: -256980458
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_6
+      name: interior free1 1_6
       rect:
         serializedVersion: 2
-        x: 34
-        y: 34
-        width: 12
-        height: 8
+        x: 16
+        y: 48
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 98dbd574a45235be0800000000000000
-      internalID: -1489806050774368887
+      spriteID: 8ce175522a52dcc48a5430ee95abff79
+      internalID: -2394117
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_7
+      name: interior free1 1_7
       rect:
         serializedVersion: 2
-        x: 50
-        y: 34
-        width: 12
-        height: 8
+        x: 32
+        y: 48
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 19ada4708789b5d70800000000000000
-      internalID: 9032981118907505297
+      spriteID: 2cf23326bdae007418586d9f02d13fbb
+      internalID: -1784540996
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_8
+      name: interior free1 1_8
       rect:
         serializedVersion: 2
-        x: 66
-        y: 34
-        width: 12
-        height: 8
+        x: 48
+        y: 48
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 899354a35c3f93330800000000000000
-      internalID: 3691249398018554264
+      spriteID: ffb978a30913ec64ebbf209138c3d107
+      internalID: 924741222
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_9
+      name: interior free1 1_9
       rect:
         serializedVersion: 2
-        x: 81
+        x: 64
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fe2e061a5f6ddd4d931b278a852495f
+      internalID: 843820433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_10
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b3f21779035f0e42ab134213baf889c
+      internalID: 201463782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_11
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 32
-        width: 13
-        height: 13
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ce3c545e19270c5e0800000000000000
-      internalID: -1891385872553229332
+      spriteID: ef57eae02f3dd6e479a69fe74b271b18
+      internalID: -115647677
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_10
+      name: interior free1 1_12
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43f6a876d19d1aa41bdd46b1d6bc5d92
+      internalID: 751153193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3071cf89782b9942882966f6d498e98
+      internalID: 2046149887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_14
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fdbb90ec4bc3dc41b915ab21524be8a
+      internalID: -261540903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_15
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f802d079e7513547a8de715f58e281f
+      internalID: -568269736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_16
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c7b1b15ea21047449b4d61808c683f2
+      internalID: -2034752245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e5cbc7b4ac11cb489680c34e886dbf3
+      internalID: -1054424337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_18
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40068a80ca862c340829a7f576ebb0ff
+      internalID: 1141986239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_19
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f96f37b0066379a4795e246d15355089
+      internalID: 460979473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_20
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40fc07dab828a1f4b922433bb7ed3c07
+      internalID: -1040397325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_21
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 889293e55b95a024db9ee04928ae3b19
+      internalID: -1328614090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_22
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 514b04fdbc18ff34d809f280fe65c86f
+      internalID: 596593404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: interior free1 1_23
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 17
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ae5cb0a94fa850bc0800000000000000
-      internalID: -3817492325965511190
+      spriteID: 808443511b669074ebc567971f89a323
+      internalID: -80916082
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interior free1_11
+      name: interior free1 1_24
       rect:
         serializedVersion: 2
-        x: 18
-        y: 18
-        width: 12
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 592b36068cf55e3b0800000000000000
-      internalID: -5483871657038466411
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: interior free1_12
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 18
-        width: 12
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c3f8247f66bb51e10800000000000000
-      internalID: 2167844846558154556
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: interior free1_13
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 18
-        width: 12
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 45c84100d6b577ae0800000000000000
-      internalID: -1551671022894937004
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: interior free1_14
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 18
-        width: 12
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c9dff4cba38dca480800000000000000
-      internalID: -8886490217929769572
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: interior free1_15
-      rect:
-        serializedVersion: 2
-        x: 83
-        y: 19
-        width: 26
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fd8c86768c5b52ca0800000000000000
-      internalID: -6042223452714645281
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: interior free1_16
-      rect:
-        serializedVersion: 2
-        x: 18
+        x: 16
         y: 0
-        width: 15
-        height: 17
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f344ce140538c4210800000000000000
-      internalID: 1318573171639338047
+      spriteID: 28d1b38070f194b4db505a0be283e97c
+      internalID: -463569702
       vertices: []
       indices: 
       edges: []
@@ -525,7 +701,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 3bbea435acfc89742badb3bb7babe041
     internalID: 0
     vertices: []
     indices: 
@@ -533,25 +709,35 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      interior free1_0: 5876868176040399430
-      interior free1_1: 3183721098425553048
-      interior free1_10: -3817492325965511190
-      interior free1_11: -5483871657038466411
-      interior free1_12: 2167844846558154556
-      interior free1_13: -1551671022894937004
-      interior free1_14: -8886490217929769572
-      interior free1_15: -6042223452714645281
-      interior free1_16: 1318573171639338047
-      interior free1_2: 8129737741342422596
-      interior free1_3: 3345534197294675301
-      interior free1_4: -4990949789453675591
-      interior free1_5: -2356279855701960366
-      interior free1_6: -1489806050774368887
-      interior free1_7: 9032981118907505297
-      interior free1_8: 3691249398018554264
-      interior free1_9: -1891385872553229332
+      interior free1 1_0: -2142844842
+      interior free1 1_1: 1986519501
+      interior free1 1_10: 201463782
+      interior free1 1_11: -115647677
+      interior free1 1_12: 751153193
+      interior free1 1_13: 2046149887
+      interior free1 1_14: -261540903
+      interior free1 1_15: -568269736
+      interior free1 1_16: -2034752245
+      interior free1 1_17: -1054424337
+      interior free1 1_18: 1141986239
+      interior free1 1_19: 460979473
+      interior free1 1_2: 360850606
+      interior free1 1_20: -1040397325
+      interior free1 1_21: -1328614090
+      interior free1 1_22: 596593404
+      interior free1 1_23: -80916082
+      interior free1 1_24: -463569702
+      interior free1 1_3: 1542065185
+      interior free1 1_4: -538105184
+      interior free1 1_5: -256980458
+      interior free1 1_6: -2394117
+      interior free1 1_7: -1784540996
+      interior free1 1_8: 924741222
+      interior free1 1_9: 843820433
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
