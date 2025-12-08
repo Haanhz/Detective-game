@@ -5,16 +5,15 @@ public class ChaseManager : MonoBehaviour
 {
     public Player player;
     public GameObject black;
-    public Evidence evidence;
     public float probAppear;
-    public float timeAtNight = 0f;
-    public float nightLength = 300f;
-    public bool isNight = true;
+
+
     public float moveSpeed = 5f;
     public float spawnDistance = 3f;
     public float chaseDur = 10f;
     public float chaseDelay = 2f;
     private float timer = 0f;
+    private float timeAtNight = 0f;
     public bool blackSpawned = false;
     private Rigidbody2D rb;
     private Transform target;
@@ -46,8 +45,21 @@ public class ChaseManager : MonoBehaviour
         rb = black.GetComponent<Rigidbody2D>();
         target = player.transform;
         EndChase();
+        GameManager.Instance.OnNightStart += OnNightStart;
+        GameManager.Instance.OnDayStart += OnDayStart;
         StartCoroutine(CheckAppear());
         StartCoroutine(CalculateProbAppear());
+    }
+    void OnNightStart()
+    {
+        // reset cơ hội xuất hiện mỗi đêm nếu muốn
+        timer = 0f;
+        timeAtNight = 0f;
+    }
+
+    void OnDayStart()
+    {
+        EndChase(); // ban ngày thì tắt quái
     }
 
     void Update()
@@ -67,30 +79,25 @@ public class ChaseManager : MonoBehaviour
         }
     }
 
-    IEnumerator CalculateProbAppear()
+        IEnumerator CalculateProbAppear()
     {
         while (true)
         {
-            if (isNight)
+            if (!GameManager.Instance.isNight)
             {
-                timeAtNight += Time.deltaTime;
-                //probAppear = Mathf.Pow(1.22f, timeAtNight / 60f) / 100f;
-                probAppear = 0.5f;
-                if (timeAtNight >= nightLength)
-                {
-                    isNight = false;
-                    timeAtNight = 0f;
-                    probAppear = 0f;
-                }
-            }
-            else
-            {
-                yield return new WaitUntil(() => isNight == true);
+                timeAtNight = 0f;
+                probAppear = 0f;
+                yield return new WaitUntil(() => GameManager.Instance.isNight == true);
             }
 
+            timeAtNight += Time.deltaTime;
+
+            //probAppear = Mathf.Pow(1.22f, timeAtNight / 60f) / 100f;
+            probAppear = 0.5f;
             yield return null;
         }
     }
+
 
     IEnumerator CheckAppear()
     {
@@ -99,8 +106,8 @@ public class ChaseManager : MonoBehaviour
         while (true)
         {
             yield return waitTime;
-
-            if (currentState == State.EndChase && isNight)
+            if (!GameManager.Instance.isNight) continue;
+            if (currentState == State.EndChase && !blackSpawned)
             {
                 if (Random.value < probAppear)
                 {
