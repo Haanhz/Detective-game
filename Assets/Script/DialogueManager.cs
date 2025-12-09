@@ -8,7 +8,7 @@ public class DialogueManager : MonoBehaviour
 {
     public GameObject player;
     public GameObject dialogueBox;
-    public TextMeshProUGUI textComponent;
+    public TextMeshProUGUI DialogueText;
     
     public GameObject StartConversationButton; 
     public GameObject PointMurderButton;
@@ -25,7 +25,7 @@ public class DialogueManager : MonoBehaviour
     private bool isInteracting = false; 
     void Start()
     {
-        textComponent.text = string.Empty;
+        DialogueText.text = string.Empty;
         dialogueBox.SetActive(false);
         StartConversationButton.SetActive(false); 
         PointMurderButton.SetActive(false);
@@ -44,16 +44,16 @@ public class DialogueManager : MonoBehaviour
         if (isInteracting)
         {
             // Xử lý nhấp chuột (LMB) để chuyển dòng/kết thúc
-            if (dialogueBox.activeInHierarchy && Input.GetMouseButtonDown(0))
+            if (dialogueBox.activeInHierarchy && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z)))
             {
-                if (textComponent.text == currentLines[index])
+                if (DialogueText.text == currentLines[index])
                 {
                     NextLine();
                 }
                 else
                 {
                     StopAllCoroutines();
-                    textComponent.text = currentLines[index];
+                    DialogueText.text = currentLines[index];
                 }
             }
             return; 
@@ -120,8 +120,8 @@ public void OnStartConversationButtonClicked()
             AvatarImage.gameObject.SetActive(false); // Ẩn GameObject
         }
         
-        // Xóa textComponent để bắt đầu gõ dòng thoại
-        textComponent.text = string.Empty;
+        // Xóa DialogueText để bắt đầu gõ dòng thoại
+        DialogueText.text = string.Empty;
         StartDialogue(currentNPC);
     }
 }
@@ -149,7 +149,7 @@ public void OnStartConversationButtonClicked()
     {
         currentLines = npc.lines;
         index = 0;
-        textComponent.text = string.Empty;
+        DialogueText.text = string.Empty;
         StartCoroutine(TypeLine());
     }
 
@@ -163,7 +163,7 @@ public void OnStartConversationButtonClicked()
 
         foreach (char c in currentLines[index].ToCharArray())
         {
-            textComponent.text += c;
+            DialogueText.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
     }
@@ -173,7 +173,7 @@ public void OnStartConversationButtonClicked()
         if (index < currentLines.Length - 1)
         {
             index++;
-            textComponent.text = string.Empty;
+            DialogueText.text = string.Empty;
             StartCoroutine(TypeLine());
         }
         else
@@ -213,7 +213,7 @@ public void OnStartConversationButtonClicked()
         StartConversationButton.SetActive(false);
         PointMurderButton.SetActive(false);
         StopAllCoroutines();
-        textComponent.text = string.Empty;
+        DialogueText.text = string.Empty;
         
         // XÓA TÊN VÀ ẢNH
         if (NameText != null) NameText.text = string.Empty;
