@@ -39,6 +39,8 @@ public class UIInventoryManager : MonoBehaviour
         // Tạo lại từng dòng
         foreach (string evidenceName in EvidenceManager.Instance.collectedEvidence)
         {
+            if(evidenceName == "Hide") 
+                continue;
             GameObject entry = Instantiate(entryPrefab, content);
             entry.GetComponent<TextMeshProUGUI>().text = evidenceName;
         }
