@@ -47,7 +47,9 @@ public class EndingManager : MonoBehaviour
 
     public void ShowEnding(bool playerDead = false)
     
-    {if (playerDead)
+    {
+
+        if (playerDead)
     {
         EndingText.text = "You died. Game over.";
     }
@@ -69,7 +71,7 @@ public class EndingManager : MonoBehaviour
         EndingBox.SetActive(true);
         EndingText.gameObject.SetActive(true);
         RestartButton.gameObject.SetActive(true);
-      
+        Time.timeScale = 0f;
 
     }
 }
