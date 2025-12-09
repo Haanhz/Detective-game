@@ -39,6 +39,8 @@ public class UIManager : MonoBehaviour
 
     private ChaseManager chase => ChaseManager.instance;
     private GameManager gm => GameManager.Instance;
+    private static bool cutscenePlayed = false;
+
 
     void Awake()
     {
@@ -66,6 +68,11 @@ public class UIManager : MonoBehaviour
 
         // Cutscene off đầu game
         cutscenePanel.SetActive(false);
+         if (cutscenePlayed)
+    {
+        startPanel.SetActive(false);
+        StartGameplay();
+    }
     }
 
     void Update()
@@ -118,6 +125,7 @@ public class UIManager : MonoBehaviour
 
         // Hết cutscene
         cutscenePanel.SetActive(false);
+        cutscenePlayed = true;
         StartGameplay();
     }
 
@@ -205,6 +213,7 @@ public class UIManager : MonoBehaviour
 
     void ReplayScene()
     {
+        Time.timeScale = 1f;
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }
