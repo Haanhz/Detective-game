@@ -20,8 +20,8 @@ public class UIInventoryManager : MonoBehaviour
 
     void Update()
     {
-        // Toggle inventory bằng I hoặc Tab
-        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
+        // Toggle inventory bằng B
+        if (Input.GetKeyDown(KeyCode.B))
         {
             isOpen = !isOpen;
             inventoryPanel.SetActive(isOpen);
