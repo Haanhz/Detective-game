@@ -12,6 +12,7 @@ TagManager:
   - Limit2
   - Hide
   - Bed
+  - Murder
   layers:
   - Default
   - TransparentFX
