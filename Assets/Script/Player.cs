@@ -28,23 +28,23 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (!IsMoving())
-        {
-            currentStamina += 0.01f;
-        }
+void Update()
+{
+    if (dead) return;
 
-        else
+    if (!IsMoving())
+    {
+        currentStamina += 0.01f * Time.deltaTime;   // hồi hợp lý hơn
+    }
+    else
+    {
+        if (Input.GetKey(KeyCode.X) && canRun)
         {
-             if (Input.GetKey(KeyCode.X) && canRun)
-        {
-            // Bắt đầu chạy
             isRunning = true;
             timer += Time.deltaTime;
+
             Move(runSpeed);
 
-            // Hết thời gian chạy
             if (timer >= runDuration)
             {
                 canRun = false;
@@ -54,67 +54,56 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (isRunning) isRunning = false;
-            Move(moveSpeed);
+            isRunning = false;
 
-                // Hồi khả năng chạy
-                if (!canRun)
-                {
-                    timer += Time.deltaTime;
-                    if (timer >= cooldown)
-                    {
-                        canRun = true;
-                        timer = 0f;
-                    }
-                }
             if (currentStamina <= 0.3f * maxStamina)
-            {
                 Move(tiredSpeed);
+            else
+                Move(moveSpeed);
+
+            if (!canRun)
+            {
+                timer += Time.deltaTime;
+                if (timer >= cooldown)
+                {
+                    canRun = true;
+                    timer = 0f;
+                }
             }
-            
-            
         }
-        }
-        
-
-       
     }
+}
 
 
-    public void Move(float speed)
+public void Move(float speed)
+{
+    if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        input = Vector2Int.up;
+    if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        input = Vector2Int.down;
+    if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        input = Vector2Int.right;
+    if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        input = Vector2Int.left;
+
+    if (input != Vector2Int.zero)
+        direction = input;
+
+    float x = transform.position.x + direction.x * speed * Time.deltaTime;
+    float y = transform.position.y + direction.y * speed * Time.deltaTime;
+    transform.position = new Vector2(x, y);
+
+    RotateHead();
+
+    if (IsMoving())
     {
-
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            input = Vector2Int.up;
-        }
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            input = Vector2Int.down;
-        }
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            input = Vector2Int.right;
-        }
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            input = Vector2Int.left;
-        }
-    
-        // Set the new direction based on the input
-        if (input != Vector2Int.zero) {
-            direction = input;
-        }
-        float x = transform.position.x + direction.x * speed * Time.deltaTime;//cơ chế đi là lấy vector position+ vector hướng 
-        float y = transform.position.y + direction.y * speed * Time.deltaTime;
-        transform.position = new Vector2(x, y) ;
-        RotateHead();
-
-        if (IsMoving())
-        {
+        if (Input.GetKey(KeyCode.X) && canRun)
+            currentStamina -= staminaRunSpeed * Time.deltaTime;
+        else
             currentStamina -= staminaMoveSpeed * Time.deltaTime;
-        }
     }
+}
+
     
     void RotateHead() {
         if (direction == Vector2Int.up) {
@@ -144,4 +133,25 @@ public class Player : MonoBehaviour
            Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) ||
            Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
     }
+
+    void OnCollisionStay2D(Collision2D collision)
+{
+    if (!collision.collider.CompareTag("Bed")) return;
+
+    // Nhấn F khi đang chạm giường
+    if (Input.GetKeyDown(KeyCode.F))
+    {
+        if (GameManager.Instance.isNight)
+        {
+            currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
+            GameManager.Instance.ForceSkipNight();
+            Debug.Log("You go to sleep and wake up the next morning!");
+        }
+        else
+        {
+            Debug.Log("You are not sleepy!");
+        }
+    }
+}
+
 }

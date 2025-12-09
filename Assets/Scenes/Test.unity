@@ -4000,9 +4000,10 @@ GameObject:
   m_Component:
   - component: {fileID: 432134741}
   - component: {fileID: 432134740}
+  - component: {fileID: 432134743}
   m_Layer: 0
-  m_Name: beds_BR_0
-  m_TagString: Untagged
+  m_Name: Bed
+  m_TagString: Bed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4077,6 +4078,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &432134743
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432134739}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.125, y: 3.625}
+    newSize: {x: 2.125, y: 3.625}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.125, y: 3.625}
+  m_EdgeRadius: 0
 --- !u!1 &458953147
 GameObject:
   m_ObjectHideFlags: 0
@@ -54337,11 +54384,11 @@ MonoBehaviour:
   direction: {x: 1, y: 0}
   maxStamina: 100
   currentStamina: 0
-  moveSpeed: 5
+  moveSpeed: 4
   runSpeed: 8
   tiredSpeed: 3.5
-  staminaMoveSpeed: 1
-  staminaRunSpeed: 2
+  staminaMoveSpeed: 0.3
+  staminaRunSpeed: 0.5
   dead: 0
   runDuration: 5
   cooldown: 5

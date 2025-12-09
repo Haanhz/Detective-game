@@ -90,4 +90,22 @@ public class GameManager : MonoBehaviour
         Debug.Log("DAYS REMAINING: " + daysRemaining);
         StartDay();
     }
+
+    public void ForceSkipNight()
+{
+    if (!isNight) return;
+
+    daysRemaining--;
+    OnDayEnded?.Invoke();
+
+    if (daysRemaining <= 0)
+    {
+        Debug.Log("TIME OUT! GAME OVER");
+        gameEnded = true;
+        return;
+    }
+
+    StartDay();
+}
+
 }

@@ -11,6 +11,7 @@ TagManager:
   - Limit1
   - Limit2
   - Hide
+  - Bed
   layers:
   - Default
   - TransparentFX
