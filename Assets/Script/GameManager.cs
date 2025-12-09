@@ -4,13 +4,15 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public GameObject limit1;
+    public GameObject limit2;
 
     public float dayDuration = 60f;   // 5 phút = 300s
     public float nightDuration = 60f;
 
     public int daysRemaining = 3;      // đếm ngược 3 ngày
     public bool isNight = false;       // bắt đầu = ban ngày
-
+    public int currentNight = 0;
     private float timer = 0f;
     public CanvasGroup nightPanel;
 
@@ -51,6 +53,9 @@ public class GameManager : MonoBehaviour
             }
         }
         if (gameEnded) return;
+        limit1.SetActive(isNight && currentNight == 1);
+        limit2.SetActive(isNight && currentNight == 2);
+
     }
 
     // ----- LOGIC -----
@@ -68,9 +73,12 @@ public class GameManager : MonoBehaviour
     {
         isNight = true;
         timer = 0f;
+        currentNight++;
+        // ToggleEvidenceForNight();
+
         OnNightStart?.Invoke();
         nightPanel.alpha = 1;
-        Debug.Log("IS NIGHT ALREADY?");
+        Debug.Log("IS NIGHT ALREADY? Night = "+ currentNight);
     }
 
     void EndNightAndNextDay()
@@ -107,5 +115,31 @@ public class GameManager : MonoBehaviour
 
     StartDay();
 }
+// void ToggleEvidenceForNight()
+// {
+//     Evidence[] allEvidences = UnityEngine.Object.FindObjectsByType<Evidence>(
+//         FindObjectsInactive.Include,
+//         FindObjectsSortMode.None
+//     );
+
+//     foreach (var ev in allEvidences)
+//     {
+//         if (ev == null) continue;
+
+//         if (ev.spawnNight == 0)
+//         {
+//             ev.gameObject.SetActive(true);
+//         }
+//         else
+//         {
+//             if (ev.spawnNight == currentNight)
+//                 ev.gameObject.SetActive(true);
+//             else
+//                 ev.gameObject.SetActive(false);
+//         }
+//     }
+// }
+
+
 
 }

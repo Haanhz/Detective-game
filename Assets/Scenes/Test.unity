@@ -3571,6 +3571,7 @@ GameObject:
   - component: {fileID: 181443924}
   - component: {fileID: 181443925}
   - component: {fileID: 181443926}
+  - component: {fileID: 181443927}
   m_Layer: 0
   m_Name: Limit1_Hang_note
   m_TagString: Limit1
@@ -3708,7 +3709,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 1
   pickupKey: 102
+--- !u!114 &181443927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181443922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24535b071b2ef3f4f839a3a1dee2039d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &186074548
 GameObject:
   m_ObjectHideFlags: 0
@@ -3840,6 +3854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!1 &254928813
 GameObject:
@@ -4212,6 +4227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!1 &355870138
 GameObject:
@@ -4302,6 +4318,7 @@ GameObject:
   - component: {fileID: 356494841}
   - component: {fileID: 356494842}
   - component: {fileID: 356494843}
+  - component: {fileID: 356494844}
   m_Layer: 0
   m_Name: Limit2_MayDia
   m_TagString: Limit2
@@ -4439,7 +4456,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 2
   pickupKey: 102
+--- !u!114 &356494844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356494839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24535b071b2ef3f4f839a3a1dee2039d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &426402637
 GameObject:
   m_ObjectHideFlags: 0
@@ -8552,6 +8582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!1 &1068147313
 GameObject:
@@ -53095,10 +53126,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205bd05cf476c834b838f068bacdf559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  limit1: {fileID: 181443922}
+  limit2: {fileID: 356494839}
   dayDuration: 30
   nightDuration: 30
   daysRemaining: 3
   isNight: 0
+  currentNight: 0
   nightPanel: {fileID: 333904958}
 --- !u!4 &1328244847
 Transform:
@@ -53417,6 +53451,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!1 &1408418145
 GameObject:
@@ -54114,13 +54149,15 @@ GameObject:
   m_Component:
   - component: {fileID: 1593444394}
   - component: {fileID: 1593444395}
+  - component: {fileID: 1593444396}
+  - component: {fileID: 1593444397}
   m_Layer: 0
   m_Name: JumpScare
-  m_TagString: Untagged
+  m_TagString: Hide
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1593444394
 Transform:
   m_ObjectHideFlags: 0
@@ -54191,6 +54228,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1593444396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593444393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24535b071b2ef3f4f839a3a1dee2039d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1593444397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593444393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3188528aac020d4f9c72ae7be0d6501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  evidenceTag: 
+  weight: 0
+  spawnNight: 1
+  pickupKey: 102
 --- !u!1 &1597668703
 GameObject:
   m_ObjectHideFlags: 0
@@ -54720,6 +54785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!1 &1696668881
 GameObject:

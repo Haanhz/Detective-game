@@ -4,6 +4,7 @@ public class Evidence : MonoBehaviour
 {
     public string evidenceTag;   // Tag hoặc type của evidence
     public float weight = 0f;    // Weight được tính dựa trên tag
+    public int spawnNight; 
     public KeyCode pickupKey = KeyCode.F;
     private bool collected = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
