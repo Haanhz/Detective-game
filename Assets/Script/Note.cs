@@ -7,6 +7,7 @@ public class Note : MonoBehaviour
     public float interactRange = 2f;
 
     private Transform player;
+    private bool isNoteOpen = false;
 
     void Start()
     {
@@ -14,14 +15,23 @@ public class Note : MonoBehaviour
     }
 
     void Update()
-    {
-        float dist = Vector2.Distance(player.position, transform.position);
+{
+    float dist = Vector2.Distance(player.position, transform.position);
 
-        if (dist <= interactRange && Input.GetKeyDown(KeyCode.Z))
+    if (dist <= interactRange && Input.GetKeyDown(KeyCode.F))
+    {
+        if (!isNoteOpen)
         {
             UIManager.Instance.OpenNote(content);
+            isNoteOpen = true;
+        }
+        else
+        {
+            UIManager.Instance.CloseNote();
+            isNoteOpen = false;
         }
     }
+}
 
     void OnDrawGizmosSelected()
     {

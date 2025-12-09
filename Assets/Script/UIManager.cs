@@ -70,14 +70,14 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        if (notePanel != null && notePanel.activeSelf)
-        {
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                CloseNote();
-            }
-            return;
-        }
+        // if (notePanel != null && notePanel.activeSelf)
+        // {
+        //     if (Input.GetKeyDown(KeyCode.V))
+        //     {
+        //         CloseNote();
+        //     }
+        //     return;
+        // }
 
         if (!gameStarted) return; // gameplay UI chưa chạy
 
