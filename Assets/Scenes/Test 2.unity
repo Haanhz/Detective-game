@@ -3841,6 +3841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!114 &181443927
 MonoBehaviour:
@@ -3992,6 +3993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!114 &250832737
 MonoBehaviour:
@@ -4519,6 +4521,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!114 &350447558
 MonoBehaviour:
@@ -4765,6 +4768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!114 &356494844
 MonoBehaviour:
@@ -5711,9 +5715,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c5b3e41b3a423f42adcdb274a248081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1913955323}
-  smoothSpeed: 5
-  offset: {x: 0, y: 0, z: 0}
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9181,6 +9182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!114 &1052475544
 MonoBehaviour:
@@ -53655,10 +53657,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205bd05cf476c834b838f068bacdf559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  limit1: {fileID: 181443922}
+  limit2: {fileID: 356494839}
   dayDuration: 500
   nightDuration: 30
   daysRemaining: 3
   isNight: 0
+  currentNight: 0
   nightPanel: {fileID: 333904958}
 --- !u!4 &1328244847
 Transform:
@@ -53978,6 +53983,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!114 &1387714607
 MonoBehaviour:
@@ -55778,6 +55784,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceTag: 
   weight: 0
+  spawnNight: 0
   pickupKey: 102
 --- !u!114 &1657222558
 MonoBehaviour:

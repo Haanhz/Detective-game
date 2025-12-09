@@ -8,6 +8,8 @@ public class EndingManager : MonoBehaviour
     public GameObject EndingBox;
     public TextMeshProUGUI EndingText;
     public Button RestartButton;
+    private ChaseManager chase => ChaseManager.instance;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,7 +21,17 @@ public class EndingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (chase.player.dead)
+    {
+        // Cleanup tất cả dialogue UI
+        CleanupState();
+
+        // Show ending cho dead
+        ShowEnding(playerDead: true);
+
+        // Optional: dừng Update để không gọi nhiều lần
+        enabled = false;
+    }
     }
     
     public void CleanupState()
@@ -33,8 +45,13 @@ public class EndingManager : MonoBehaviour
         
     }
 
-    public void ShowEnding()
+    public void ShowEnding(bool playerDead = false)
+    
+    {if (playerDead)
     {
+        EndingText.text = "You died. Game over.";
+    }
+    else{
         float totalWeight = EvidenceManager.Instance.CalculateTotalWeight();
         bool chooseRightMurderer = DialogueManager.Instance.ChooseRightMurderer();
         if (totalWeight <= 9 && chooseRightMurderer)
@@ -48,7 +65,7 @@ public class EndingManager : MonoBehaviour
         else if (totalWeight > 9 && chooseRightMurderer)
         {
             EndingText.text = "You are right, but the whole truth is still waiting for you.";
-        }
+        }}
         EndingBox.SetActive(true);
         EndingText.gameObject.SetActive(true);
         RestartButton.gameObject.SetActive(true);

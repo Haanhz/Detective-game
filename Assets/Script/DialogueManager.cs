@@ -57,6 +57,15 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.isNight)
+    {
+        if (isInteracting) 
+        {
+  
+            CleanupState();
+        }
+        return; // không cho dialogue hoạt động
+    }
         // 1. Tìm NPC gần đó
         currentNPC = FindClosestNPC();
 

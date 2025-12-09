@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
     private bool isFlashing = false;
 
     // Lose + Replay
-    public TextMeshProUGUI loseText;
+    //public TextMeshProUGUI loseText;
     public Button replayButton;
 
     private ChaseManager chase => ChaseManager.instance;
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
         staminaFill = staminaSlider.fillRect.GetComponent<Image>();
 
         // Ẩn Lose + Replay lúc đầu
-        if (loseText != null) loseText.gameObject.SetActive(false);
+        //if (loseText != null) loseText.gameObject.SetActive(false);
         if (replayButton != null)
         {
             replayButton.gameObject.SetActive(false);
@@ -86,7 +86,7 @@ public class UIManager : MonoBehaviour
     {
         if (chase.player.dead)
         {
-            if (loseText != null) loseText.gameObject.SetActive(true);
+            // if (loseText != null) loseText.gameObject.SetActive(true);
             if (replayButton != null) replayButton.gameObject.SetActive(true);
         }
     }

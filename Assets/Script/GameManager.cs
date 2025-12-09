@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
         OnDayStart?.Invoke();
         nightPanel.alpha = 0;
         Debug.Log("GOOD MORNING!");
+        SetNPCActive(true);
     }
 
     void StartNight()
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
         timer = 0f;
         currentNight++;
         // ToggleEvidenceForNight();
+        SetNPCActive(false);
 
         OnNightStart?.Invoke();
         nightPanel.alpha = 1;
@@ -115,6 +117,22 @@ public class GameManager : MonoBehaviour
 
     StartDay();
 }
+    void SetNPCActive(bool active)
+    {
+        GameObject[] npcs = GameObject.FindGameObjectsWithTag("NPC");
+        GameObject[] murders = GameObject.FindGameObjectsWithTag("Murder");
+
+        foreach (var npc in npcs)
+        {
+            npc.SetActive(active);
+        }
+        foreach (var obj in murders)
+        {
+            obj.SetActive(active);
+        }
+        
+    }
+
 // void ToggleEvidenceForNight()
 // {
 //     Evidence[] allEvidences = UnityEngine.Object.FindObjectsByType<Evidence>(
