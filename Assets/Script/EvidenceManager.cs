@@ -44,7 +44,12 @@ public class EvidenceManager : MonoBehaviour
 
     public Dictionary<string, string> evidenceDescriptions = new Dictionary<string, string>()
     {
-        { "HangPhone", "Điện thoại của Hang, tìm thấy gần giếng." }
+        { "HangPhone", "There’s a new message from Tấn that hasn’t been read: Why did you let May look at the document but not me? Do you hate me that much?" },
+        { "LivingCorner", "The living corner in the shed includes: an old blanket, a pillow, a torn food bag, a water bottle, and a piece of clothing." },
+        { "Ultimatum", "YOU ARE BEING WATCHED" },
+        { "HangNoteBook", "Page 1: It seems the house has been broken into, Page 2: Mai knows the house too well, is she hiding something?" },
+        { "Limit1", "The torn paper in Hang's notebook: I found a photo, and in the photo, there’s a girl who looks familiar." },
+        { "Limit2", "May's Diary: That past... I don't want to remember... NO, I DIDN'T DO THAT... I DIDN'T MEAN IT... Hang investigates too fast, what should I do now?" }
     };
 
     public string GetEvidenceDescription(string name)
