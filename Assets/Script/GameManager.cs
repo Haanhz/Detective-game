@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public event Action OnDayStart;
     public event Action OnNightStart;
     public event Action OnDayEnded;
-    bool gameEnded = false;
+    public bool gameEnded = false;
 
     // LƯU REFERENCE CÁC NPC
     private GameObject[] allNPCs;
