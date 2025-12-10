@@ -8883,14 +8883,26 @@ MonoBehaviour:
   characterPortraits:
   - {fileID: -6686936924111061147, guid: e5b4c393ac6ba4a4cb6d7535c5b66fee, type: 3}
   - {fileID: -7636499561933389721, guid: 3e12c6529fa61344b9615895a6143c88, type: 3}
-  - {fileID: -7636499561933389721, guid: 3e12c6529fa61344b9615895a6143c88, type: 3}
-  - {fileID: -7636499561933389721, guid: 3e12c6529fa61344b9615895a6143c88, type: 3}
+  - {fileID: -1678404321430398395, guid: 910b6f8fc9d94d247baa72e106bc005d, type: 3}
+  - {fileID: 1635137701855651849, guid: bd15e5e5e7a2e874e8f71101b3b462f3, type: 3}
   characterNames:
   - Sang
   - Mai
+  - May
+  - Tan
   characterDescriptions:
-  - The owner
-  - The maid
+  - 'The owner
+
+    Nervous, Cowardly, and Conventional.'
+  - 'The maid.
+
+    "At night, there are a lot of secrets."'
+  - 'The neighbor 1.
+
+    "Hang usually works a lot in her room."'
+  - 'The neighbor 2.
+
+    Argued with Hang and feels disrespected.'
 --- !u!1 &1017035448
 GameObject:
   m_ObjectHideFlags: 0
