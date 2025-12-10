@@ -105,16 +105,36 @@ public void Move(float speed)
 }
 
     
+    // void RotateHead() {
+    //     if (direction == Vector2Int.up) {
+    //         transform.rotation = Quaternion.Euler(0, 0, 0);
+    //     } else if (direction == Vector2Int.down) {
+    //         transform.rotation = Quaternion.Euler(0, 0, 180);
+    //     } else if (direction == Vector2Int.left) {
+    //         transform.rotation = Quaternion.Euler(0, 0, 90);
+    //     } else if (direction == Vector2Int.right) {
+    //         transform.rotation = Quaternion.Euler(0, 0, -90);
+    //     }
+    // }
     void RotateHead() {
-        if (direction == Vector2Int.up) {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        } else if (direction == Vector2Int.down) {
-            transform.rotation = Quaternion.Euler(0, 0, 180);
-        } else if (direction == Vector2Int.left) {
-            transform.rotation = Quaternion.Euler(0, 0, 90);
-        } else if (direction == Vector2Int.right) {
-            transform.rotation = Quaternion.Euler(0, 0, -90);
+        Vector3 currentScale = transform.localScale;
+        
+        // Luôn reset rotation để tránh lật ngược object khi đi lên/xuống
+        transform.rotation = Quaternion.identity; 
+
+        if (direction == Vector2Int.left) 
+        {
+            // Đi sang trái: Lật Sprite
+            transform.localScale = new Vector3(-1, currentScale.y, currentScale.z);
+        } 
+        else if (direction == Vector2Int.right)
+        {
+            // Đi sang phải: Trạng thái bình thường
+            transform.localScale = new Vector3(1, currentScale.y, currentScale.z);
         }
+        
+        // Nếu di chuyển Up hoặc Down, scale X sẽ giữ nguyên giá trị của hướng ngang gần nhất,
+        // điều này là hợp lý cho dạng top-down 2D.
     }
 
     public void Run()
