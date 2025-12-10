@@ -972,7 +972,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You Are The Murder
+  m_Text: You Are The Murderer
 --- !u!222 &117558154
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3704,6 +3704,7 @@ GameObject:
   - component: {fileID: 181443925}
   - component: {fileID: 181443926}
   - component: {fileID: 181443927}
+  - component: {fileID: 181443928}
   m_Layer: 0
   m_Name: Limit1_Hang_note
   m_TagString: Limit1
@@ -3860,7 +3861,26 @@ MonoBehaviour:
   displayTime: 3
   typingSpeed: 0.05
   evidenceTag: 
+  spawnNight: 0
   pickupKey: 102
+--- !u!114 &181443928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181443922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.99215686, g: 1, b: 0.050980393, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &186074548
 GameObject:
   m_ObjectHideFlags: 0
@@ -3906,6 +3926,7 @@ GameObject:
   - component: {fileID: 250832736}
   - component: {fileID: 250832735}
   - component: {fileID: 250832737}
+  - component: {fileID: 250832738}
   m_Layer: 0
   m_Name: LivingCorner
   m_TagString: LivingCorner
@@ -4012,7 +4033,26 @@ MonoBehaviour:
   displayTime: 3
   typingSpeed: 0.05
   evidenceTag: 
+  spawnNight: 0
   pickupKey: 102
+--- !u!114 &250832738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250832733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.99215686, g: 1, b: 0.050980393, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &254928813
 GameObject:
   m_ObjectHideFlags: 0
@@ -4433,6 +4473,7 @@ GameObject:
   - component: {fileID: 350447556}
   - component: {fileID: 350447557}
   - component: {fileID: 350447558}
+  - component: {fileID: 350447559}
   m_Layer: 0
   m_Name: Hide
   m_TagString: Hide
@@ -4540,7 +4581,26 @@ MonoBehaviour:
   displayTime: 3
   typingSpeed: 0.05
   evidenceTag: 
+  spawnNight: 0
   pickupKey: 102
+--- !u!114 &350447559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350447554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0.99085027, g: 1, b: 0.051886797, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &355870138
 GameObject:
   m_ObjectHideFlags: 0
@@ -4631,6 +4691,7 @@ GameObject:
   - component: {fileID: 356494842}
   - component: {fileID: 356494843}
   - component: {fileID: 356494844}
+  - component: {fileID: 356494845}
   m_Layer: 0
   m_Name: Limit2_MayDia
   m_TagString: Limit2
@@ -4787,7 +4848,26 @@ MonoBehaviour:
   displayTime: 3
   typingSpeed: 0.05
   evidenceTag: 
+  spawnNight: 0
   pickupKey: 102
+--- !u!114 &356494845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356494839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.99215686, g: 1, b: 0.050980393, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &426402637
 GameObject:
   m_ObjectHideFlags: 0
@@ -6218,7 +6298,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1679937901}
         m_TargetAssemblyTypeName: EndingManager, Assembly-CSharp
         m_MethodName: ShowEnding
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8899,12 +8979,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayRemainText: {fileID: 900070242}
+  notePanel: {fileID: 0}
+  noteText: {fileID: 0}
   staminaSlider: {fileID: 1371922515}
   fullColor: {r: 0, g: 1, b: 0, a: 1}
   midColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   lowColor: {r: 1, g: 0, b: 0, a: 1}
-  loseText: {fileID: 1199188721}
   replayButton: {fileID: 509555369}
+  startPanel: {fileID: 0}
+  startButton: {fileID: 0}
+  cutscenePanel: {fileID: 0}
+  cutsceneText: {fileID: 0}
+  textSpeed: 0.03
 --- !u!4 &990689665
 Transform:
   m_ObjectHideFlags: 0
@@ -9045,6 +9131,7 @@ GameObject:
   - component: {fileID: 1052475542}
   - component: {fileID: 1052475543}
   - component: {fileID: 1052475544}
+  - component: {fileID: 1052475545}
   m_Layer: 0
   m_Name: Hang_phone
   m_TagString: HangPhone
@@ -9108,8 +9195,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -106963237
-  m_SortingLayer: 3
+  m_SortingLayerID: -200729111
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 1577872341304835443, guid: 3be1c97ee66f724449f70f218f8da0ea, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -9201,7 +9288,26 @@ MonoBehaviour:
   displayTime: 3
   typingSpeed: 0.05
   evidenceTag: 
+  spawnNight: 0
   pickupKey: 102
+--- !u!114 &1052475545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052475539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.99215686, g: 1, b: 0.050980393, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 1
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1068147313
 GameObject:
   m_ObjectHideFlags: 0
@@ -9348,6 +9454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1086638388}
   - component: {fileID: 1086638387}
+  - component: {fileID: 1086638389}
   m_Layer: 0
   m_Name: Tutor_note
   m_TagString: Untagged
@@ -9425,6 +9532,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 691717554}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1086638389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086638386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.99215686, g: 1, b: 0.050980393, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1089101704
 GameObject:
   m_ObjectHideFlags: 0
@@ -54002,6 +54127,7 @@ MonoBehaviour:
   displayTime: 3
   typingSpeed: 0.05
   evidenceTag: 
+  spawnNight: 0
   pickupKey: 102
 --- !u!1 &1408418145
 GameObject:
@@ -55647,6 +55773,7 @@ GameObject:
   - component: {fileID: 1657222556}
   - component: {fileID: 1657222557}
   - component: {fileID: 1657222558}
+  - component: {fileID: 1657222559}
   m_Layer: 0
   m_Name: Hang_notebook
   m_TagString: HangNoteBook
@@ -55803,7 +55930,26 @@ MonoBehaviour:
   displayTime: 3
   typingSpeed: 0.05
   evidenceTag: 
+  spawnNight: 0
   pickupKey: 102
+--- !u!114 &1657222559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657222553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.99215686, g: 1, b: 0.050980393, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1679937899
 GameObject:
   m_ObjectHideFlags: 0
