@@ -76,9 +76,6 @@ public class Evidence : MonoBehaviour
                 // Bắt đầu Coroutine gõ chữ
                 displayCoroutine = StartCoroutine(TypeEvidenceFound(fullMessage)); 
             } 
-            
-            if (ShouldHide(evidenceTag))
-                gameObject.SetActive(false); // Ẩn vật phẩm sau khi thu thập
         }
     }
 
@@ -114,6 +111,10 @@ public class Evidence : MonoBehaviour
             DialogueBox.SetActive(false);
             CatchName.text = string.Empty; // Xóa text khi ẩn
         }
+        if (ShouldHide(evidenceTag))
+    {
+        gameObject.SetActive(false);
+    }
         displayCoroutine = null;
     }
 
