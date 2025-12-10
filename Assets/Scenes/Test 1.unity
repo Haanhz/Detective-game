@@ -8883,6 +8883,8 @@ MonoBehaviour:
   characterPortraits:
   - {fileID: -6686936924111061147, guid: e5b4c393ac6ba4a4cb6d7535c5b66fee, type: 3}
   - {fileID: -7636499561933389721, guid: 3e12c6529fa61344b9615895a6143c88, type: 3}
+  - {fileID: -7636499561933389721, guid: 3e12c6529fa61344b9615895a6143c88, type: 3}
+  - {fileID: -7636499561933389721, guid: 3e12c6529fa61344b9615895a6143c88, type: 3}
   characterNames:
   - Sang
   - Mai
@@ -9429,7 +9431,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.0007261938}
-  m_SizeDelta: {x: 0, y: 300}
+  m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1032854009
 MonoBehaviour:
@@ -9467,7 +9469,7 @@ MonoBehaviour:
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
