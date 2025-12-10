@@ -58,10 +58,14 @@ public class Evidence : MonoBehaviour
                  EvidenceManager.Instance.AddEvidence(evidenceTag, weight);
             }
 
-            // 3. Xử lý ẩn/hiện object
-           
+            // 3. Nếu tag là "Hide" thì ẩn ngay lập tức và không hiện dialogue
+            if (evidenceTag == "Hide")
+            {
+                gameObject.SetActive(false);
+                return; // Kết thúc hàm, không chạy phần hiển thị UI
+            }
 
-            // 4. HIỂN THỊ UI THÔNG BÁO (Gõ chữ)
+            // 4. HIỂN THỊ UI THÔNG BÁO (Gõ chữ) - chỉ cho các evidence khác "Hide"
             if (DialogueBox != null && CatchName != null && evidenceName != "Hide")
             {
                 // Dừng Coroutine cũ (gõ chữ hoặc ẩn) để bắt đầu cái mới
@@ -111,10 +115,13 @@ public class Evidence : MonoBehaviour
             DialogueBox.SetActive(false);
             CatchName.text = string.Empty; // Xóa text khi ẩn
         }
+        
+        // Ẩn GameObject nếu cần (sau khi dialogue đã hiện xong)
         if (ShouldHide(evidenceTag))
-    {
-        gameObject.SetActive(false);
-    }
+        {
+            gameObject.SetActive(false);
+        }
+        
         displayCoroutine = null;
     }
 
@@ -161,7 +168,7 @@ public class Evidence : MonoBehaviour
                 return true;
 
             default:
-                return false;   
+                return false;   
         }
     }
 }

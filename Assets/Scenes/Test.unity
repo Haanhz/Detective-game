@@ -10263,7 +10263,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 148.5578, y: 37.667236}
+  m_AnchoredPosition: {x: 148.55762, y: 37.667236}
   m_SizeDelta: {x: 297.1156, y: 75.3345}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1021567933
@@ -10706,7 +10706,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.065514445, y: -0.09212685}
+  m_Offset: {x: -0.018256068, y: -0.09212875}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -10716,7 +10716,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3.5400698, y: 3.3490715}
+  m_Size: {x: 3.3725288, y: 2.455513}
   m_EdgeRadius: 0
 --- !u!114 &1052475543
 MonoBehaviour:
@@ -55138,8 +55138,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   limit1: {fileID: 181443922}
   limit2: {fileID: 356494839}
-  dayDuration: 120
-  nightDuration: 120
+  dayDuration: 30
+  nightDuration: 30
   daysRemaining: 3
   isNight: 0
   currentNight: 0
@@ -57486,7 +57486,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 125.441}
+  m_AnchoredPosition: {x: 0, y: 125.44092}
   m_SizeDelta: {x: 0, y: 250.881}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1676533071
@@ -60113,7 +60113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 100, y: 92.4}
+  m_AnchoredPosition: {x: 100, y: 92.3999}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2145066286

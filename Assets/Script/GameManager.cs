@@ -7,24 +7,32 @@ public class GameManager : MonoBehaviour
     public GameObject limit1;
     public GameObject limit2;
 
-    public float dayDuration = 60f;   // 5 phút = 300s
+    public float dayDuration = 60f;
     public float nightDuration = 60f;
 
-    public int daysRemaining = 3;      // đếm ngược 3 ngày
-    public bool isNight = false;       // bắt đầu = ban ngày
+    public int daysRemaining = 3;
+    public bool isNight = false;
     public int currentNight = 0;
     private float timer = 0f;
     public CanvasGroup nightPanel;
 
     public event Action OnDayStart;
     public event Action OnNightStart;
-    public event Action OnDayEnded;    // khi hết 1 ngày
+    public event Action OnDayEnded;
     bool gameEnded = false;
+
+    // LƯU REFERENCE CÁC NPC
+    private GameObject[] allNPCs;
+    private GameObject[] allMurders;
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+        
+        // Tìm và lưu tất cả NPC ngay từ đầu (kể cả inactive)
+        allNPCs = GameObject.FindGameObjectsWithTag("NPC");
+        allMurders = GameObject.FindGameObjectsWithTag("Murder");
     }
 
     void Start()
@@ -38,7 +46,6 @@ public class GameManager : MonoBehaviour
 
         if (!isNight)
         {
-            // đang ban ngày
             if (timer >= dayDuration)
             {
                 StartNight();
@@ -46,19 +53,16 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // đang ban đêm
             if (timer >= nightDuration)
             {
                 EndNightAndNextDay();
             }
         }
+        
         if (gameEnded) return;
         limit1.SetActive(isNight && currentNight == 1);
         limit2.SetActive(isNight && currentNight == 2);
-
     }
-
-    // ----- LOGIC -----
 
     void StartDay()
     {
@@ -75,7 +79,6 @@ public class GameManager : MonoBehaviour
         isNight = true;
         timer = 0f;
         currentNight++;
-        // ToggleEvidenceForNight();
         SetNPCActive(false);
 
         OnNightStart?.Invoke();
@@ -86,14 +89,12 @@ public class GameManager : MonoBehaviour
     void EndNightAndNextDay()
     {
         daysRemaining--;
-
         OnDayEnded?.Invoke();
 
         if (daysRemaining <= 0)
         {
             Debug.Log("TIME OUT! GAME OVER");
             gameEnded = true;
-            // mày có thể gọi UI Game Over ở đây
             return;
         }
 
@@ -102,62 +103,33 @@ public class GameManager : MonoBehaviour
     }
 
     public void ForceSkipNight()
-{
-    if (!isNight) return;
-
-    daysRemaining--;
-    OnDayEnded?.Invoke();
-
-    if (daysRemaining <= 0)
     {
-        Debug.Log("TIME OUT! GAME OVER");
-        gameEnded = true;
-        return;
+        if (!isNight) return;
+
+        daysRemaining--;
+        OnDayEnded?.Invoke();
+
+        if (daysRemaining <= 0)
+        {
+            Debug.Log("TIME OUT! GAME OVER");
+            gameEnded = true;
+            return;
+        }
+
+        StartDay();
     }
 
-    StartDay();
-}
     void SetNPCActive(bool active)
     {
-        GameObject[] npcs = GameObject.FindGameObjectsWithTag("NPC");
-        GameObject[] murders = GameObject.FindGameObjectsWithTag("Murder");
-
-        foreach (var npc in npcs)
+        // Dùng array đã lưu thay vì tìm lại
+        foreach (var npc in allNPCs)
         {
-            npc.SetActive(active);
-        }
-        foreach (var obj in murders)
-        {
-            obj.SetActive(active);
+            if (npc != null) npc.SetActive(active);
         }
         
+        foreach (var murder in allMurders)
+        {
+            if (murder != null) murder.SetActive(active);
+        }
     }
-
-// void ToggleEvidenceForNight()
-// {
-//     Evidence[] allEvidences = UnityEngine.Object.FindObjectsByType<Evidence>(
-//         FindObjectsInactive.Include,
-//         FindObjectsSortMode.None
-//     );
-
-//     foreach (var ev in allEvidences)
-//     {
-//         if (ev == null) continue;
-
-//         if (ev.spawnNight == 0)
-//         {
-//             ev.gameObject.SetActive(true);
-//         }
-//         else
-//         {
-//             if (ev.spawnNight == currentNight)
-//                 ev.gameObject.SetActive(true);
-//             else
-//                 ev.gameObject.SetActive(false);
-//         }
-//     }
-// }
-
-
-
 }
