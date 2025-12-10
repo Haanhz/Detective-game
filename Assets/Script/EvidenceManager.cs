@@ -41,4 +41,17 @@ public class EvidenceManager : MonoBehaviour
 
         return total;
     }
+
+    public Dictionary<string, string> evidenceDescriptions = new Dictionary<string, string>()
+    {
+        { "HangPhone", "Điện thoại của Hang, tìm thấy gần giếng." }
+    };
+
+    public string GetEvidenceDescription(string name)
+    {
+        if (evidenceDescriptions.ContainsKey(name))
+            return evidenceDescriptions[name];
+        return "No description available.";
+    }
+
 }

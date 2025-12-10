@@ -36,13 +36,20 @@ public class UIInventoryManager : MonoBehaviour
         foreach (Transform child in content)
             Destroy(child.gameObject);
 
-        // Tạo lại từng dòng
+        // Sinh lại từng entry
         foreach (string evidenceName in EvidenceManager.Instance.collectedEvidence)
         {
-            if(evidenceName == "Hide") 
+            if (evidenceName == "Hide")
                 continue;
+
             GameObject entry = Instantiate(entryPrefab, content);
-            entry.GetComponent<TextMeshProUGUI>().text = evidenceName;
+
+            // Tìm các text con
+            TextMeshProUGUI nameText = entry.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI descText = entry.transform.Find("DescText").GetComponent<TextMeshProUGUI>();
+
+            nameText.text = evidenceName;
+            descText.text = EvidenceManager.Instance.GetEvidenceDescription(evidenceName);
         }
     }
 }
