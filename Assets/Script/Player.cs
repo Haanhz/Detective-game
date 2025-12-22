@@ -17,161 +17,155 @@ public class Player : MonoBehaviour
     public bool dead = false;
     private float timer = 0f;
     private bool canRun = true;
-    private bool isRunning = false;
     public float runDuration = 5f;
     public float cooldown = 5f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Animator animator;
+
     void Start()
     {
         currentStamina = maxStamina;
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-void Update()
-{
-    if (dead) return;
+    void Update()
+    {
+        Debug.Log("Last: " + animator.GetFloat("LastInputX") + ", " + animator.GetFloat("LastInputY"));
 
-    if (!IsMoving())
-    {
-        currentStamina += 0.01f * Time.deltaTime;   // hồi hợp lý hơn
-    }
-    else
-    {
-        if (Input.GetKey(KeyCode.X) && canRun)
+        if (dead) return;
+
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            isRunning = true;
-            timer += Time.deltaTime;
+            animator.SetTrigger("Catch");
+        }
 
-            Move(runSpeed);
+        bool moving = IsMoving();
 
-            if (timer >= runDuration)
-            {
-                canRun = false;
-                isRunning = false;
-                timer = 0f;
-            }
+        // Lấy input thô
+        float inputX = Input.GetAxisRaw("Horizontal");
+        float inputY = Input.GetAxisRaw("Vertical");
+
+        if (moving)
+        {
+            // Move params
+            animator.SetFloat("InputX", inputX);
+            animator.SetFloat("InputY", inputY);
+
+            // Lưu hướng cuối cho Idle
+            animator.SetFloat("LastInputX", inputX); 
+            animator.SetFloat("LastInputY", inputY); 
         }
         else
         {
-            isRunning = false;
+            // Không di chuyển -> cho Move = 0
+            animator.SetFloat("InputX", 0);
+            animator.SetFloat("InputY", 0);
+        }
 
-            if (currentStamina <= 0.3f * maxStamina)
-                Move(tiredSpeed);
-            else
-                Move(moveSpeed);
+        if (!moving)
+        {
+            currentStamina += 0.01f * Time.deltaTime;
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isRunning", false);
+        }
+        else
+        {
+            bool isPressingRun = Input.GetKey(KeyCode.LeftShift) && canRun;
 
-            if (!canRun)
+            if (isPressingRun)
             {
                 timer += Time.deltaTime;
-                if (timer >= cooldown)
+                Move(runSpeed);
+
+                animator.SetBool("isWalking", false);
+                animator.SetBool("isRunning", true);
+
+                if (timer >= runDuration)
                 {
-                    canRun = true;
+                    canRun = false;
                     timer = 0f;
+                }
+            }
+            else
+            {
+                if (currentStamina <= 0.3f * maxStamina)
+                    Move(tiredSpeed);
+                else
+                    Move(moveSpeed);
+
+                animator.SetBool("isWalking", true);
+                animator.SetBool("isRunning", false);
+
+                if (!canRun)
+                {
+                    timer += Time.deltaTime;
+                    if (timer >= cooldown)
+                    {
+                        canRun = true;
+                        timer = 0f;
+                    }
                 }
             }
         }
     }
-}
 
-
-public void Move(float speed)
-{
-    if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        input = Vector2Int.up;
-    if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        input = Vector2Int.down;
-    if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        input = Vector2Int.right;
-    if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-        input = Vector2Int.left;
-
-    if (input != Vector2Int.zero)
-        direction = input;
-
-    float x = transform.position.x + direction.x * speed * Time.deltaTime;
-    float y = transform.position.y + direction.y * speed * Time.deltaTime;
-    transform.position = new Vector2(x, y);
-
-    RotateHead();
-
-    if (IsMoving())
+    public void Move(float speed)
     {
-        if (Input.GetKey(KeyCode.X) && canRun)
-            currentStamina -= staminaRunSpeed * Time.deltaTime;
-        else
-            currentStamina -= staminaMoveSpeed * Time.deltaTime;
-    }
-}
+        Vector2Int currentInput = Vector2Int.zero;
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) currentInput = Vector2Int.up;
+        else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) currentInput = Vector2Int.down;
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) currentInput = Vector2Int.right;
+        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) currentInput = Vector2Int.left;
 
-    
-    // void RotateHead() {
-    //     if (direction == Vector2Int.up) {
-    //         transform.rotation = Quaternion.Euler(0, 0, 0);
-    //     } else if (direction == Vector2Int.down) {
-    //         transform.rotation = Quaternion.Euler(0, 0, 180);
-    //     } else if (direction == Vector2Int.left) {
-    //         transform.rotation = Quaternion.Euler(0, 0, 90);
-    //     } else if (direction == Vector2Int.right) {
-    //         transform.rotation = Quaternion.Euler(0, 0, -90);
-    //     }
-    // }
-    void RotateHead() {
-        Vector3 currentScale = transform.localScale;
-        
-        // Luôn reset rotation để tránh lật ngược object khi đi lên/xuống
-        transform.rotation = Quaternion.identity; 
+        if (currentInput != Vector2Int.zero)
+            direction = currentInput;
 
-        if (direction == Vector2Int.left) 
-        {
-            // Đi sang trái: Lật Sprite
-            transform.localScale = new Vector3(-1, currentScale.y, currentScale.z);
-        } 
-        else if (direction == Vector2Int.right)
-        {
-            // Đi sang phải: Trạng thái bình thường
-            transform.localScale = new Vector3(1, currentScale.y, currentScale.z);
-        }
-        
-        // Nếu di chuyển Up hoặc Down, scale X sẽ giữ nguyên giá trị của hướng ngang gần nhất,
-        // điều này là hợp lý cho dạng top-down 2D.
-    }
+        float x = transform.position.x + direction.x * speed * Time.deltaTime;
+        float y = transform.position.y + direction.y * speed * Time.deltaTime;
+        transform.position = new Vector2(x, y);
 
-    public void Run()
-    {
-        Move(runSpeed);
+        RotateHead();
+
         if (IsMoving())
         {
-            currentStamina -= staminaRunSpeed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.LeftShift) && canRun)
+                currentStamina -= staminaRunSpeed * Time.deltaTime;
+            else
+                currentStamina -= staminaMoveSpeed * Time.deltaTime;
         }
     }
-    
+
+    void RotateHead()
+    {
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+
+        if (horizontalInput < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
+        else if (horizontalInput > 0)
+            transform.localScale = new Vector3(1, 1, 1);
+    }
+
     private bool IsMoving()
     {
-    return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) ||
-           Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) ||
-           Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) ||
-           Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
+        return Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
     }
 
     void OnCollisionStay2D(Collision2D collision)
-{
-    if (!collision.collider.CompareTag("Bed")) return;
-
-    // Nhấn F khi đang chạm giường
-    if (Input.GetKeyDown(KeyCode.F))
     {
-        if (GameManager.Instance.isNight)
+        if (!collision.collider.CompareTag("Bed")) return;
+
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
-            GameManager.Instance.ForceSkipNight();
-            Debug.Log("You go to sleep and wake up the next morning!");
-        }
-        else
-        {
-            Debug.Log("You are not sleepy!");
+            if (GameManager.Instance.isNight)
+            {
+                currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
+                GameManager.Instance.ForceSkipNight();
+                Debug.Log("You go to sleep and wake up the next morning!");
+            }
+            else
+            {
+                Debug.Log("You are not sleepy!");
+            }
         }
     }
-}
-
 }
