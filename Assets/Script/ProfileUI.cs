@@ -43,17 +43,10 @@ public class ProfileUI : MonoBehaviour
 
     void Update()
     {
-        // Toggle bằng phím C
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            isOpen = !isOpen;
-            if (profilePanel != null) profilePanel.SetActive(isOpen);
-
-            if (isOpen) UpdateUI();
-        }
+        
     }
 
-    void UpdateUI()
+    public void UpdateUI()
     {
         // Safety checks to avoid IndexOutOfRange / null refs
         if (characterNames == null || characterNames.Length == 0)

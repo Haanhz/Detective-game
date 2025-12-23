@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     public Button startButton;             // Nút Start
     public GameObject cutscenePanel;       // Panel nền đen
     public TextMeshProUGUI cutsceneText;   // Text chạy chữ
+    public GameObject menuButtonObject;
     public float textSpeed = 0.03f;
 
     private bool gameStarted = false;
@@ -54,6 +55,9 @@ public class UIManager : MonoBehaviour
         // Ẩn UI gameplay và lose lúc chưa bắt đầu
         if (dayRemainText != null) dayRemainText.gameObject.SetActive(false);
         if (staminaSlider != null) staminaSlider.gameObject.SetActive(false);
+
+        if (menuButtonObject != null) 
+            menuButtonObject.SetActive(false);
 
         // if (loseText != null) loseText.gameObject.SetActive(false);
         if (replayButton != null)
@@ -160,6 +164,9 @@ public class UIManager : MonoBehaviour
         // bật UI
         dayRemainText.gameObject.SetActive(true);
         staminaSlider.gameObject.SetActive(true);
+
+        if (menuButtonObject != null) 
+            menuButtonObject.SetActive(true);
     }
 
     // ===========================================
