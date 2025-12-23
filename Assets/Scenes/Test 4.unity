@@ -6593,7 +6593,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.9021635, y: -33.04161, z: -10}
+  m_LocalPosition: {x: -16.250553, y: -33.04248, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7047,7 +7047,7 @@ Transform:
   m_GameObject: {fileID: 640541236}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.63, y: -36.44, z: -10}
+  m_LocalPosition: {x: -16.25, y: -33.72, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -58204,7 +58204,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1752609367
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -58318,7 +58318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2951c2d0f8a3d554780e7c125a62e97e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
+  rb: {fileID: 1752609366}
 --- !u!95 &1752609370
 Animator:
   serializedVersion: 7
@@ -59110,7 +59110,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1913955321}
   black: {fileID: 1752609364}
+  blackAnimator: {fileID: 0}
   probAppear: 0
+  killDistance: 1
   moveSpeed: 5
   spawnDistance: 3
   chaseDur: 10
@@ -59443,6 +59445,7 @@ MonoBehaviour:
   dead: 0
   runDuration: 5
   cooldown: 5
+  animator: {fileID: 0}
 --- !u!212 &1913955322
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -59507,7 +59510,7 @@ Transform:
   m_GameObject: {fileID: 1913955318}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.63, y: -36.44, z: 0}
+  m_LocalPosition: {x: -16.25, y: -33.72, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

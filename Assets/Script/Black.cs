@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Callbacks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Black : MonoBehaviour
 {
     public Rigidbody2D rb;
+
     public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -16,10 +17,12 @@ public class Black : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            ChaseManager.instance.player.gameObject.SetActive(false);
             ChaseManager.instance.player.dead = true;
+            ChaseManager.instance.player.gameObject.SetActive(false);
             ScoreBoard.scoreValue = 0;
             Debug.Log("You died!");
         }
     }
+    
+   
 }

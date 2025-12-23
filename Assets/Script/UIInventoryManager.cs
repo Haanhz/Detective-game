@@ -6,11 +6,9 @@ public class UIInventoryManager : MonoBehaviour
     public static UIInventoryManager Instance;
 
     [Header("UI References")]
-    public GameObject inventoryPanel;
-    public Transform content;
-    public GameObject entryPrefab;
-
-    private bool isOpen = false;
+    public GameObject inventoryPanel;   // InventoryContent (tab)
+    public Transform content;           // Content của ScrollView
+    public GameObject entryPrefab;       // PrefabEntry
 
     void Awake()
     {
@@ -18,25 +16,32 @@ public class UIInventoryManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    void Update()
+    /// <summary>
+    /// Được gọi khi mở tab Inventory
+    /// </summary>
+    public void OpenInventory()
     {
-        // Toggle inventory bằng B
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            isOpen = !isOpen;
-            inventoryPanel.SetActive(isOpen);
+        inventoryPanel.SetActive(true);
+        RefreshUI();
+    }
 
-            if (isOpen) RefreshUI();
-        }
+    /// <summary>
+    /// Được gọi khi đóng menu hoặc chuyển tab
+    /// </summary>
+    public void CloseInventory()
+    {
+        inventoryPanel.SetActive(false);
     }
 
     public void RefreshUI()
     {
-        // Xóa tất cả dòng cũ
+        if (EvidenceManager.Instance == null) return;
+
+        // Xóa entry cũ
         foreach (Transform child in content)
             Destroy(child.gameObject);
 
-        // Sinh lại từng entry
+        // Sinh entry mới
         foreach (string evidenceName in EvidenceManager.Instance.collectedEvidence)
         {
             if (evidenceName == "Hide")
@@ -44,9 +49,11 @@ public class UIInventoryManager : MonoBehaviour
 
             GameObject entry = Instantiate(entryPrefab, content);
 
-            // Tìm các text con
-            TextMeshProUGUI nameText = entry.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI descText = entry.transform.Find("DescText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI nameText =
+                entry.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
+
+            TextMeshProUGUI descText =
+                entry.transform.Find("DescText").GetComponent<TextMeshProUGUI>();
 
             nameText.text = evidenceName;
             descText.text = EvidenceManager.Instance.GetEvidenceDescription(evidenceName);
