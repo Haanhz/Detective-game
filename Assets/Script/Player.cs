@@ -21,7 +21,13 @@ public class Player : MonoBehaviour
     public float runDuration = 5f;
     public float cooldown = 5f;
 
-    private Animator animator;
+    public Animator animator;
+
+    // Public getter for animator to ensure safe external access
+    public Animator GetAnimator()
+    {
+        return animator;
+    }
 
     void Start()
     {
@@ -31,11 +37,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (dead)
-        {
-            DeadTrigger();
-            
-        } 
+        if (dead) {
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -73,7 +77,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            bool isPressingRun = Input.GetKey(KeyCode.LeftShift) && canRun;
+            bool isPressingRun = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && canRun;
 
             if (isPressingRun)
             {
@@ -112,19 +116,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void DeadTrigger()
-    {
-        if(animator.GetFloat("LastInputX") == 1)
-        {   
-            transform.localRotation = Quaternion.Euler(0, -90, 0);
-            animator.SetTrigger("Die"); 
-        } else if (animator.GetFloat("LastInputX") == -1)
-        {
-            transform.localRotation = Quaternion.Euler(0, 90, 0);
-            animator.SetTrigger("Die"); 
-        } else animator.SetTrigger("Die");
     
-    }
     public void Move(float speed)
     {
         Vector2Int currentInput = Vector2Int.zero;
@@ -144,7 +136,7 @@ public class Player : MonoBehaviour
 
         if (IsMoving())
         {
-            if (Input.GetKey(KeyCode.LeftShift) && canRun)
+            if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && canRun)
                 currentStamina -= staminaRunSpeed * Time.deltaTime;
             else
                 currentStamina -= staminaMoveSpeed * Time.deltaTime;

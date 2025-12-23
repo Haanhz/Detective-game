@@ -58318,7 +58318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2951c2d0f8a3d554780e7c125a62e97e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
+  rb: {fileID: 1752609366}
 --- !u!95 &1752609370
 Animator:
   serializedVersion: 7
@@ -59443,6 +59443,7 @@ MonoBehaviour:
   dead: 0
   runDuration: 5
   cooldown: 5
+  animator: {fileID: 0}
 --- !u!212 &1913955322
 SpriteRenderer:
   m_ObjectHideFlags: 0
