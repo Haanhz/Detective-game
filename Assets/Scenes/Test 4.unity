@@ -58204,7 +58204,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1752609367
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -59110,7 +59110,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1913955321}
   black: {fileID: 1752609364}
+  blackAnimator: {fileID: 0}
   probAppear: 0
+  killDistance: 1
   moveSpeed: 5
   spawnDistance: 3
   chaseDur: 10

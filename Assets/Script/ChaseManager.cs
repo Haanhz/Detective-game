@@ -5,8 +5,9 @@ public class ChaseManager : MonoBehaviour
 {
     public Player player;
     public GameObject black;
+    public Animator blackAnimator;
     public float probAppear;
-
+    public float killDistance = 1.0f; // Khoảng cách để trigger Kill
 
     public float moveSpeed = 5f;
     public float spawnDistance = 3f;
@@ -21,7 +22,8 @@ public class ChaseManager : MonoBehaviour
     {
         EndChase,
         SpawnBlack,
-        Chase
+        Chase,
+        Kill
     }
     private State currentState = State.EndChase;
 
@@ -43,6 +45,8 @@ public class ChaseManager : MonoBehaviour
     public void Start()
     {
         rb = black.GetComponent<Rigidbody2D>();
+        if (blackAnimator == null) blackAnimator = black.GetComponent<Animator>();
+
         target = player.transform;
         EndChase();
         GameManager.Instance.OnNightStart += OnNightStart;
@@ -73,7 +77,8 @@ public class ChaseManager : MonoBehaviour
                 Chase();
                 break;
             case State.EndChase:
-                //EndChase(); 
+                break;
+            case State.Kill:
                 break;
 
         }
@@ -123,12 +128,17 @@ public class ChaseManager : MonoBehaviour
         {
             timer = 0f;
             Vector3 playerPos = target.position;
+            // Spawn random quanh player nhưng làm tròn vị trí để khớp pixel (tuỳ chọn)
             float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
             Vector3 offset = direction * spawnDistance;
+            
             black.transform.position = playerPos + offset;
             black.SetActive(true);
             blackSpawned = true;
+            
+            // Reset animation
+            if(blackAnimator) blackAnimator.ResetTrigger("Kill");
         }
 
         timer += Time.deltaTime;
@@ -141,26 +151,109 @@ public class ChaseManager : MonoBehaviour
 
     void Chase()
     {
-        //chase logic
-        Vector3 direction = (target.position - black.transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        rb.rotation = angle;
-        rb.linearVelocity = new Vector2(direction.x, direction.y) * moveSpeed;
+        // 1. LOGIC KILL (Nếu quá gần thì giết)
+        float distanceToPlayer = Vector3.Distance(black.transform.position, target.position);
+        
+        // Nếu gần player và player chưa chết
+        if (distanceToPlayer <= killDistance && !player.dead)
+        {
+            currentState = State.Kill;
+            if(rb) rb.linearVelocity = Vector2.zero; // Dừng lại
 
+            // Báo animator chuyển sang kill
+            if (blackAnimator)
+            {
+                blackAnimator.SetFloat("MoveX", 0);
+                blackAnimator.SetFloat("MoveY", 0);
+                blackAnimator.SetTrigger("Kill");
+            }
+            
+            StartCoroutine(KillProcess()); 
+            return;
+        }
+
+        // 2. TÍNH TOÁN DI CHUYỂN 4 HƯỚNG
+        Vector3 diff = target.position - black.transform.position;
+        Vector2 moveDir = Vector2.zero;
+
+        // So sánh khoảng cách X và Y để chọn hướng đi (Manhattan Movement)
+        if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+        {
+            // Đi theo chiều Ngang (Trái/Phải)
+            moveDir = new Vector2(Mathf.Sign(diff.x), 0);
+        }
+        else
+        {
+            // Đi theo chiều Dọc (Lên/Xuống)
+            moveDir = new Vector2(0, Mathf.Sign(diff.y));
+        }
+
+        // Áp dụng vận tốc cho Rigidbody
+        if(rb) rb.linearVelocity = moveDir * moveSpeed;
+
+
+        // 3. XỬ LÝ ANIMATION VÀ FLIP (LẬT MẶT)
+        // Đây là đoạn code giúp Black lật mặt giống Player
+        if (moveDir.x != 0) 
+        {
+            if (moveDir.x > 0)
+            {
+                // Chạy sang PHẢI -> Scale (1, 1, 1)
+                black.transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                // Chạy sang TRÁI -> Scale (-1, 1, 1) -> Lật ngược lại
+                black.transform.localScale = new Vector3(-1, 1, 1);
+            }
+        }
+        // Lưu ý: Nếu đi lên/xuống (moveDir.x == 0) thì giữ nguyên hướng mặt hiện tại
+
+
+        // Cập nhật tham số cho Animator (để chạy Blend Tree)
+        if (blackAnimator != null)
+        {
+            blackAnimator.SetFloat("MoveX", moveDir.x);
+            blackAnimator.SetFloat("MoveY", moveDir.y);
+        }
+
+
+        // 4. KIỂM TRA THỜI GIAN CHASE
         timer += Time.deltaTime;
-        if (timer >= chaseDur)
+        
+        // Hết thời gian đuổi hoặc Player đã chết thì dừng
+        if (timer >= chaseDur || player.dead)
         {
             timer = 0f;
-            rb.linearVelocity = Vector2.zero;
+            if(rb) rb.linearVelocity = Vector2.zero;
+            
+            // Reset Animator về Idle
+            if(blackAnimator) 
+            {
+                blackAnimator.SetFloat("MoveX", 0);
+                blackAnimator.SetFloat("MoveY", 0);
+            }
+
             EndChase();
             currentState = State.EndChase;
         }
-        else if (timer < chaseDur && player.dead == true)
-        {
-            timer = 0f;
-            rb.linearVelocity = Vector2.zero;
-        }
-
+    }
+    
+    // Coroutine xử lý sau khi kill (chờ animation chạy xong một chút rồi mới End game)
+    IEnumerator KillProcess()
+    {
+        // Chờ khoảng 0.5s hoặc độ dài animation kill
+        yield return new WaitForSeconds(0.5f); 
+        
+        // Logic chết cũ của bạn
+        player.dead = true;
+        player.gameObject.SetActive(false);
+        // ScoreBoard.scoreValue = 0; // Nếu có script này
+        Debug.Log("You died by animation!");
+        
+        // Sau khi kill xong thì end chase
+        EndChase();
+        currentState = State.EndChase;
     }
 
     void EndChase()
