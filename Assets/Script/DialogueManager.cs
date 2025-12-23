@@ -174,6 +174,7 @@ public class DialogueManager : MonoBehaviour
 
         if (currentNPC != null && !isInteracting)
         {
+            CharacterUnlockManager.UnlockCharacter(currentNPC.profileIndex);
             isInteracting = true;
             StartConversationButton.SetActive(false);
             PointMurderButton.SetActive(false);

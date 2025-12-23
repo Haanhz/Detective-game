@@ -6,6 +6,14 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
+    [Header("Interaction UI")]
+    public GameObject interactIndicator; // Kéo Sprite dấu chấm than vào đây
+    public float detectionRange = 1.5f;   // Khoảng cách phát hiện
+    public System.Collections.Generic.List<string> interactableTags = new System.Collections.Generic.List<string> 
+    { 
+        "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", 
+        "Limit1", "Limit2", "Hide", "Bed", "Murder", "NPC" 
+    };
     public Vector2Int direction = Vector2Int.right;// (1,0)
     private Vector2Int input;
     public float maxStamina = 100f;
@@ -33,10 +41,13 @@ public class Player : MonoBehaviour
     {
         currentStamina = maxStamina;
         animator = GetComponent<Animator>();
+        if (interactIndicator != null) interactIndicator.SetActive(false);
     }
 
     void Update()
     {
+        CheckForInteractables();
+
         if (dead) {
             return;
         }
@@ -175,5 +186,38 @@ public class Player : MonoBehaviour
                 Debug.Log("You are not sleepy!");
             }
         }
+    }
+
+    void CheckForInteractables()
+    {
+        if (interactIndicator == null) return;
+
+        // Quét các Collider2D trong phạm vi hình tròn xung quanh Player
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange);
+        bool isNear = false;
+
+        foreach (var hit in hits)
+        {
+            if (interactableTags.Contains(hit.tag))
+            {
+                isNear = true;
+                break;
+            }
+        }
+
+        interactIndicator.SetActive(isNear);
+        
+        // Giữ dấu chấm than không bị lật ngược khi Player đổi hướng scale
+        if (isNear)
+        {
+            interactIndicator.transform.localScale = new Vector3(transform.localScale.x > 0 ? 1 : -1, 1, 1);
+        }
+    }
+
+    // Vẽ vòng tròn phạm vi trong Scene để bạn dễ căn chỉnh (không bắt buộc)
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
     }
 }

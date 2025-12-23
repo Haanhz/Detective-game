@@ -56,7 +56,7 @@ public class UIMenuManager : MonoBehaviour
         // THÊM DÒNG NÀY: Ép Profile cập nhật dữ liệu ngay khi hiện lên
         if (ProfileUI.Instance != null)
         {
-            ProfileUI.Instance.UpdateUI();
+            ProfileUI.Instance.OnOpenProfile();
         }
     }
 
