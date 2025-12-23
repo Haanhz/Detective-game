@@ -89086,8 +89086,8 @@ MonoBehaviour:
     id: 
     lines:
     - 'Mai: Hello, you''re a friend of Hang, right?'
-    - 'Mai: I''m Mai, the maid here. I work here when Mr.Sang lives in this mansion.
-      When Hang came here, he called me to help Hang in daily life.'
+    - 'Mai: I''m Mai, the maid here. I work here when Mr.Sang lives in this mansion.'
+    - 'Mai: When Hang came here, he called me to help Hang in daily life.'
     - Do you often talk to her?
     - 'Mai: Yes. It''s just me and her living here, so we talk to each other all
       the time.'
@@ -89098,6 +89098,8 @@ MonoBehaviour:
     - 'Mai: One night, I stayed in the villa later than usual. I heard a strange
       noise coming from the second floor, even though I was sure all the doors were
       locked. After that night, Mr. Sang moved out.'
+    - 'Mai: I heard a strange noise coming from the second floor, even though I was
+      sure all the doors were locked. After that night, Mr. Sang moved out.'
     - Oh, now I know about that, thanks alot for your information
     - "Mai: Yeah, no problem....uhm, I\u2019ve set up a place for you to sleep in
       H\u1EB1ng room. If you want, feel free to stay the night and investigate."
