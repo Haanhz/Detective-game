@@ -5094,27 +5094,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Tan - The Neighbor
   portrait: {fileID: 1635137701855651849, guid: bd15e5e5e7a2e874e8f71101b3b462f3, type: 3}
-  lines:
-  - 'Tan: Hi, I heard some noise... And Oh!!! Are you new here? Came to see that
-    girl?'
-  - 'Me: Yeah... ... ... But ... you are ...'
-  - 'Tan: Oh sorry, my name is Tan I live in the house there.
-
-'
-  - 'Tan: I already know about it. Earlier after talking to Mr. Sang... Poor girl.
-    I''ll miss her much.'
-  - 'Me: Do you remember the last time you saw her?
-
-'
-  - 'Tan: Hmmm......about a week ago, I had an argument with her because Hang refused
-    to let me see the documents. '
-  - 'Tan: But SHE SHOWED IT TO MAY
-
-
-'
-  - 'Tan: I think that''s DISRESPECTFUL to me because I helped her a lot.
-
-'
+  profileIndex: 0
+  introBlock:
+    id: 
+    lines: []
+    requiredEvidenceTags: []
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: 
+    infoKey: 0
+    infoValue: 
+  followUpBlock:
+    id: 
+    lines: []
+    requiredEvidenceTags: []
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: 
+    infoKey: 0
+    infoValue: 
+  dialogueStage: 0
+  conditionalBlocks: []
 --- !u!212 &414834595
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6809,16 +6813,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: May - The Neighbor
   portrait: {fileID: -1678404321430398395, guid: 910b6f8fc9d94d247baa72e106bc005d, type: 3}
-  lines:
-  - 'May: Hi, who... are you?'
-  - 'Me: I''m Hang''s friend. What''s your name?'
-  - 'May: ...May. I''m her neighbor.'
-  - 'Me: Do you know anything about Hang?'
-  - 'May: Yes. I''m quite close to her.'
-  - 'May: I think her job is so interesting, she used to work a lot in HER ROOM.'
-  - 'Me: Oh! You heard that Hang died, didn''t you?'
-  - 'May: What??? OMG. That''s shock to me. What happened? Where is she now? Who
-    did that?'
+  profileIndex: 0
+  introBlock:
+    id: 
+    lines: []
+    requiredEvidenceTags: []
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: 
+    infoKey: 0
+    infoValue: 
+  followUpBlock:
+    id: 
+    lines: []
+    requiredEvidenceTags: []
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: 
+    infoKey: 0
+    infoValue: 
+  dialogueStage: 0
+  conditionalBlocks: []
 --- !u!212 &581598866
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6889,6 +6908,142 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &612135359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 612135360}
+  - component: {fileID: 612135362}
+  - component: {fileID: 612135361}
+  m_Layer: 5
+  m_Name: CountDownText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &612135360
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612135359}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1793907736}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.0000038147, y: 0.000015259}
+  m_SizeDelta: {x: 293.96, y: 199.4202}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &612135361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612135359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: New Text
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8088cb2b25ab0ec498bf69bda4bf655d, type: 2}
+  m_sharedMaterial: {fileID: 3216688107176568827, guid: 8088cb2b25ab0ec498bf69bda4bf655d, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278519240
+  m_fontColor: {r: 0.7830189, g: 0.018467424, b: 0.018467424, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 250
+  m_fontSizeBase: 250
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 0
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &612135362
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612135359}
+  m_CullTransparentMesh: 1
 --- !u!1 &616755351
 GameObject:
   m_ObjectHideFlags: 0
@@ -8313,6 +8468,7 @@ MonoBehaviour:
   startButton: {fileID: 1872445983}
   cutscenePanel: {fileID: 1361394134}
   cutsceneText: {fileID: 1676533071}
+  menuButtonObject: {fileID: 0}
   textSpeed: 0.01
 --- !u!4 &851640101
 Transform:
@@ -10593,35 +10749,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Sang - The mansion's Owner
   portrait: {fileID: -6686936924111061147, guid: e5b4c393ac6ba4a4cb6d7535c5b66fee, type: 3}
-  lines:
-  - 'Sang: Hello, you must be the DETECTIVE Hang mentioned.
-
-'
-  - 'Sang: I am Sang, the owner of this mansion.'
-  - 'Me: You met her? Where''s she?'
-  - 'Sang: She called me here to talk about what she found in this villa. '
-  - 'Sang: She said she would also call one of her detective friends.'
-  - 'Sang: However, when I got here, she had already ... ... ... DIED ... in the
-    SHED outside.'
-  - 'Me: WHAT??? What happened?'
-  - 'Sang: I don''t know.... I only got here a few hours before you. '
-  - 'Sang: I wonder if it is because of what she is investigating here..'
-  - 'Sang: ...this villa ....is definitely HAUNTED......'
-  - 'Sang: I also noticed a strange mark on Hang''s neck, like a HANGING MARK.
-
-'
-  - 'Sang: Hang definitely left some clues here. And of course, I can''t figure them
-    out.
-
-'
-  - 'Sang: So, can you stay here to find out why she died and also figure out what
-    she left behind?
-
-'
-  - 'Me: ... My poor friend....'
-  - 'Sang: I must be responsible for this problem. I''ll stay here with you. There
-    is a note on the table for you, you can press F to have a look.'
-  - 'Me: Thanks, first, I need to have some information about you.'
+  profileIndex: 0
+  introBlock:
+    id: 
+    lines: []
+    requiredEvidenceTags: []
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: 
+    infoKey: 0
+    infoValue: 
+  followUpBlock:
+    id: 
+    lines: []
+    requiredEvidenceTags: []
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: 
+    infoKey: 0
+    infoValue: 
+  dialogueStage: 0
+  conditionalBlocks: []
 --- !u!212 &1045237820
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -55248,12 +55400,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   limit1: {fileID: 181443922}
   limit2: {fileID: 356494839}
-  dayDuration: 60
-  nightDuration: 60
+  limit3: {fileID: 0}
+  limit4: {fileID: 0}
+  limit5: {fileID: 0}
+  limit6: {fileID: 0}
+  dayDuration: 10
+  nightDuration: 10
   daysRemaining: 3
   isNight: 0
   currentNight: 0
   nightPanel: {fileID: 333904958}
+  countdownText: {fileID: 612135361}
+  countdownThreshold: 3
   gameEnded: 0
 --- !u!4 &1328244847
 Transform:
@@ -55460,7 +55618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1361394135
 RectTransform:
   m_ObjectHideFlags: 0
@@ -58387,6 +58545,7 @@ RectTransform:
   - {fileID: 1645346071}
   - {fileID: 1361394135}
   - {fileID: 973800489}
+  - {fileID: 612135360}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -59434,6 +59593,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6be70c35985d024b8ddf447d54474dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactIndicator: {fileID: 0}
+  detectionRange: 1.5
+  interactableTags:
+  - LivingCorner
+  - Ultimatum
+  - HangPhone
+  - HangNoteBook
+  - Limit1
+  - Limit2
+  - Hide
+  - Bed
+  - Murder
+  - NPC
   direction: {x: 1, y: 0}
   maxStamina: 100
   currentStamina: 0
@@ -60004,17 +60176,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Mai - The Maid
   portrait: {fileID: -7636499561933389721, guid: 3e12c6529fa61344b9615895a6143c88, type: 3}
-  lines:
-  - 'Mai: Hello, you''re a friend of Hang, right?'
-  - 'Mai: I''m Mai, the maid here. I work here when Mr.Sang lives in this mansion. '
-  - 'Mai: When Hang came here, he called me to help Hang in daily life.'
-  - 'Me: Do you often talk to her?'
-  - 'Mai: Yes. It''s just me and her living here, so we talk to each other all the
-    time.'
-  - 'Me: So did you notice anything strange before Hang died?'
-  - 'Mai: Hmm...I.... don''t....... but AT NIGHT, this villa has a lot of MYSTERY......'
-  - 'Me: Ok, I have a basic understanding. But I still need to know a bit more about
-    you.'
+  profileIndex: 0
+  introBlock:
+    id: 
+    lines: []
+    requiredEvidenceTags: []
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: 
+    infoKey: 0
+    infoValue: 
+  followUpBlock:
+    id: 
+    lines: []
+    requiredEvidenceTags: []
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: 
+    infoKey: 0
+    infoValue: 
+  dialogueStage: 0
+  conditionalBlocks: []
 --- !u!212 &2020424472
 SpriteRenderer:
   m_ObjectHideFlags: 0

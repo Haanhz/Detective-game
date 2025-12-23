@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,7 +13,6 @@ public class GameManager : MonoBehaviour
     public GameObject limit5;
     public GameObject limit6;
 
-
     public float dayDuration = 60f;
     public float nightDuration = 60f;
 
@@ -21,25 +22,29 @@ public class GameManager : MonoBehaviour
     private float timer = 0f;
     public CanvasGroup nightPanel;
 
+    // --- CÁC BIẾN CHO ĐẾM NGƯỢC ---
+    public TextMeshProUGUI countdownText; 
+    public float countdownThreshold = 3f; 
+    private bool isCountingDown = false;
+    // ------------------------------
+
     public event Action OnDayStart;
     public event Action OnNightStart;
     public event Action OnDayEnded;
     public bool gameEnded = false;
 
-    // LƯU REFERENCE CÁC NPC
     private GameObject[] allNPCs;
     private GameObject[] allMurders;
-
-    // Điều kiện thoại
 
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         
-        // Tìm và lưu tất cả NPC ngay từ đầu (kể cả inactive)
         allNPCs = GameObject.FindGameObjectsWithTag("NPC");
         allMurders = GameObject.FindGameObjectsWithTag("Murder");
+
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
     }
 
     void Start()
@@ -53,6 +58,13 @@ public class GameManager : MonoBehaviour
 
         if (!isNight)
         {
+            // Đếm ngược từ Sáng -> Tối
+            float timeLeftDay = dayDuration - timer;
+            if (timeLeftDay <= countdownThreshold && !isCountingDown && timeLeftDay > 0)
+            {
+                StartCoroutine(CountdownSequence(dayDuration));
+            }
+
             if (timer >= dayDuration)
             {
                 StartNight();
@@ -60,6 +72,13 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            // Đếm ngược từ Tối -> Sáng
+            float timeLeftNight = nightDuration - timer;
+            if (timeLeftNight <= countdownThreshold && !isCountingDown && timeLeftNight > 0)
+            {
+                StartCoroutine(CountdownSequence(nightDuration));
+            }
+
             if (timer >= nightDuration)
             {
                 EndNightAndNextDay();
@@ -75,10 +94,38 @@ public class GameManager : MonoBehaviour
         limit6.SetActive(isNight && currentNight == 6);
     }
 
+    // Coroutine dùng chung cho cả sáng và tối
+    IEnumerator CountdownSequence(float targetDuration)
+    {
+        isCountingDown = true;
+        if (countdownText != null) countdownText.gameObject.SetActive(true);
+
+        while (timer < targetDuration)
+        {
+            if (countdownText != null)
+            {
+                int secondsDisplay = Mathf.CeilToInt(targetDuration - timer);
+                // Đảm bảo không hiện số <= 0 trước khi chuyển giao diện
+                if (secondsDisplay > 0) 
+                    countdownText.text = secondsDisplay.ToString();
+            }
+            yield return null; 
+        }
+
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
+        isCountingDown = false;
+    }
+
     void StartDay()
     {
         isNight = false;
         timer = 0f;
+        
+        // Dừng đếm ngược cũ nếu có và ẩn UI
+        StopAllCoroutines();
+        isCountingDown = false;
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
+
         OnDayStart?.Invoke();
         nightPanel.alpha = 0;
         Debug.Log("GOOD MORNING!");
@@ -92,11 +139,17 @@ public class GameManager : MonoBehaviour
         currentNight++;
         SetNPCActive(false);
 
+        // Dừng đếm ngược cũ nếu có và ẩn UI
+        StopAllCoroutines(); 
+        isCountingDown = false;
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
+
         OnNightStart?.Invoke();
         nightPanel.alpha = 1;
         Debug.Log("IS NIGHT ALREADY? Night = "+ currentNight);
     }
 
+    // Các hàm còn lại giữ nguyên logic cũ của bạn
     void EndNightAndNextDay()
     {
         daysRemaining--;
@@ -116,28 +169,22 @@ public class GameManager : MonoBehaviour
     public void ForceSkipNight()
     {
         if (!isNight) return;
-
         daysRemaining--;
         OnDayEnded?.Invoke();
-
         if (daysRemaining <= 0)
         {
-            Debug.Log("TIME OUT! GAME OVER");
             gameEnded = true;
             return;
         }
-
         StartDay();
     }
 
     void SetNPCActive(bool active)
     {
-        // Dùng array đã lưu thay vì tìm lại
         foreach (var npc in allNPCs)
         {
             if (npc != null) npc.SetActive(active);
         }
-        
         foreach (var murder in allMurders)
         {
             if (murder != null) murder.SetActive(active);
