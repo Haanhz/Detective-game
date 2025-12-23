@@ -296,7 +296,7 @@ public class DialogueManager : MonoBehaviour
     void FinishDialogueSequence()
 {
     // ===== 0. UPDATE IMPORTANT INFO =====
-    if (currentBlock != null && currentBlock.infoKey != 0)
+    if (currentBlock != null)
     {
         Dictionary<int, string> targetDict = null;
 
