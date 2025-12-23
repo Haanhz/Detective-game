@@ -59436,7 +59436,7 @@ MonoBehaviour:
   maxStamina: 100
   currentStamina: 0
   moveSpeed: 4
-  runSpeed: 10
+  runSpeed: 8
   tiredSpeed: 3.5
   staminaMoveSpeed: 0.3
   staminaRunSpeed: 0.5

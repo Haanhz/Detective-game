@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -30,9 +31,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Last: " + animator.GetFloat("LastInputX") + ", " + animator.GetFloat("LastInputY"));
-
-        if (dead) return;
+        if (dead)
+        {
+            DeadTrigger();
+            
+        } 
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -109,6 +112,19 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void DeadTrigger()
+    {
+        if(animator.GetFloat("LastInputX") == 1)
+        {   
+            transform.localRotation = Quaternion.Euler(0, -90, 0);
+            animator.SetTrigger("Die"); 
+        } else if (animator.GetFloat("LastInputX") == -1)
+        {
+            transform.localRotation = Quaternion.Euler(0, 90, 0);
+            animator.SetTrigger("Die"); 
+        } else animator.SetTrigger("Die");
+    
+    }
     public void Move(float speed)
     {
         Vector2Int currentInput = Vector2Int.zero;
