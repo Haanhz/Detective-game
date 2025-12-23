@@ -88,21 +88,68 @@ public class ProfileUI : MonoBehaviour
 
     void NextProfile()
     {
+        // Giữ nguyên cách lấy 'max' an toàn của bạn
         int max = characterNames != null && characterNames.Length > 0 ? characterNames.Length : (characterPortraits != null ? characterPortraits.Length : 0);
-        if (max == 0) return;
+        if (max <= 1) return; // Nếu có 0 hoặc 1 nhân vật thì không cần chuyển
 
-        index++;
-        if (index >= max) index = 0;
-        UpdateUI();
+        int startSearchIndex = index; // Lưu lại điểm bắt đầu để tránh lặp vô tận
+        do {
+            index++;
+            if (index >= max) index = 0;
+
+            // Kiểm tra xem đã mở khóa chưa (CharacterUnlockManager là script tôi bảo bạn tạo thêm)
+            if (CharacterUnlockManager.IsUnlocked(index)) {
+                UpdateUI();
+                return;
+            }
+        } while (index != startSearchIndex); 
     }
 
     void PrevProfile()
     {
         int max = characterNames != null && characterNames.Length > 0 ? characterNames.Length : (characterPortraits != null ? characterPortraits.Length : 0);
+        if (max <= 1) return;
+
+        int startSearchIndex = index;
+        do {
+            index--;
+            if (index < 0) index = max - 1;
+
+            if (CharacterUnlockManager.IsUnlocked(index)) {
+                UpdateUI();
+                return;
+            }
+        } while (index != startSearchIndex);
+    }
+
+    // Thêm hàm này vào ProfileUI.cs
+    public void OnOpenProfile()
+    {
+        int max = characterNames != null ? characterNames.Length : 0;
         if (max == 0) return;
 
-        index--;
-        if (index < 0) index = max - 1;
-        UpdateUI();
+        // Tìm nhân vật đầu tiên đã được mở khóa để hiển thị ngay khi mở menu
+        bool found = false;
+        for (int i = 0; i < max; i++)
+        {
+            if (CharacterUnlockManager.IsUnlocked(i))
+            {
+                index = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (found)
+        {
+            UpdateUI();
+        }
+        else
+        {
+            // Nếu chưa gặp bất kỳ ai, hiển thị trạng thái trống
+            nameText.text = "???";
+            descText.text = "You didn't meet anyone yet.";
+            if (portraitImage != null) portraitImage.enabled = false;
+        }
     }
 }

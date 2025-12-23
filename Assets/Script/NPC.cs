@@ -9,6 +9,9 @@ public class NPC : MonoBehaviour
     public string npcName = "NPC Name";
     public Sprite portrait;
 
+    [Header("Profile Linking")]
+    public int profileIndex;
+
     // ===== DIALOGUE STAGES =====
 
     [Header("Stage 0 - Intro (first time)")]
