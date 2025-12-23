@@ -135,8 +135,16 @@ public class Evidence : MonoBehaviour
             case "Ultimatum": return "Ultimatum";
             case "HangPhone": return "Hang's Phone";
             case "HangNoteBook": return "Hang's Notebook";
-            case "Limit1": return "May's Diary";
-            case "Limit2": return "The torn sheet in Hang's Notebook";
+            case "Crack": return"Crack outside the attic";
+            case "StrangeTable": return "Four chairs around the table, three of them fall";
+            case "OpenWindow": return "Open window in the attic";
+            case "Rope": return "Rope in the attic";
+            case "Limit1": return "The torn sheet in Hang's Notebook";
+            case "Limit2": return "Hang the Ghost";
+            case "Limit3": return "Mai's Diary";
+            case "Limit4": return "Family Photo";
+            case "Limit5": return "May's Diary";
+            case "Limit6": return "The ghost mom";
             case "Hide": return "Hide";
             default: return "Unknown Evidence";
         }
@@ -163,7 +171,9 @@ public class Evidence : MonoBehaviour
         {
             case "HangNoteBook":
             case "Limit1":
-            case "Limit2":
+            case "Limit3":
+            case "Limit4":
+            case "Limit5":
             case "Hide":
                 return true;
 

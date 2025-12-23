@@ -14,6 +14,9 @@ TagManager:
   - Bed
   - Murder
   - NPC
+  - Limit3
+  - Limit4
+  - Limit5
   layers:
   - Default
   - TransparentFX

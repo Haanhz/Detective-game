@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 
 public class DialogueManager : MonoBehaviour
@@ -27,6 +28,11 @@ public class DialogueManager : MonoBehaviour
     private bool isInteracting = false;
 
     private bool chooseRightMurderer = false;
+
+    public Dictionary<int, string>Sang = new Dictionary<int, string>();
+    public Dictionary<int, string>Mai = new Dictionary<int, string>();
+    public Dictionary<int, string>Tan = new Dictionary<int, string>();
+    public Dictionary<int, string>May = new Dictionary<int, string>();
 
     void Awake()
     {
@@ -126,6 +132,22 @@ public class DialogueManager : MonoBehaviour
             }
         }
     }
+
+    public void UpdateImportantInfo(Dictionary<int, string> dict, int key, string value, bool condition)
+    {
+        if (condition)
+        {
+            if (dict.ContainsKey(key))
+            {
+                dict[key] = value; // update nếu key đã tồn tại
+            }
+            else
+            {
+                dict.Add(key, value); // thêm mới nếu key chưa có
+            }
+        }
+    }
+
 
     public bool ChooseRightMurderer()
     {
