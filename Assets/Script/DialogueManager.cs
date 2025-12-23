@@ -29,10 +29,11 @@ public class DialogueManager : MonoBehaviour
 
     private bool chooseRightMurderer = false;
 
-    public Dictionary<int, string>Sang = new Dictionary<int, string>();
-    public Dictionary<int, string>Mai = new Dictionary<int, string>();
-    public Dictionary<int, string>Tan = new Dictionary<int, string>();
-    public Dictionary<int, string>May = new Dictionary<int, string>();
+    public Dictionary<int, string> Sang = new Dictionary<int, string>();
+    public Dictionary<int, string> Mai = new Dictionary<int, string>();
+    public Dictionary<int, string> Tan = new Dictionary<int, string>();
+    public Dictionary<int, string> May = new Dictionary<int, string>();
+    private NPC.DialogueBlock currentBlock;
 
     void Awake()
     {
@@ -64,18 +65,19 @@ public class DialogueManager : MonoBehaviour
     void Update()
     {
         if (GameManager.Instance.isNight)
-    {
-        if (isInteracting) 
         {
-  
-            CleanupState();
+            if (isInteracting)
+            {
+
+                CleanupState();
+            }
+            return; // không cho dialogue hoạt động
         }
-        return; // không cho dialogue hoạt động
-    }
         // 1. Tìm NPC gần đó
         currentNPC = FindClosestNPC();
 
-        if(currentNPC != null){
+        if (currentNPC != null)
+        {
             ChooseRightMurderer(currentNPC.tag);
         }
         // 2. Xử lý logic Hội thoại (Nếu đang tương tác, bỏ qua kiểm tra khoảng cách/hiện nút)
@@ -148,6 +150,19 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+        bool HasImportantInfo(string npcName, int key)
+    {
+        switch (npcName)
+        {
+            case "Sang": return Sang.ContainsKey(key);
+            case "Mai":  return Mai.ContainsKey(key);
+            case "Tan":  return Tan.ContainsKey(key);
+            case "May":  return May.ContainsKey(key);
+            default: return false;
+        }
+    }
+
+
 
     public bool ChooseRightMurderer()
     {
@@ -201,11 +216,30 @@ public class DialogueManager : MonoBehaviour
 
     void StartDialogue(NPC npc)
     {
-        currentLines = npc.lines;
+        NPC.DialogueBlock blockToPlay = null;
+
+        if (npc.dialogueStage == 0)
+        {
+            blockToPlay = npc.introBlock;
+        }
+        else if (npc.dialogueStage == 1)
+        {
+            blockToPlay = npc.followUpBlock;
+        }
+        else
+        {
+            blockToPlay = GetConditionalDialogue(npc);
+        }
+
+        currentBlock = blockToPlay;
+        currentLines = blockToPlay.lines;
+
         index = 0;
-        DialogueText.text = string.Empty;
+        DialogueText.text = "";
         StartCoroutine(TypeLine());
     }
+
+
 
     IEnumerator TypeLine()
     {
@@ -238,27 +272,100 @@ public class DialogueManager : MonoBehaviour
 
     // Kết thúc chuỗi hội thoại
     void FinishDialogueSequence()
+{
+    // ===== 0. UPDATE IMPORTANT INFO =====
+    if (currentBlock != null && currentBlock.infoKey != 0)
     {
-        CleanupState();
+        Dictionary<int, string> targetDict = null;
 
-        // Kiểm tra xem người chơi có còn gần NPC không để hiển thị lại thông tin tương tác
-        if (FindClosestNPC() != null)
+        switch (currentBlock.targetNPC)
         {
-            // Hiển thị lại nút, tên, và ảnh
-            dialogueBox.SetActive(true);
+            case "Sang": targetDict = Sang; break;
+            case "Mai":  targetDict = Mai;  break;
+            case "Tan":  targetDict = Tan;  break;
+            case "May":  targetDict = May;  break;
+        }
 
-            StartConversationButton.SetActive(true);
-            PointMurderButton.SetActive(true);
-
-            NPC npc = FindClosestNPC();
-            if (NameText != null) NameText.text = npc.npcName;
-            if (AvatarImage != null && npc.portrait != null)
-            {
-                AvatarImage.sprite = npc.portrait;
-                AvatarImage.gameObject.SetActive(true);
-            }
+        if (targetDict != null)
+        {
+            UpdateImportantInfo(
+                targetDict,
+                currentBlock.infoKey,
+                currentBlock.infoValue,
+                true
+            );
         }
     }
+
+    // ===== 1. UPDATE DIALOGUE STAGE =====
+    if (currentNPC != null)
+    {
+        if (currentNPC.dialogueStage == 0)
+        {
+            currentNPC.dialogueStage = 1;
+        }
+        else if (currentNPC.dialogueStage == 1)
+        {
+            currentNPC.dialogueStage = 2;
+        }
+        // stage >= 2: KHÔNG tự tăng
+    }
+
+    // ===== 2. CLEANUP UI =====
+    CleanupState();
+
+    // ===== 3. HIỂN THỊ LẠI UI =====
+    NPC npc = FindClosestNPC();
+    if (npc != null)
+    {
+        dialogueBox.SetActive(true);
+        StartConversationButton.SetActive(true);
+        PointMurderButton.SetActive(true);
+
+        if (NameText != null) NameText.text = npc.npcName;
+        if (AvatarImage != null && npc.portrait != null)
+        {
+            AvatarImage.sprite = npc.portrait;
+            AvatarImage.gameObject.SetActive(true);
+        }
+    }
+}
+
+
+    NPC.DialogueBlock GetConditionalDialogue(NPC npc)
+    {
+        foreach (var block in npc.conditionalBlocks)
+        {
+            if (block.readOnceOnly && block.hasRead)
+                continue;
+
+            foreach (string ev in block.requiredEvidenceTags)
+            {
+                if (!EvidenceManager.Instance.HasEvidence(ev))
+                    goto NextBlock;
+            }
+
+            if (!string.IsNullOrEmpty(block.requiredNPC))
+            {
+                foreach (int key in block.requiredKeys)
+                {
+                    if (!HasImportantInfo(block.requiredNPC, key))
+                        goto NextBlock;
+                }
+            }
+
+            block.hasRead = true;
+            return block;
+
+        NextBlock:;
+        }
+
+        return npc.followUpBlock; // fallback đúng
+    }
+
+
+
+
 
     // Dọn dẹp trạng thái chung (tắt tất cả UI liên quan)
     void CleanupState()

@@ -17,6 +17,11 @@ TagManager:
   - Limit3
   - Limit4
   - Limit5
+  - Rope
+  - Crack
+  - StrangeTable
+  - OpenWindow
+  - Limit6
   layers:
   - Default
   - TransparentFX

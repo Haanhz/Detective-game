@@ -6,11 +6,16 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameObject limit1;
     public GameObject limit2;
+    public GameObject limit3;
+    public GameObject limit4;
+    public GameObject limit5;
+    public GameObject limit6;
+
 
     public float dayDuration = 60f;
     public float nightDuration = 60f;
 
-    public int daysRemaining = 3;
+    public int daysRemaining = 7;
     public bool isNight = false;
     public int currentNight = 0;
     private float timer = 0f;
@@ -24,6 +29,8 @@ public class GameManager : MonoBehaviour
     // LƯU REFERENCE CÁC NPC
     private GameObject[] allNPCs;
     private GameObject[] allMurders;
+
+    // Điều kiện thoại
 
     void Awake()
     {
@@ -62,6 +69,10 @@ public class GameManager : MonoBehaviour
         if (gameEnded) return;
         limit1.SetActive(isNight && currentNight == 1);
         limit2.SetActive(isNight && currentNight == 2);
+        limit3.SetActive(isNight && currentNight == 3);
+        limit4.SetActive(isNight && currentNight == 4);
+        limit5.SetActive(isNight && currentNight == 5);
+        limit6.SetActive(isNight && currentNight == 6);
     }
 
     void StartDay()

@@ -59,4 +59,10 @@ public class EvidenceManager : MonoBehaviour
         return "No description available.";
     }
 
+    public bool HasEvidence(string tagName)
+    {
+        return collectedEvidence.Contains(tagName);
+    }
+
+
 }
