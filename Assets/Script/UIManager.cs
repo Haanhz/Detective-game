@@ -150,7 +150,7 @@ public class UIManager : MonoBehaviour
         // (tùy bạn có muốn thêm không)
         // hintText.SetActive(true);
 
-        while (!Input.GetKeyDown(KeyCode.Z))
+        while (!Input.GetKeyDown(KeyCode.F))
             yield return null;
 
         // hintText.SetActive(false);

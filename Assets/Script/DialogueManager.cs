@@ -106,7 +106,7 @@ public class DialogueManager : MonoBehaviour
             // NPC đang trong phạm vi tương tác, hội thoại chưa bắt đầu
 
             // KIỂM TRA PHÍM Z ĐỂ HIỆN NÚT VÀ THÔNG TIN CÁ NHÂN CỦA NPC
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 if (!StartConversationButton.activeInHierarchy)
                 {
