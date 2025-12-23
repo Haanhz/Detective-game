@@ -7,13 +7,13 @@ using System.Collections;
 public class Evidence : MonoBehaviour
 {
     // Tham chiếu UI (Gắn DialogueBox và TextMeshProUGUI vào đây)
-    public GameObject DialogueBox; 
+    public GameObject DialogueBox;
     public TextMeshProUGUI CatchName;
-    
+
     // Cài đặt hiển thị
     public float displayTime = 1f; // Thời gian hộp thoại tồn tại sau khi gõ xong
     public float typingSpeed = 0.01f; // Tốc độ gõ chữ
-    
+
     // Quản lý Coroutine
     private Coroutine displayCoroutine;
 
@@ -22,8 +22,8 @@ public class Evidence : MonoBehaviour
     public string evidenceTag;
     private float weight = 0f;
 
-    public int spawnNight; 
-    
+    public int spawnNight;
+
     // Logic Thu thập
     public KeyCode pickupKey = KeyCode.F;
     private bool collected = false;
@@ -34,7 +34,7 @@ public class Evidence : MonoBehaviour
         // Khởi tạo UI
         if (DialogueBox != null) DialogueBox.SetActive(false);
         if (CatchName != null) CatchName.text = string.Empty;
-        
+
         // Thiết lập Tag nếu chưa được gán trong Inspector
         if (string.IsNullOrEmpty(evidenceTag))
             evidenceTag = gameObject.tag;
@@ -42,44 +42,58 @@ public class Evidence : MonoBehaviour
 
     // --- LOGIC THU THẬP ---
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private bool playerInRange = false;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        // Chỉ xử lý khi va chạm với Player, nhấn phím, và chưa được thu thập
-        if (collision.gameObject.CompareTag("Player") && Input.GetKey(pickupKey) && !collected)
+        if (other.CompareTag("Player"))
         {
-            // 1. Đánh dấu đã thu thập và tính toán dữ liệu
-            collected = true;
-            weight = CalculateWeight(evidenceTag);
-            string evidenceName = GetEvidenceName(evidenceTag); 
+            playerInRange = true;
+        }
+    }
 
-            // 2. Thêm vào EvidenceManager
-            if (EvidenceManager.Instance != null)
-            {
-                 EvidenceManager.Instance.AddEvidence(evidenceTag, weight);
-            }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
+        }
+    }
 
-            // 3. Nếu tag là "Hide" thì ẩn ngay lập tức và không hiện dialogue
-            if (evidenceTag == "Hide")
-            {
-                gameObject.SetActive(false);
-                return; // Kết thúc hàm, không chạy phần hiển thị UI
-            }
+    private void Update()
+    {
+        if (playerInRange && Input.GetKeyDown(pickupKey) && !collected)
+        {
+            CollectEvidence();
+        }
+    }
 
-            // 4. HIỂN THỊ UI THÔNG BÁO (Gõ chữ) - chỉ cho các evidence khác "Hide"
-            if (DialogueBox != null && CatchName != null && evidenceName != "Hide")
-            {
-                // Dừng Coroutine cũ (gõ chữ hoặc ẩn) để bắt đầu cái mới
-                if (displayCoroutine != null)
-                {
-                    StopCoroutine(displayCoroutine);
-                }
-                
-                DialogueBox.SetActive(true);
-                string fullMessage = announceText + evidenceName;
-                
-                // Bắt đầu Coroutine gõ chữ
-                displayCoroutine = StartCoroutine(TypeEvidenceFound(fullMessage)); 
-            } 
+    private void CollectEvidence()
+    {
+        collected = true;
+
+        weight = CalculateWeight(evidenceTag);
+        string evidenceName = GetEvidenceName(evidenceTag);
+
+        if (EvidenceManager.Instance != null)
+        {
+            EvidenceManager.Instance.AddEvidence(evidenceTag, weight);
+        }
+
+        if (evidenceTag == "Hide")
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        if (DialogueBox != null && CatchName != null)
+        {
+            if (displayCoroutine != null)
+                StopCoroutine(displayCoroutine);
+
+            DialogueBox.SetActive(true);
+            string fullMessage = announceText + evidenceName;
+            displayCoroutine = StartCoroutine(TypeEvidenceFound(fullMessage));
         }
     }
 
@@ -90,8 +104,8 @@ public class Evidence : MonoBehaviour
     /// </summary>
     private IEnumerator TypeEvidenceFound(string fullMessage)
     {
-        CatchName.text = string.Empty; 
-        
+        CatchName.text = string.Empty;
+
         foreach (char c in fullMessage.ToCharArray())
         {
             CatchName.text += c;
@@ -108,25 +122,25 @@ public class Evidence : MonoBehaviour
     private IEnumerator HideDialogueAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-        
+
         // Ẩn hộp thoại
         if (DialogueBox != null)
         {
             DialogueBox.SetActive(false);
             CatchName.text = string.Empty; // Xóa text khi ẩn
         }
-        
+
         // Ẩn GameObject nếu cần (sau khi dialogue đã hiện xong)
         if (ShouldHide(evidenceTag))
         {
             gameObject.SetActive(false);
         }
-        
+
         displayCoroutine = null;
     }
 
     // --- HÀM HỖ TRỢ DỮ LIỆU ---
-    
+
     string GetEvidenceName(string evidenceTag)
     {
         switch (evidenceTag)
@@ -135,7 +149,7 @@ public class Evidence : MonoBehaviour
             case "Ultimatum": return "Ultimatum";
             case "HangPhone": return "Hang's Phone";
             case "HangNoteBook": return "Hang's Notebook";
-            case "Crack": return"Crack outside the attic";
+            case "Crack": return "Crack outside the attic";
             case "StrangeTable": return "Four chairs around the table, three of them fall";
             case "OpenWindow": return "Open window in the attic";
             case "Rope": return "Rope in the attic";
@@ -178,7 +192,7 @@ public class Evidence : MonoBehaviour
                 return true;
 
             default:
-                return false;   
+                return false;
         }
     }
 }

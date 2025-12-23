@@ -84,7 +84,7 @@ public class DialogueManager : MonoBehaviour
         if (isInteracting)
         {
             // Xử lý nhấp chuột (LMB) để chuyển dòng/kết thúc
-            if (dialogueBox.activeInHierarchy && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Z)))
+            if (dialogueBox.activeInHierarchy && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F)))
             {
                 if (DialogueText.text == currentLines[index])
                 {

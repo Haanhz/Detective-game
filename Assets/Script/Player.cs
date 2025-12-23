@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     private bool canRun = true;
     public float runDuration = 5f;
     public float cooldown = 5f;
+    private bool inBedTrigger = false;
+
 
     public Animator animator;
 
@@ -47,6 +49,20 @@ public class Player : MonoBehaviour
     void Update()
     {
         CheckForInteractables();
+        if (inBedTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (GameManager.Instance.isNight)
+            {
+                currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
+                GameManager.Instance.ForceSkipNight();
+                Debug.Log("You go to sleep and wake up the next morning!");
+            }
+            else
+            {
+                Debug.Log("You are not sleepy!");
+            }
+        }
+
 
         if (dead) {
             return;
@@ -169,23 +185,17 @@ public class Player : MonoBehaviour
         return Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
     }
 
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if (!collision.collider.CompareTag("Bed")) return;
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (GameManager.Instance.isNight)
-            {
-                currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
-                GameManager.Instance.ForceSkipNight();
-                Debug.Log("You go to sleep and wake up the next morning!");
-            }
-            else
-            {
-                Debug.Log("You are not sleepy!");
-            }
-        }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Bed"))
+            inBedTrigger = true;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Bed"))
+            inBedTrigger = false;
     }
 
     void CheckForInteractables()
