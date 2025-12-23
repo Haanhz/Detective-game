@@ -5932,18 +5932,42 @@ MonoBehaviour:
   portrait: {fileID: 1635137701855651849, guid: bd15e5e5e7a2e874e8f71101b3b462f3, type: 3}
   introBlock:
     id: 
-    lines: []
+    lines:
+    - 'Tan: Hi, I heard some noise... And Oh!!! Are you new here? Came to see that
+      girl?'
+    - Yeah... ... ... But ... you are ...
+    - 'Tan: Oh sorry, my name is Tan I live in the house there.'
+    - 'Tan: I already know about it. Earlier after talking to Mr. Sang... Poor girl.
+      I''ll miss her much.'
+    - 'Tan: I already know about it. Earlier after talking to Mr. Sang... Poor girl.
+      I''ll miss her much.'
+    - 'It seems like you and she are pretty close, huh?
+
+      Do you remember the
+      last time you saw her?'
+    - 'It seems like you and she are pretty close, huh?
+
+      Do you remember the
+      last time you saw her?'
+    - 'Tan: Hmmm......about a week ago, I had an argument with her because Hang refused
+      to let me see the documents. '
+    - 'Tan: But SHE SHOWED IT TO MAY. '
+    - 'Tan: I think that''s DISRESPECTFUL to me because I helped her a lot.
+
+'
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
-    readOnceOnly: 0
+    readOnceOnly: 1
     hasRead: 0
-    targetNPC: 
+    targetNPC: Tan
     infoKey: 0
-    infoValue: 
+    infoValue: Had argument with Hang, Hang didn't show him notebook but showed May,
+      feel disrespected
   followUpBlock:
     id: 
-    lines: []
+    lines:
+    - Still looking around? Have you check everywhere? This house is big isn't it?
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -5953,7 +5977,40 @@ MonoBehaviour:
     infoKey: 0
     infoValue: 
   dialogueStage: 0
-  conditionalBlocks: []
+  conditionalBlocks:
+  - id: 
+    lines:
+    - "Tan: Oh\u2026 I remember one night, I saw a dark figure heading toward the
+      villa. The figure was a bit small. "
+    - 'Tan: At first, I thought it was Mai, but then I realized Mai is bigger.'
+    requiredEvidenceTags:
+    - Crack
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: Tan
+    infoKey: 1
+    infoValue: "\"Oh\u2026 I remember one night, I saw a dark figure heading toward
+      the villa. The figure was a bit small. At first, I thought it was Mai, but
+      then I realized Mai is bigger.\""
+  - id: 
+    lines:
+    - 'Tan: Yeah, I saw a hanging mark on Hang neck, but there is no rope at the
+      scene.'
+    - "Tan: Oh\u2026 on the morning H\u1EB1ng died, I saw Mai burning something in
+      the backyard. I didn\u2019t ask about it."
+    - "Tan: I wasn\u2019t stalking anyone, okay\u2014it was just a coincidence."
+    requiredEvidenceTags:
+    - Rope
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: Tan
+    infoKey: 2
+    infoValue: "\"Oh\u2026 on the morning Hang died, I saw Mai burning something
+      in the backyard. \""
 --- !u!212 &414834595
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7901,18 +7958,30 @@ MonoBehaviour:
   portrait: {fileID: -1678404321430398395, guid: 910b6f8fc9d94d247baa72e106bc005d, type: 3}
   introBlock:
     id: 
-    lines: []
+    lines:
+    - 'May: Hi, who... are you?'
+    - I'm Hang's friend. What's your name?
+    - 'May: ...May. I''m her neighbor.'
+    - Do you know anything about Hang?
+    - 'May: Yes. I''m quite close to her. I think her job is so interesting, so I
+      often talk to her about what she found or help her something.'
+    - 'May: But she used to work a lot, locked in HER ROOM, and sometimes I could
+      barely see her.'
+    - Oh! You heard that Hang died, didn't you?
+    - 'May: What??? OMG. That''s shock to me. What happened? Where is she now? Who
+      did that?'
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
-    readOnceOnly: 0
+    readOnceOnly: 1
     hasRead: 0
-    targetNPC: 
+    targetNPC: May
     infoKey: 0
-    infoValue: 
+    infoValue: Hang used to work a lot in her room, May could barely see her
   followUpBlock:
     id: 
-    lines: []
+    lines:
+    - 'May: Why did she die???'
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -7922,7 +7991,23 @@ MonoBehaviour:
     infoKey: 0
     infoValue: 
   dialogueStage: 0
-  conditionalBlocks: []
+  conditionalBlocks:
+  - id: 
+    lines:
+    - "May: The second floor? No, I didn\u2019t go up there\u2014why would I? H\u1EB1ng
+      always stayed on the first floor\u2026 and the attic door up there was locked
+      anyway."
+    requiredEvidenceTags:
+    - Crack
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: May
+    infoKey: 1
+    infoValue: "\"The second floor? No, I didn\u2019t go up there\u2014why would
+      I? H\u1EB1ng always stayed on the first floor\u2026 and the attic door up there
+      was locked anyway.\""
 --- !u!212 &581598866
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -85774,40 +85859,97 @@ MonoBehaviour:
   introBlock:
     id: 
     lines:
-    - "\xE2dwdw"
+    - 'Mai: Hello, you''re a friend of Hang, right?'
+    - 'Mai: I''m Mai, the maid here. I work here when Mr.Sang lives in this mansion.
+      When Hang came here, he called me to help Hang in daily life.'
+    - Do you often talk to her?
+    - 'Mai: Yes. It''s just me and her living here, so we talk to each other all
+      the time.'
+    - So did you notice anything strange before Hang died?
+    - 'Mai: Hmm... I..... don''t.....'
+    - 'Mai: not related to Hang but....Mr. Sang often said the villa became very
+      STRANGE at night. '
+    - 'Mai: One night, I stayed in the villa later than usual. I heard a strange
+      noise coming from the second floor, even though I was sure all the doors were
+      locked. After that night, Mr. Sang moved out.'
+    - Oh, now I know about that, thanks alot for your information
+    - "Mai: Yeah, no problem....uhm, I\u2019ve set up a place for you to sleep in
+      H\u1EB1ng room. If you want, feel free to stay the night and investigate."
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
-    readOnceOnly: 0
+    readOnceOnly: 1
     hasRead: 0
-    targetNPC: 
+    targetNPC: Mai
     infoKey: 0
-    infoValue: 
+    infoValue: "She worked here for Mr.Sang, then Hang. Mr. Sang said the villa became
+      strange at night. She heard a strange noise coming from the second floor one
+      night, though all the doors were locked. \nShe set up a place for me to sleep
+      in Hang room."
   followUpBlock:
     id: 
     lines:
-    - adwdwdwdwd
+    - "Mai: T\u1EA5n used to like H\u1EB1ng, you know. But after that argument, he
+      stopped coming around so often. "
+    - "Mai: Still, every now and then, I\u2019d see T\u1EA5n standing at a distance,
+      watching the villa\u2026 it was a bit unsettling."
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
     readOnceOnly: 0
     hasRead: 0
-    targetNPC: 
-    infoKey: 0
-    infoValue: 
+    targetNPC: Mai
+    infoKey: 1
+    infoValue: '"Tan used to like Hang, after argument he stop comming, but still
+      standing at a distance watching the villa"'
   dialogueStage: 0
   conditionalBlocks:
   - id: 
-    lines: []
+    lines:
+    - "Mai: Oh\u2026 the locked door? That\u2019s just the attic. I locked it since
+      no one\u2019s used it for a long time. "
+    - "Mai: If you want to investigate, here\u2019s the key."
     requiredEvidenceTags:
     - Crack
     requiredNPC: 
     requiredKeys: 
     readOnceOnly: 0
     hasRead: 0
+    targetNPC: Mai
+    infoKey: 2
+    infoValue: Mai kept the key for the attic
+  - id: 
+    lines:
+    - "Mai: The rope in the attic\u2014 I\u2014I don\u2019t know\u2014no! If you
+      think it was me, I swear it wasn\u2019t! Why would I do that to her?"
+    - But you are the only one have the key
+    - "Mai: If\u2014if someone broke in through the window and took the rope then\u2014
+      no, wait, why am I even saying that? I DONT' KNOW, I REALLY DON'T"
+    requiredEvidenceTags:
+    - Rope
+    requiredNPC: 
+    requiredKeys: 
+    readOnceOnly: 0
+    hasRead: 0
     targetNPC: 
     infoKey: 0
     infoValue: 
+  - id: 
+    lines:
+    - "Mai: \u2026 Burning something? I don\u2019t even know why that became a big
+      deal."
+    - 'Mai: May just handed me a small package and asked me to get rid of it.'
+    - "Mai: She said it was just trash. I didn\u2019t open it\u2014I didn\u2019t
+      think it mattered."
+    requiredEvidenceTags:
+    - Rope
+    requiredNPC: Tan
+    requiredKeys: 02000000
+    readOnceOnly: 0
+    hasRead: 0
+    targetNPC: Mai
+    infoKey: 3
+    infoValue: '"May just handed me a small package and asked me to get rid of it."'
 --- !u!212 &2020424472
 SpriteRenderer:
   m_ObjectHideFlags: 0
