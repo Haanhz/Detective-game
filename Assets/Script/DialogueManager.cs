@@ -150,7 +150,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-        bool HasImportantInfo(string npcName, int key)
+        public bool HasImportantInfo(string npcName, int key)
     {
         switch (npcName)
         {
