@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System;
+using System.Collections.Generic;
 
 public class EndingManager : MonoBehaviour
 {
@@ -14,37 +14,25 @@ public class EndingManager : MonoBehaviour
 
     private EvidenceManager EvidenceManager => EvidenceManager.Instance;
 
-    private bool HalfEvidence = false;
-    private bool HalfConversation = false;
     private bool HalfEndingTriggered = false;
-    private bool FullEvidence = false;
-    private bool FullConversation = false;
     private bool FullEndingTriggered = false;
 
     private DialogueManager DialogueManager => DialogueManager.Instance;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         EndingBox.SetActive(false);
         EndingText.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (chase.player.dead || GameEnd.gameEnded) 
-    {
-        // Cleanup tất cả dialogue UI
-        CleanupState();
-
-        // Show ending cho dead
-        ShowEnding(playerDead: true);
-
-        // Optional: dừng Update để không gọi nhiều lần
-        enabled = false;
-    }
+        {
+            CleanupState();
+            ShowEnding(playerDead: true);
+            enabled = false;
+        }
     }
     
     public void CleanupState()
@@ -55,7 +43,6 @@ public class EndingManager : MonoBehaviour
         DialogueManager.Instance.DialogueText.text = string.Empty;
         DialogueManager.Instance.NameText.text = string.Empty;
         DialogueManager.Instance.AvatarImage.gameObject.SetActive(false);
-        
     }
 
     public void ShowEnding(bool playerDead = false)
@@ -66,22 +53,12 @@ public class EndingManager : MonoBehaviour
         }
         else
         {
-            checkHalfEnding();
             checkFullEnding();
+            if (!FullEndingTriggered) checkHalfEnding();
+
             bool chooseRightMurderer = DialogueManager.Instance.ChooseRightMurderer();
-            if (!HalfEndingTriggered && !FullEndingTriggered && (chooseRightMurderer || !chooseRightMurderer))
-            {
-                EndingText.text = "Nobody will ever believe you.";
-            }
-            else if (HalfEndingTriggered && !FullEndingTriggered && !chooseRightMurderer)
-            {
-                EndingText.text = "Hmm, you're not much of a detective, are you?";
-            }
-            else if (HalfEndingTriggered && !FullEndingTriggered && chooseRightMurderer)
-            {
-                EndingText.text = "You've found a piece, but the whole truth remains hidden in the shadows.";
-            }
-            else if (FullEndingTriggered && chooseRightMurderer)
+
+            if (FullEndingTriggered && chooseRightMurderer)
             {
                 EndingText.text = "Congratulations! You've uncovered the full truth and brought justice to light.";
             }
@@ -89,57 +66,76 @@ public class EndingManager : MonoBehaviour
             {
                 EndingText.text = "Hmm, you're not much of a detective, are you?";
             }
+            else if (HalfEndingTriggered && chooseRightMurderer)
+            {
+                EndingText.text = "You've found a piece, but the whole truth remains hidden in the shadows.";
+            }
+            else if (HalfEndingTriggered && !chooseRightMurderer)
+            {
+                EndingText.text = "Hmm, you're not much of a detective, are you?";
+            }
+            else
+            {
+                EndingText.text = "Nobody will ever believe you.";
+            }
         }
         EndingBox.SetActive(true);
         EndingText.gameObject.SetActive(true);
         RestartButton.gameObject.SetActive(true);
         Time.timeScale = 0f;
-
     }
+
     public void checkHalfEnding()
     {
-        //string[] halfEndingEvidence = new string[] { "Limit1", "Crack", "OpenWindow", "Rope" };
-        string[] halfEndingEvidence = new string[] { "OpenWindow", "Rope" };
+        string[] halfEndingEvidence = new string[] { "Limit1", "Crack", "OpenWindow", "Rope" };
+        //string[] halfEndingEvidence = new string[] { "OpenWindow", "Rope" };
+        bool hasEnoughEvidence = true;
+
         foreach (string evidenceTag in halfEndingEvidence)
         {
             if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
             {
-                Debug.Log("Chưa đủ evidence để trigger Half Ending. Thiếu: " + evidenceTag);
-                HalfEvidence = false;
-                return;
+                hasEnoughEvidence = false;
+                break;
             }
         }
-        HalfEvidence = true;
-        HalfConversation = DialogueManager.Instance.CheckEndingConversation();
-        if (HalfEvidence && HalfConversation)
+
+        bool halfConversation = DialogueManager.Instance.CheckEndingConversation();
+
+        if (hasEnoughEvidence && halfConversation)
         {
             HalfEndingTriggered = true;
-            Debug.Log("Half Ending đã đủ điều kiện trigger!");
         }
-
     }
 
     public void checkFullEnding()
     {
+        string[] fullEndingEvidence = new string[] { 
+            "Limit1", "Limit2", "Limit3", "Limit4", "Limit5", "Limit6", 
+            "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", 
+            "StrangeTable", "OpenWindow", "Rope", "Crack" 
+        };
+        // string[] fullEndingEvidence = new string[] { 
+             
+        //     "OpenWindow", "Rope", "Crack"
+        // };
         
-        string[] fullEndingEvidence = new string[] {"Limit1", "Limit2", "Limit3", "Limit4", "Limit5", " Limit6", "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", "StrangeTable", "OpenWindow", "Rope", "Crack" };
-        
+        bool hasAllEvidence = true;
+
         foreach (string evidenceTag in fullEndingEvidence)
         {
             if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
             {
-                Debug.Log("Chưa đủ evidence để trigger Full Ending. Thiếu: " + evidenceTag);
-                FullEvidence = false;
-                return;
+                hasAllEvidence = false;
+                break;
             }
         }
-        FullEvidence = true;
-        FullConversation = DialogueManager.Instance.CheckEndingConversation();
-        if (FullEvidence && FullConversation)
+
+        bool fullConversation = DialogueManager.Instance.CheckEndingConversation();
+
+        if (hasAllEvidence && fullConversation)
         {
             FullEndingTriggered = true;
-            Debug.Log("Full Ending đã đủ điều kiện trigger!");
         }
     }
 }
-    
