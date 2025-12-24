@@ -88,17 +88,17 @@ public class EndingManager : MonoBehaviour
     public void checkHalfEnding()
     {
         string[] halfEndingEvidence = new string[] { "Limit1", "Crack", "OpenWindow", "Rope" };
-        //string[] halfEndingEvidence = new string[] { "OpenWindow", "Rope" };
+       
         bool hasEnoughEvidence = true;
 
-        foreach (string evidenceTag in halfEndingEvidence)
-        {
-            if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
-            {
-                hasEnoughEvidence = false;
-                break;
-            }
-        }
+        // foreach (string evidenceTag in halfEndingEvidence)
+        // {
+        //     if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
+        //     {
+        //         hasEnoughEvidence = false;
+        //         break;
+        //     }
+        // }
 
         bool halfConversation = DialogueManager.Instance.CheckEndingConversation();
 
@@ -115,21 +115,17 @@ public class EndingManager : MonoBehaviour
             "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", 
             "StrangeTable", "OpenWindow", "Rope", "Crack" 
         };
-        // string[] fullEndingEvidence = new string[] { 
-             
-        //     "OpenWindow", "Rope", "Crack"
-        // };
         
         bool hasAllEvidence = true;
 
-        foreach (string evidenceTag in fullEndingEvidence)
-        {
-            if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
-            {
-                hasAllEvidence = false;
-                break;
-            }
-        }
+        // foreach (string evidenceTag in fullEndingEvidence)
+        // {
+        //     if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
+        //     {
+        //         hasAllEvidence = false;
+        //         break;
+        //     }
+        // }
 
         bool fullConversation = DialogueManager.Instance.CheckEndingConversation();
 
