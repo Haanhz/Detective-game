@@ -11,12 +11,14 @@ public class UIMenuManager : MonoBehaviour
     [Header("Tabs")]
     public GameObject profileContent;
     public GameObject inventoryContent;
+    public GameObject noteContent; // THÊM MỚI: Content cho tab Note
 
     [Header("Buttons")]
-    public Button menuButton;       // nút MENU ngoài gameplay
-    public Button closeButton;      // nút X trong menu
+    public Button menuButton;
+    public Button closeButton;
     public Button profileTabButton;
     public Button inventoryTabButton;
+    public Button noteTabButton;    // THÊM MỚI: Nút chuyển sang tab Note
 
     void Awake()
     {
@@ -33,12 +35,13 @@ public class UIMenuManager : MonoBehaviour
 
         profileTabButton.onClick.AddListener(ShowProfile);
         inventoryTabButton.onClick.AddListener(ShowInventory);
+        noteTabButton.onClick.AddListener(ShowNote); // THÊM MỚI: Lắng nghe sự kiện nút Note
     }
 
     void OpenMenu()
     {
         menuPanel.SetActive(true);
-        ShowProfile();      // mở sẵn Profile
+        ShowProfile(); // Mặc định mở Profile
         Time.timeScale = 0f;
     }
 
@@ -46,14 +49,15 @@ public class UIMenuManager : MonoBehaviour
     {
         menuPanel.SetActive(false);
         Time.timeScale = 1f;
-        UIInventoryManager.Instance.CloseInventory();
+        if(UIInventoryManager.Instance != null) UIInventoryManager.Instance.CloseInventory();
     }
 
     void ShowProfile()
     {
         profileContent.SetActive(true);
         inventoryContent.SetActive(false);
-        // THÊM DÒNG NÀY: Ép Profile cập nhật dữ liệu ngay khi hiện lên
+        noteContent.SetActive(false); // Ẩn tab Note
+
         if (ProfileUI.Instance != null)
         {
             ProfileUI.Instance.OnOpenProfile();
@@ -64,6 +68,19 @@ public class UIMenuManager : MonoBehaviour
     {
         profileContent.SetActive(false);
         inventoryContent.SetActive(true);
-        UIInventoryManager.Instance.OpenInventory();
+        noteContent.SetActive(false); // Ẩn tab Note
+        
+        if(UIInventoryManager.Instance != null) UIInventoryManager.Instance.OpenInventory();
+    }
+
+    // THÊM MỚI: Hàm hiển thị Tab Note
+    void ShowNote()
+    {
+        profileContent.SetActive(false);
+        inventoryContent.SetActive(false);
+        noteContent.SetActive(true);  // Hiện tab Note
+
+        // Nếu bạn có Script quản lý Note (ví dụ NoteUI), hãy gọi hàm cập nhật tại đây tương tự Profile
+        // if (NoteUI.Instance != null) NoteUI.Instance.UpdateNoteList();
     }
 }

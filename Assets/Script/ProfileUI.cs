@@ -156,8 +156,18 @@ public class ProfileUI : MonoBehaviour
     // Thêm hàm này vào trong class ProfileUI
     public void AddInfoToDescription(int charIndex, string newInfo)
     {
+        // Kiểm tra tính hợp lệ của mảng và index
         if (characterDescriptions == null || charIndex < 0 || charIndex >= characterDescriptions.Length)
             return;
+
+        // Nếu thông tin mới trống thì bỏ qua
+        if (string.IsNullOrEmpty(newInfo)) return;
+
+        // KIỂM TRA TRÙNG LẶP: Nếu thông tin này đã tồn tại trong mô tả thì không thêm nữa
+        if (characterDescriptions[charIndex].Contains(newInfo))
+        {
+            return; 
+        }
 
         // Nếu đã có nội dung, thêm dấu xuống dòng trước khi cộng chuỗi mới
         if (!string.IsNullOrEmpty(characterDescriptions[charIndex]))
@@ -169,7 +179,7 @@ public class ProfileUI : MonoBehaviour
             characterDescriptions[charIndex] = "- " + newInfo;
         }
 
-        // Nếu đang mở đúng trang của nhân vật này, cập nhật UI ngay lập tức
+        // Cập nhật UI ngay lập tức nếu đang mở
         if (profilePanel.activeSelf && index == charIndex)
         {
             UpdateUI();
