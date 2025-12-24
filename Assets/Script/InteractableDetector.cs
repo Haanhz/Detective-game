@@ -13,7 +13,8 @@ public class InteractableDetector : MonoBehaviour
         "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", 
         "Limit1", "Limit2", "Hide", "Bed", "Murder", "NPC",
         "Limit3", "Limit4", "Limit5", "Limit6",
-        "Rope", "Crack", "StrangeTable", "OpenWindow"
+        "Rope", "Crack", "StrangeTable", "OpenWindow",
+        "Fridge"
     };
 
     void Update()
