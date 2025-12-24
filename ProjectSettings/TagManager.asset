@@ -22,6 +22,7 @@ TagManager:
   - StrangeTable
   - OpenWindow
   - Limit6
+  - Fridge
   layers:
   - Default
   - TransparentFX

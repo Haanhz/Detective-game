@@ -7,6 +7,9 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     [Header("Interaction UI")]
+    [Header("Fridge Settings")]
+    public float fridgeCooldown = 10f; // Thời gian chờ giữa 2 lần ăn (giây)
+    private float lastEatTime = -100f; // Mốc thời gian lần cuối ăn (để mặc định đủ xa)
     public GameObject interactIndicator; // Kéo Sprite dấu chấm than vào đây
     public float detectionRange = 1.5f;   // Khoảng cách phát hiện
     public System.Collections.Generic.List<string> interactableTags = new System.Collections.Generic.List<string> 
@@ -28,8 +31,6 @@ public class Player : MonoBehaviour
     private bool canRun = true;
     public float runDuration = 5f;
     public float cooldown = 5f;
-    private bool inBedTrigger = false;
-
 
     public Animator animator;
 
@@ -49,20 +50,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         CheckForInteractables();
-        if (inBedTrigger && Input.GetKeyDown(KeyCode.F))
-        {
-            if (GameManager.Instance.isNight)
-            {
-                currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
-                GameManager.Instance.ForceSkipNight();
-                Debug.Log("You go to sleep and wake up the next morning!");
-            }
-            else
-            {
-                Debug.Log("You are not sleepy!");
-            }
-        }
-
 
         if (dead) {
             return;
@@ -185,17 +172,54 @@ public class Player : MonoBehaviour
         return Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
     }
 
-
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionStay2D(Collision2D collision)
     {
-        if (other.CompareTag("Bed"))
-            inBedTrigger = true;
-    }
+        string hitTag = collision.collider.tag;
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Bed"))
-            inBedTrigger = false;
+        if (hitTag == "Fridge")
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                // Kiểm tra Cooldown: Thời gian hiện tại phải lớn hơn (lần ăn cuối + thời gian chờ)
+                if (Time.time >= lastEatTime + fridgeCooldown)
+                {
+                    if (currentStamina < maxStamina)
+                    {
+                        currentStamina = Mathf.Min(maxStamina, currentStamina + 5f);
+                        Debug.Log("You ate. Stamina restored!");
+                        
+                        // CẬP NHẬT MỐC THỜI GIAN VỪA ĂN
+                        lastEatTime = Time.time;
+                    }
+                    else
+                    {
+                        Debug.Log("You are full!");
+                    }
+                }
+                else
+                {
+                    // Tính toán thời gian còn lại để in ra console
+                    float timeLeft = (lastEatTime + fridgeCooldown) - Time.time;
+                    Debug.Log("You are still full! Wait " + Mathf.Ceil(timeLeft) + " seconds.");
+                }
+            }
+        }
+        else if (hitTag == "Bed")
+        {
+            // ... logic cho Bed giữ nguyên ...
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (GameManager.Instance.isNight)
+                {
+                    currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
+                    GameManager.Instance.ForceSkipNight();
+                }
+                else
+                {
+                    Debug.Log("You are not sleepy!");
+                }
+            }
+        }
     }
 
     void CheckForInteractables()
