@@ -11,7 +11,9 @@ public class InteractableDetector : MonoBehaviour
     public List<string> interactableTags = new List<string> 
     { 
         "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", 
-        "Limit1", "Limit2", "Hide", "Bed", "Murder", "NPC" 
+        "Limit1", "Limit2", "Hide", "Bed", "Murder", "NPC",
+        "Limit3", "Limit4", "Limit5", "Limit6",
+        "Rope", "Crack", "StrangeTable", "OpenWindow"
     };
 
     void Update()

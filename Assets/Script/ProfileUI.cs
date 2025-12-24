@@ -152,4 +152,27 @@ public class ProfileUI : MonoBehaviour
             if (portraitImage != null) portraitImage.enabled = false;
         }
     }
+    
+    // Thêm hàm này vào trong class ProfileUI
+    public void AddInfoToDescription(int charIndex, string newInfo)
+    {
+        if (characterDescriptions == null || charIndex < 0 || charIndex >= characterDescriptions.Length)
+            return;
+
+        // Nếu đã có nội dung, thêm dấu xuống dòng trước khi cộng chuỗi mới
+        if (!string.IsNullOrEmpty(characterDescriptions[charIndex]))
+        {
+            characterDescriptions[charIndex] += "\n- " + newInfo;
+        }
+        else
+        {
+            characterDescriptions[charIndex] = "- " + newInfo;
+        }
+
+        // Nếu đang mở đúng trang của nhân vật này, cập nhật UI ngay lập tức
+        if (profilePanel.activeSelf && index == charIndex)
+        {
+            UpdateUI();
+        }
+    }
 }

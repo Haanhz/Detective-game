@@ -271,6 +271,19 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    int GetProfileIndexByName(string name)
+    {
+        // Bạn cần đảm bảo thứ tự này khớp với mảng characterNames trong ProfileUI
+        switch (name)
+        {
+            case "Sang": return 0; // Giả sử Sang ở vị trí 0
+            case "Mai":  return 1;
+            case "Tan":  return 2;
+            case "May":  return 3;
+            default: return -1;
+        }
+    }
+
     // Kết thúc chuỗi hội thoại
     void FinishDialogueSequence()
 {
@@ -295,6 +308,12 @@ public class DialogueManager : MonoBehaviour
                 currentBlock.infoValue,
                 true
             );
+        }
+
+        int pIndex = GetProfileIndexByName(currentBlock.targetNPC);
+        if (pIndex != -1 && ProfileUI.Instance != null)
+        {
+            ProfileUI.Instance.AddInfoToDescription(pIndex, currentBlock.infoValue);
         }
     }
 
