@@ -162,6 +162,14 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    public bool CheckEndingConversation()
+        {
+            bool tanCondition = Tan.ContainsKey(1) && Tan.ContainsKey(2);
+            bool mayCondition = May.ContainsKey(1);
+            bool maiCondition = Mai.ContainsKey(3);
+
+            return tanCondition && mayCondition && maiCondition;
+        }
 
 
     public bool ChooseRightMurderer()
