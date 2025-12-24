@@ -85,20 +85,21 @@ public class EndingManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    
     public void checkHalfEnding()
     {
         string[] halfEndingEvidence = new string[] { "Limit1", "Crack", "OpenWindow", "Rope" };
        
         bool hasEnoughEvidence = true;
 
-        // foreach (string evidenceTag in halfEndingEvidence)
-        // {
-        //     if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
-        //     {
-        //         hasEnoughEvidence = false;
-        //         break;
-        //     }
-        // }
+        foreach (string evidenceTag in halfEndingEvidence)
+        {
+            if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
+            {
+                hasEnoughEvidence = false;
+                break;
+            }
+        }
 
         bool halfConversation = DialogueManager.Instance.CheckEndingConversation();
 
@@ -118,14 +119,14 @@ public class EndingManager : MonoBehaviour
         
         bool hasAllEvidence = true;
 
-        // foreach (string evidenceTag in fullEndingEvidence)
-        // {
-        //     if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
-        //     {
-        //         hasAllEvidence = false;
-        //         break;
-        //     }
-        // }
+        foreach (string evidenceTag in fullEndingEvidence)
+        {
+            if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
+            {
+                hasAllEvidence = false;
+                break;
+            }
+        }
 
         bool fullConversation = DialogueManager.Instance.CheckEndingConversation();
 
