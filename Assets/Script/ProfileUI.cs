@@ -11,6 +11,7 @@ public class ProfileUI : MonoBehaviour
     public GameObject profilePanel;     // Panel tổng
     public TextMeshProUGUI nameText;    // Tên nhân vật
     public TextMeshProUGUI descText;    // Mô tả
+    public ScrollRect descScrollRect;
     public Image portraitImage;         // Ảnh chân dung
     public Button nextBtn;              // Nút tới
     public Button prevBtn;              // Nút lùi
@@ -83,6 +84,13 @@ public class ProfileUI : MonoBehaviour
                 portraitImage.sprite = null;
                 portraitImage.enabled = false;
             }
+        }
+
+        // Sau khi gán Text xong, đưa thanh cuộn về vị trí trên cùng
+        if (descScrollRect != null)
+        {
+            Canvas.ForceUpdateCanvases(); // Ép Unity tính toán lại kích thước Content ngay lập tức
+            descScrollRect.verticalNormalizedPosition = 1f; // 1 = Top, 0 = Bottom
         }
     }
 
