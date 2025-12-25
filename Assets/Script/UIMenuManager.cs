@@ -58,6 +58,8 @@ public class UIMenuManager : MonoBehaviour
         inventoryContent.SetActive(false);
         noteContent.SetActive(false); // Ẩn tab Note
 
+        if (UIInventoryManager.Instance != null) UIInventoryManager.Instance.CloseInventory();
+
         if (ProfileUI.Instance != null)
         {
             ProfileUI.Instance.OnOpenProfile();
@@ -79,6 +81,8 @@ public class UIMenuManager : MonoBehaviour
         profileContent.SetActive(false);
         inventoryContent.SetActive(false);
         noteContent.SetActive(true);  // Hiện tab Note
+
+        if (UIInventoryManager.Instance != null) UIInventoryManager.Instance.CloseInventory();
 
         // Nếu bạn có Script quản lý Note (ví dụ NoteUI), hãy gọi hàm cập nhật tại đây tương tự Profile
         // if (NoteUI.Instance != null) NoteUI.Instance.UpdateNoteList();

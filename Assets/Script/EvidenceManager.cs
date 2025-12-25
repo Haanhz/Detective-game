@@ -1,10 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class EvidenceData
+{
+    public string tagName;
+    public Sprite icon;
+    public Sprite bigPortrait;
+    [TextArea]
+    public string description;
+}
+
 public class EvidenceManager : MonoBehaviour
 {
     public static EvidenceManager Instance;
 
+    [Header("Data Database")]
+    public List<EvidenceData> evidenceDatabase = new List<EvidenceData>();
     public List<string> collectedEvidence = new List<string>();
     public Dictionary<string, float> evidenceWeights = new Dictionary<string, float>();
 
@@ -61,11 +73,24 @@ public class EvidenceManager : MonoBehaviour
 
     };
 
+    // Hàm lấy Sprite theo tên
+    public Sprite GetEvidenceSprite(string name)
+    {
+        EvidenceData data = evidenceDatabase.Find(x => x.tagName == name);
+        return data != null ? data.icon : null;
+    }
+
+    public Sprite GetEvidenceBigPortrait(string name)
+    {
+        EvidenceData data = evidenceDatabase.Find(x => x.tagName == name);
+        return data != null ? data.bigPortrait : null;
+    }
+
+    // Cập nhật hàm lấy Description từ database mới (tốt hơn dùng Dictionary thủ công)
     public string GetEvidenceDescription(string name)
     {
-        if (evidenceDescriptions.ContainsKey(name))
-            return evidenceDescriptions[name];
-        return "No description available.";
+        EvidenceData data = evidenceDatabase.Find(x => x.tagName == name);
+        return data != null ? data.description : "No description available.";
     }
 
     public bool HasEvidence(string tagName)
