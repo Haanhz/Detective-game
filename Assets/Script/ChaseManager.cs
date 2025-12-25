@@ -120,7 +120,7 @@ public class ChaseManager : MonoBehaviour
             }
 
             timeAtNight += Time.deltaTime;
-            probAppear = 0.5f;
+            probAppear = 0.3f;
             yield return null;
         }
     }
