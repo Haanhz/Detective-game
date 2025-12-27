@@ -17,12 +17,14 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI NameText;
     public Image AvatarImage;
 
-    // SETTINGS
-    //public string NPCTag;
+    [Header("Player Settings")]
+    public string playerName = "Player";
+    public Sprite playerPortrait;
+
+    [Header("Settings")]
     public float interactionDistance = 3f;
     public float textSpeed = 0.05f;
 
-    private string[] currentLines;
     private int index;
     private NPC currentNPC;
     private bool isInteracting = false;
@@ -34,6 +36,7 @@ public class DialogueManager : MonoBehaviour
     public Dictionary<int, string> Tan = new Dictionary<int, string>();
     public Dictionary<int, string> May = new Dictionary<int, string>();
     private NPC.DialogueBlock currentBlock;
+    private NPC.DialogueLine[] currentLines;
 
     void Awake()
     {
@@ -68,7 +71,6 @@ public class DialogueManager : MonoBehaviour
         {
             if (isInteracting)
             {
-
                 CleanupState();
             }
             return; // không cho dialogue hoạt động
@@ -86,14 +88,14 @@ public class DialogueManager : MonoBehaviour
             // Xử lý nhấp chuột (LMB) để chuyển dòng/kết thúc
             if (dialogueBox.activeInHierarchy && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F)))
             {
-                if (DialogueText.text == currentLines[index])
+                if (DialogueText.text == currentLines[index].text)
                 {
                     NextLine();
                 }
                 else
                 {
                     StopAllCoroutines();
-                    DialogueText.text = currentLines[index];
+                    DialogueText.text = currentLines[index].text;
                 }
             }
             return;
@@ -105,7 +107,6 @@ public class DialogueManager : MonoBehaviour
         {
             // NPC đang trong phạm vi tương tác, hội thoại chưa bắt đầu
 
-            // KIỂM TRA PHÍM Z ĐỂ HIỆN NÚT VÀ THÔNG TIN CÁ NHÂN CỦA NPC
             if (Input.GetKeyDown(KeyCode.F))
             {
                 if (!StartConversationButton.activeInHierarchy)
@@ -150,7 +151,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-        public bool HasImportantInfo(string npcName, int key)
+    public bool HasImportantInfo(string npcName, int key)
     {
         switch (npcName)
         {
@@ -179,7 +180,6 @@ public class DialogueManager : MonoBehaviour
     public void OnStartConversationButtonClicked()
     {
         currentNPC = FindClosestNPC();
-
         if (currentNPC != null && !isInteracting)
         {
             CharacterUnlockManager.UnlockCharacter(currentNPC.profileIndex);
@@ -187,19 +187,6 @@ public class DialogueManager : MonoBehaviour
             StartConversationButton.SetActive(false);
             PointMurderButton.SetActive(false);
 
-            // dialogueBox đã được bật khi nhấn Z
-
-            // ẨN TÊN VÀ ẢNH ĐẠI DIỆN KHI BẮT ĐẦU HỘI THOẠI
-            if (NameText != null)
-            {
-                NameText.text = string.Empty; // Xóa text
-            }
-            if (AvatarImage != null)
-            {
-                AvatarImage.gameObject.SetActive(false); // Ẩn GameObject
-            }
-
-            // Xóa DialogueText để bắt đầu gõ dòng thoại
             DialogueText.text = string.Empty;
             StartDialogue(currentNPC);
         }
@@ -226,44 +213,51 @@ public class DialogueManager : MonoBehaviour
     void StartDialogue(NPC npc)
     {
         NPC.DialogueBlock blockToPlay = null;
-
-        if (npc.dialogueStage == 0)
-        {
-            blockToPlay = npc.introBlock;
-        }
-        else if (npc.dialogueStage == 1)
-        {
-            blockToPlay = npc.followUpBlock;
-        }
-        else
-        {
-            blockToPlay = GetConditionalDialogue(npc);
-        }
+        if (npc.dialogueStage == 0) blockToPlay = npc.introBlock;
+        else if (npc.dialogueStage == 1) blockToPlay = npc.followUpBlock;
+        else blockToPlay = GetConditionalDialogue(npc);
 
         currentBlock = blockToPlay;
         currentLines = blockToPlay.lines;
-
         index = 0;
-        DialogueText.text = "";
+
         StartCoroutine(TypeLine());
     }
 
-
+    void UpdateSpeakerUI(NPC.DialogueLine line)
+    {
+        if (line.speaker == NPC.DialogueLine.Speaker.NPC)
+        {
+            NameText.text = currentNPC.npcName;
+            AvatarImage.sprite = currentNPC.portrait;
+        }
+        else
+        {
+            NameText.text = playerName;
+            AvatarImage.sprite = playerPortrait;
+        }
+        AvatarImage.gameObject.SetActive(true);
+    }
 
     IEnumerator TypeLine()
     {
-        if (currentLines.Length == 0)
+        if (currentLines.Length == 0 || currentLines == null)
         {
             FinishDialogueSequence();
             yield break;
         }
+        
+        UpdateSpeakerUI(currentLines[index]);
+        DialogueText.text = "";
 
-        foreach (char c in currentLines[index].ToCharArray())
+        foreach (char c in currentLines[index].text.ToCharArray())
         {
             DialogueText.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
     }
+
+    
 
     void NextLine()
     {
@@ -390,10 +384,6 @@ public class DialogueManager : MonoBehaviour
 
         return npc.followUpBlock; // fallback đúng
     }
-
-
-
-
 
     // Dọn dẹp trạng thái chung (tắt tất cả UI liên quan)
     void CleanupState()

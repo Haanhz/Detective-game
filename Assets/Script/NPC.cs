@@ -1,10 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// Đảm bảo script này xuất hiện dưới dạng Component trong Inspector
 public class NPC : MonoBehaviour
 {
-    // ===== NPC IDENTITY =====
     [Header("NPC Identity")]
     public string npcName = "NPC Name";
     public Sprite portrait;
@@ -12,40 +10,41 @@ public class NPC : MonoBehaviour
     [Header("Profile Linking")]
     public int profileIndex;
 
-    // ===== DIALOGUE STAGES =====
-
     [Header("Stage 0 - Intro (first time)")]
     public DialogueBlock introBlock;
 
     [Header("Stage 1 - Follow-up (after intro)")]
     public DialogueBlock followUpBlock;
 
-
     [HideInInspector]
     public int dialogueStage = 0;
-    // 0 = chưa đọc gì
-    // 1 = đã đọc intro
-    // 2+ = bắt đầu dùng conditional blocks
 
-    // ===== CONDITIONAL DIALOGUES =====
     [Header("Stage 2+ - Conditional Dialogues")]
     public List<DialogueBlock> conditionalBlocks = new List<DialogueBlock>();
 
-    // ===== STRUCT =====
+    // ===== NEW STRUCTS FOR MULTI-SPEAKER =====
+    [System.Serializable]
+    public struct DialogueLine
+    {
+        public enum Speaker { NPC, Player }
+        public Speaker speaker;
+        [TextArea(2, 5)]
+        public string text;
+    }
+
     [System.Serializable]
     public class DialogueBlock
     {
         public string id;
 
-        [TextArea(3, 10)]
-        public string[] lines;
+        // Thay đổi từ string[] sang DialogueLine[]
+        public DialogueLine[] lines;
 
         [Header("Conditions")]
         public List<string> requiredEvidenceTags;
         [Header("Knowledge Condition (Dialogue Info)")]
-        public string requiredNPC;      // "Sang" / "Mai" / "Tan" / "May"
-        public List<int> requiredKeys;  // các key phải có trong dict
-
+        public string requiredNPC;
+        public List<int> requiredKeys;
 
         [Header("Read Control")]
         public bool readOnceOnly;
@@ -53,10 +52,9 @@ public class NPC : MonoBehaviour
         public bool hasRead;
 
         [Header("Knowledge Gain")]
-        public string targetNPC;   // Sang / Mai / Tan / May
+        public string targetNPC; 
         public int infoKey;
         [TextArea]
         public string infoValue;
     }
-
 }
