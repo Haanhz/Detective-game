@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using TMPro;
+using UnityEngine.Rendering.Universal;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,9 +19,11 @@ public class GameManager : MonoBehaviour
 
     public int daysRemaining = 7;
     public bool isNight = false;
+    public bool isLight = false;
     public int currentNight = 0;
     private float timer = 0f;
-    public CanvasGroup nightPanel;
+    // public CanvasGroup nightPanel;
+    public Light2D environmentLight;
 
     // --- CÁC BIẾN CHO ĐẾM NGƯỢC ---
     public TextMeshProUGUI countdownText; 
@@ -86,12 +89,12 @@ public class GameManager : MonoBehaviour
         }
         
         if (gameEnded) return;
-        limit1.SetActive(isNight && currentNight == 1);
-        limit2.SetActive(isNight && currentNight == 2);
-        limit3.SetActive(isNight && currentNight == 3);
-        limit4.SetActive(isNight && currentNight == 4);
-        limit5.SetActive(isNight && currentNight == 5);
-        limit6.SetActive(isNight && currentNight == 6);
+        limit1.SetActive(isNight && isLight);
+        limit2.SetActive(isNight && isLight);
+        limit3.SetActive(isNight && isLight);
+        limit4.SetActive(isNight && isLight);
+        limit5.SetActive(isNight && isLight);
+        limit6.SetActive(isNight && isLight);
     }
 
     // Coroutine dùng chung cho cả sáng và tối
@@ -127,7 +130,8 @@ public class GameManager : MonoBehaviour
         if (countdownText != null) countdownText.gameObject.SetActive(false);
 
         OnDayStart?.Invoke();
-        nightPanel.alpha = 0;
+        //nightPanel.alpha = 0;
+        environmentLight.color = Color.white;
         Debug.Log("GOOD MORNING!");
         SetNPCActive(true);
     }
@@ -145,7 +149,12 @@ public class GameManager : MonoBehaviour
         if (countdownText != null) countdownText.gameObject.SetActive(false);
 
         OnNightStart?.Invoke();
-        nightPanel.alpha = 1;
+        //nightPanel.alpha = 1;
+        environmentLight.color = new Color(
+            31f / 255f,
+            31f / 255f,
+            61f / 255f
+        );
         Debug.Log("IS NIGHT ALREADY? Night = "+ currentNight);
     }
 

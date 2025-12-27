@@ -50,6 +50,10 @@ public class Evidence : MonoBehaviour
         {
             playerInRange = true;
         }
+        if (other.CompareTag("UVLight"))
+        {
+            GameManager.Instance.isLight= true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -57,6 +61,10 @@ public class Evidence : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+        }
+        if (other.CompareTag("UVLight"))
+        {
+            GameManager.Instance.isLight= false;
         }
     }
 
@@ -153,7 +161,7 @@ public class Evidence : MonoBehaviour
             case "StrangeTable": return "Four chairs around the table, three of them fall";
             case "OpenWindow": return "Open window in the attic";
             case "Rope": return "Rope in the attic";
-            case "Limit1": return "The torn sheet in Hang's Notebook";
+            case "Limit1": return "Footprint in the attic";
             case "Limit2": return "Hang the Ghost";
             case "Limit3": return "Mai's Diary";
             case "Limit4": return "Family Photo";

@@ -23,6 +23,7 @@ TagManager:
   - OpenWindow
   - Limit6
   - Fridge
+  - UVLight
   layers:
   - Default
   - TransparentFX

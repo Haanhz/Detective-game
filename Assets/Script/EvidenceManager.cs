@@ -60,7 +60,7 @@ public class EvidenceManager : MonoBehaviour
         { "LivingCorner", "The living corner in the shed includes: an old blanket, a pillow, a torn food bag, a water bottle, and a piece of clothing." },
         { "Ultimatum", "YOU ARE BEING WATCHED" },
         { "HangNoteBook", "Page 1: It seems the house has been broken into, Page 2: Mai knows the house too well, is she hiding something?" },
-        { "Limit1", "The torn paper in Hang's notebook: I found a photo, and in the photo, there’s a girl who looks familiar." },
+        { "Limit1", "Footprint in the attic, beneath the open window." },
         { "Limit2", "Hang the Ghost: Hồn ma của Hang: the intruder... the one....10 years ago.....why me?" },
         { "Crack", "Why there is crack outside this room?"},
         {  "StrangeTable", "Four chairs around the table, three of them fall, one of them stand."},
