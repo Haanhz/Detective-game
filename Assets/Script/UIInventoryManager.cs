@@ -1,10 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class UIInventoryManager : MonoBehaviour
 {
     public static UIInventoryManager Instance;
+
+    [Header("Panel Reference")]
+    public GameObject inventoryPanel;
 
     [Header("Top Details")]
     public TextMeshProUGUI nameText;
@@ -16,13 +20,15 @@ public class UIInventoryManager : MonoBehaviour
     public Transform gridContent;
     public GameObject iconPrefab; // Prefab chỉ gồm 1 Image và 1 Button
 
+    private List<GameObject> spawnedIcons = new List<GameObject>();
+
     void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         
         // Mặc định ẩn khi bắt đầu game
-        gameObject.SetActive(false);
+        if (inventoryPanel != null) inventoryPanel.SetActive(false);
     }
 
     /// <summary>
@@ -30,7 +36,7 @@ public class UIInventoryManager : MonoBehaviour
     /// </summary>
     public void OpenInventory()
     {
-        gameObject.SetActive(true);
+        if (inventoryPanel != null) inventoryPanel.SetActive(true);
         RefreshUI();
     }
 
@@ -39,16 +45,16 @@ public class UIInventoryManager : MonoBehaviour
     /// </summary>
     public void CloseInventory()
     {
-        gameObject.SetActive(false);
+        if (inventoryPanel != null) inventoryPanel.SetActive(false);
     }
 
     public void RefreshUI()
     {
         if (EvidenceManager.Instance == null) return;
 
-        // Xóa icon cũ
-        foreach (Transform child in gridContent) 
-            Destroy(child.gameObject);
+        // 1. Xóa sạch icon cũ và danh sách quản lý
+        foreach (Transform child in gridContent) Destroy(child.gameObject);
+        spawnedIcons.Clear();
 
         bool firstItem = true;
 
@@ -56,35 +62,54 @@ public class UIInventoryManager : MonoBehaviour
         {
             if (evName == "Hide") continue;
 
+            // 2. Tạo ô vật phẩm
             GameObject item = Instantiate(iconPrefab, gridContent);
-            
-            // Gán Icon từ Database của EvidenceManager
-            Image img = item.GetComponent<Image>();
-            if (img != null) 
-                img.sprite = EvidenceManager.Instance.GetEvidenceSprite(evName);
+            spawnedIcons.Add(item);
 
-            // Gán sự kiện Click để hiển thị chi tiết lên nửa trên
+            // 3. Tìm chính xác Component Image của Icon (thường là con của Prefab)
+            // Đảm bảo trong Prefab bạn đặt tên đối tượng chứa ảnh là "Icon"
+            Transform iconTransform = item.transform.Find("Icon");
+            if (iconTransform != null)
+            {
+                iconTransform.GetComponent<Image>().sprite = EvidenceManager.Instance.GetEvidenceSprite(evName);
+            }
+
+            // 4. Mặc định tắt Highlight
+            Transform highlight = item.transform.Find("HighlightFrame");
+            if (highlight != null) highlight.gameObject.SetActive(false);
+
+            // 5. Gán sự kiện Click (Truyền cả Tên và cái GameObject này vào)
             Button btn = item.GetComponent<Button>();
             if (btn != null)
-                btn.onClick.AddListener(() => DisplayDetails(evName));
+                btn.onClick.AddListener(() => DisplayDetails(evName, item));
 
-            // Mặc định hiển thị thông tin món đầu tiên để tránh để trống nửa trên
-            if (firstItem) {
-                DisplayDetails(evName);
+            if (firstItem)
+            {
+                DisplayDetails(evName, item);
                 firstItem = false;
             }
         }
     }
 
-    void DisplayDetails(string evName)
+    void DisplayDetails(string evName, GameObject selectedItem)
     {
+        // Cập nhật thông tin phía trên
         nameText.text = evName;
         descText.text = EvidenceManager.Instance.GetEvidenceDescription(evName);
         bigPortrait.sprite = EvidenceManager.Instance.GetEvidenceBigPortrait(evName);
 
-        // Reset thanh cuộn mô tả về vị trí trên cùng
+        // XỬ LÝ HIGHLIGHT: Tắt tất cả các ô khác, chỉ bật ô được chọn
+        foreach (GameObject iconObj in spawnedIcons)
+        {
+            Transform h = iconObj.transform.Find("HighlightFrame");
+            if (h != null) h.gameObject.SetActive(false);
+        }
+
+        Transform selectedH = selectedItem.transform.Find("HighlightFrame");
+        if (selectedH != null) selectedH.gameObject.SetActive(true);
+
+        // Reset Scroll
         Canvas.ForceUpdateCanvases();
-        if (descScrollRect != null) 
-            descScrollRect.verticalNormalizedPosition = 1f;
+        if (descScrollRect != null) descScrollRect.verticalNormalizedPosition = 1f;
     }
 }

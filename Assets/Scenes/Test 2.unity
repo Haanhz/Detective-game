@@ -6475,7 +6475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &347068078
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6540,7 +6540,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &365729535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6975,22 +6975,26 @@ MonoBehaviour:
   introBlock:
     id: 
     lines:
-    - 'Mai: Hello, you''re a friend of Hang, right?'
-    - 'Mai: I''m Mai, the maid here. I work here when Mr.Sang lives in this mansion.
-      When Hang came here, he called me to help Hang in daily life.'
-    - Do you often talk to her?
-    - 'Mai: Yes. It''s just me and her living here, so we talk to each other all
-      the time.'
-    - So did you notice anything strange before Hang died?
-    - 'Mai: Hmm... I..... don''t.....'
-    - 'Mai: not related to Hang but....Mr. Sang often said the villa became very
-      STRANGE at night. '
-    - 'Mai: One night, I stayed in the villa later than usual. I heard a strange
-      noise coming from the second floor, even though I was sure all the doors were
-      locked. After that night, Mr. Sang moved out.'
-    - Oh, now I know about that, thanks alot for your information
-    - "Mai: Yeah, no problem....uhm, I\u2019ve set up a place for you to sleep in
-      H\u1EB1ng room. If you want, feel free to stay the night and investigate."
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -7005,10 +7009,10 @@ MonoBehaviour:
   followUpBlock:
     id: 
     lines:
-    - "Mai: T\u1EA5n used to like H\u1EB1ng, you know. But after that argument, he
-      stopped coming around so often. "
-    - "Mai: Still, every now and then, I\u2019d see T\u1EA5n standing at a distance,
-      watching the villa\u2026 it was a bit unsettling."
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -7022,9 +7026,10 @@ MonoBehaviour:
   conditionalBlocks:
   - id: 
     lines:
-    - "Mai: Oh\u2026 the locked door? That\u2019s just the attic. I locked it since
-      no one\u2019s used it for a long time. "
-    - "Mai: If you want to investigate, here\u2019s the key."
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags:
     - Crack
     requiredNPC: 
@@ -7036,11 +7041,12 @@ MonoBehaviour:
     infoValue: Mai kept the key for the attic
   - id: 
     lines:
-    - "Mai: The rope in the attic\u2014 I\u2014I don\u2019t know\u2014no! If you
-      think it was me, I swear it wasn\u2019t! Why would I do that to her?"
-    - But you are the only one have the key
-    - "Mai: If\u2014if someone broke in through the window and took the rope then\u2014
-      no, wait, why am I even saying that? I DONT' KNOW, I REALLY DON'T"
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags:
     - Rope
     requiredNPC: 
@@ -7052,11 +7058,12 @@ MonoBehaviour:
     infoValue: 
   - id: 
     lines:
-    - "Mai: \u2026 Burning something? I don\u2019t even know why that became a big
-      deal."
-    - 'Mai: May just handed me a small package and asked me to get rid of it.'
-    - "Mai: She said it was just trash. I didn\u2019t open it\u2014I didn\u2019t
-      think it mattered."
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags:
     - Rope
     requiredNPC: Tan
@@ -8961,16 +8968,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 649863009}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.13565943, w: 0.9907555}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.14316, y: 5.58784, z: 0.34924}
+  m_LocalScale: {x: 3.6099193, y: 6.417634, z: 0.40110213}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 556994435}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 15.594}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -550, y: 0}
+  m_AnchoredPosition: {x: -586, y: 61}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &649863011
@@ -12983,142 +12990,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.234992, y: 0.62301254}
   m_EdgeRadius: 0
---- !u!1 &1021567931
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1021567932}
-  - component: {fileID: 1021567934}
-  - component: {fileID: 1021567933}
-  m_Layer: 5
-  m_Name: TutRun
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1021567932
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021567931}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1793907736}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 148.55762, y: 37.667236}
-  m_SizeDelta: {x: 297.1156, y: 75.3345}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1021567933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021567931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 'x: run'
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8088cb2b25ab0ec498bf69bda4bf655d, type: 2}
-  m_sharedMaterial: {fileID: 3216688107176568827, guid: 8088cb2b25ab0ec498bf69bda4bf655d, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 69.888565, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1021567934
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021567931}
-  m_CullTransparentMesh: 1
 --- !u!1 &1031477152
 GameObject:
   m_ObjectHideFlags: 0
@@ -13239,7 +13110,7 @@ RectTransform:
   m_Father: {fileID: 621797746}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -62481,17 +62352,22 @@ MonoBehaviour:
   introBlock:
     id: 
     lines:
-    - 'May: Hi, who... are you?'
-    - I'm Hang's friend. What's your name?
-    - 'May: ...May. I''m her neighbor.'
-    - Do you know anything about Hang?
-    - 'May: Yes. I''m quite close to her. I think her job is so interesting, so I
-      often talk to her about what she found or help her something.'
-    - 'May: But she used to work a lot, locked in HER ROOM, and sometimes I could
-      barely see her.'
-    - Oh! You heard that Hang died, didn't you?
-    - 'May: What??? OMG. That''s shock to me. What happened? Where is she now? Who
-      did that?'
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -62503,7 +62379,8 @@ MonoBehaviour:
   followUpBlock:
     id: 
     lines:
-    - 'May: Why did she die???'
+    - speaker: 0
+      text: 
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -62516,9 +62393,8 @@ MonoBehaviour:
   conditionalBlocks:
   - id: 
     lines:
-    - "May: The second floor? No, I didn\u2019t go up there\u2014why would I? H\u1EB1ng
-      always stayed on the first floor\u2026 and the attic door up there was locked
-      anyway."
+    - speaker: 0
+      text: 
     requiredEvidenceTags:
     - Crack
     requiredNPC: 
@@ -63881,7 +63757,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 183}
+  m_SizeDelta: {x: -1520, y: 183}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1219334145
 MonoBehaviour:
@@ -63956,9 +63832,9 @@ RectTransform:
   m_Father: {fileID: 838805059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1231670330
 MonoBehaviour:
@@ -81214,8 +81090,9 @@ MonoBehaviour:
   nightDuration: 180
   daysRemaining: 3
   isNight: 0
+  isLight: 0
   currentNight: 0
-  nightPanel: {fileID: 333904958}
+  environmentLight: {fileID: 0}
   countdownText: {fileID: 0}
   countdownThreshold: 3
   gameEnded: 0
@@ -82055,9 +81932,9 @@ RectTransform:
   m_Father: {fileID: 245162609}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -17}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1413649890
 MonoBehaviour:
@@ -82538,7 +82415,7 @@ RectTransform:
   m_Father: {fileID: 392569397}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -82782,28 +82659,26 @@ MonoBehaviour:
   introBlock:
     id: 
     lines:
-    - 'Tan: Hi, I heard some noise... And Oh!!! Are you new here? Came to see that
-      girl?'
-    - Yeah... ... ... But ... you are ...
-    - 'Tan: Oh sorry, my name is Tan I live in the house there.'
-    - 'Tan: I already know about it. Earlier after talking to Mr. Sang... Poor girl.
-      I''ll miss her much.'
-    - 'Tan: I already know about it. Earlier after talking to Mr. Sang... Poor girl.
-      I''ll miss her much.'
-    - 'It seems like you and she are pretty close, huh?
-
-      Do you remember the
-      last time you saw her?'
-    - 'It seems like you and she are pretty close, huh?
-
-      Do you remember the
-      last time you saw her?'
-    - 'Tan: Hmmm......about a week ago, I had an argument with her because Hang refused
-      to let me see the documents. '
-    - 'Tan: But SHE SHOWED IT TO MAY. '
-    - 'Tan: I think that''s DISRESPECTFUL to me because I helped her a lot.
-
-'
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -82816,7 +82691,8 @@ MonoBehaviour:
   followUpBlock:
     id: 
     lines:
-    - Still looking around? Have you check everywhere? This house is big isn't it?
+    - speaker: 0
+      text: 
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -82829,9 +82705,10 @@ MonoBehaviour:
   conditionalBlocks:
   - id: 
     lines:
-    - "Tan: Oh\u2026 I remember one night, I saw a dark figure heading toward the
-      villa. The figure was a bit small. "
-    - 'Tan: At first, I thought it was Mai, but then I realized Mai is bigger.'
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags:
     - Crack
     requiredNPC: 
@@ -82845,11 +82722,12 @@ MonoBehaviour:
       then I realized Mai is bigger.\""
   - id: 
     lines:
-    - 'Tan: Yeah, I saw a hanging mark on Hang neck, but there is no rope at the
-      scene.'
-    - "Tan: Oh\u2026 on the morning H\u1EB1ng died, I saw Mai burning something in
-      the backyard. I didn\u2019t ask about it."
-    - "Tan: I wasn\u2019t stalking anyone, okay\u2014it was just a coincidence."
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags:
     - Rope
     requiredNPC: 
@@ -83170,7 +83048,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1484944325
 RectTransform:
   m_ObjectHideFlags: 0
@@ -84136,10 +84014,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   evidenceDatabase:
-  - tagName: 
-    icon: {fileID: 0}
-    bigPortrait: {fileID: 0}
-    description: 
+  - tagName: HangPhone
+    icon: {fileID: -4014443867644705504, guid: 5d87b1c5902d5f44b9f36fe42e4777b1, type: 3}
+    bigPortrait: {fileID: 1248784056254802929, guid: 29118a89a60218240acebe8d13d83ccf, type: 3}
+    description: "There\u2019s a new message from Tan that hasn\u2019t been read:
+      Why did you let May look at the document but not me? Do you hate me that much?"
   collectedEvidence: []
 --- !u!4 &1591563807
 Transform:
@@ -84779,10 +84658,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1865950314}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 493.9793, y: -20.11}
+  m_SizeDelta: {x: 987.9586, y: 40.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1660642976
 MonoBehaviour:
@@ -85308,6 +85187,8 @@ MonoBehaviour:
   PointMurderButton: {fileID: 1301480997}
   NameText: {fileID: 1715140316}
   AvatarImage: {fileID: 1146255558}
+  playerName: Player
+  playerPortrait: {fileID: 0}
   interactionDistance: 3
   textSpeed: 0.1
 --- !u!4 &1680332610
@@ -86341,8 +86222,6 @@ RectTransform:
   - {fileID: 732961991}
   - {fileID: 365729538}
   - {fileID: 1669655804}
-  - {fileID: 1021567932}
-  - {fileID: 2145066285}
   - {fileID: 1645346071}
   - {fileID: 1361394135}
   - {fileID: 1484944325}
@@ -86711,16 +86590,12 @@ MonoBehaviour:
   introBlock:
     id: 
     lines:
-    - Hello, you must be the DETECTIVE Hang mentioned.
-    - 'She called me here to talk about what she found in this villa. She said she
-      would also call one of her detective friends.
-
-      However, when I got here,
-      she had already ... ... ... DIED ...  in the SHED outside'
-    - 'I don''t know. I only got here a few hours before you. I wonder if it is because
-      of what she is investigating here.. ...this villa ....is definitely HAUNTED......
-
-'
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
+    - speaker: 0
+      text: 
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -86732,7 +86607,8 @@ MonoBehaviour:
   followUpBlock:
     id: 
     lines:
-    - Hohoho
+    - speaker: 0
+      text: 
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -86745,7 +86621,8 @@ MonoBehaviour:
   conditionalBlocks:
   - id: 
     lines:
-    - You found Ultimatum? congrats
+    - speaker: 0
+      text: 
     requiredEvidenceTags:
     - Ultimatum
     requiredNPC: 
@@ -87288,7 +87165,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 40.22}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1865950315
 MonoBehaviour:
@@ -88165,7 +88042,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1944481555
 RectTransform:
   m_ObjectHideFlags: 0
@@ -89483,142 +89360,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113981898}
-  m_CullTransparentMesh: 1
---- !u!1 &2145066284
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2145066285}
-  - component: {fileID: 2145066287}
-  - component: {fileID: 2145066286}
-  m_Layer: 5
-  m_Name: TutCatch
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &2145066285
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2145066284}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1793907736}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 100, y: 92.3999}
-  m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2145066286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2145066284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 'f: catch'
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8088cb2b25ab0ec498bf69bda4bf655d, type: 2}
-  m_sharedMaterial: {fileID: 3216688107176568827, guid: 8088cb2b25ab0ec498bf69bda4bf655d, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: -37.263992, z: -92.27551, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &2145066287
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2145066284}
   m_CullTransparentMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
