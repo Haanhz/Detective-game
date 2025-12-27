@@ -8,16 +8,16 @@ public class Player : MonoBehaviour
 {
     [Header("Interaction UI")]
     [Header("Fridge Settings")]
-    public float fridgeCooldown = 10f; // Thời gian chờ giữa 2 lần ăn (giây)
-    private float lastEatTime = -100f; // Mốc thời gian lần cuối ăn (để mặc định đủ xa)
-    public GameObject interactIndicator; // Kéo Sprite dấu chấm than vào đây
-    public float detectionRange = 1.5f;   // Khoảng cách phát hiện
+    public float fridgeCooldown = 10f; 
+    private float lastEatTime = -100f; 
+    public GameObject interactIndicator; 
+    public float detectionRange = 1.5f;   
     public System.Collections.Generic.List<string> interactableTags = new System.Collections.Generic.List<string> 
     { 
         "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", 
         "Limit1", "Limit2", "Hide", "Bed", "Murder", "NPC" 
     };
-    public Vector2Int direction = Vector2Int.right;// (1,0)
+    public Vector2Int direction = Vector2Int.right;
     private Vector2Int input;
     public float maxStamina = 100f;
     public float currentStamina;
@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
 
     public Animator animator;
 
-    // Public getter for animator to ensure safe external access
     public Animator GetAnimator()
     {
         return animator;
@@ -62,23 +61,25 @@ public class Player : MonoBehaviour
 
         bool moving = IsMoving();
 
-        // Lấy input thô
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputY = Input.GetAxisRaw("Vertical");
 
+        // KHÓA INPUT ANIMATION THEO CHIỀU DỌC KHI MENU MỞ
+        if (DialogueManager.IsMenuOpen)
+        {
+            inputY = 0;
+        }
+
         if (moving)
         {
-            // Move params
             animator.SetFloat("InputX", inputX);
             animator.SetFloat("InputY", inputY);
 
-            // Lưu hướng cuối cho Idle
             animator.SetFloat("LastInputX", inputX); 
             animator.SetFloat("LastInputY", inputY); 
         }
         else
         {
-            // Không di chuyển -> cho Move = 0
             animator.SetFloat("InputX", 0);
             animator.SetFloat("InputY", 0);
         }
@@ -134,9 +135,16 @@ public class Player : MonoBehaviour
     public void Move(float speed)
     {
         Vector2Int currentInput = Vector2Int.zero;
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) currentInput = Vector2Int.up;
-        else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) currentInput = Vector2Int.down;
-        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) currentInput = Vector2Int.right;
+
+        // CHỈNH SỬA: Kiểm tra nếu Menu KHÔNG mở thì mới nhận phím W/S hoặc Mũi tên lên/xuống
+        if (!DialogueManager.IsMenuOpen)
+        {
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) currentInput = Vector2Int.up;
+            else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) currentInput = Vector2Int.down;
+        }
+
+        // Các hướng Trái/Phải luôn hoạt động
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) currentInput = Vector2Int.right;
         else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) currentInput = Vector2Int.left;
 
         if (currentInput != Vector2Int.zero)
@@ -169,7 +177,16 @@ public class Player : MonoBehaviour
 
     private bool IsMoving()
     {
-        return Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0;
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+
+        // CHỈNH SỬA: Nếu menu mở, coi như không có di chuyển theo chiều dọc để tránh đứng im mà vẫn chạy animation
+        if (DialogueManager.IsMenuOpen)
+        {
+            vertical = 0;
+        }
+
+        return horizontal != 0 || vertical != 0;
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -180,25 +197,18 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                // Kiểm tra Cooldown: Thời gian hiện tại phải lớn hơn (lần ăn cuối + thời gian chờ)
                 if (Time.time >= lastEatTime + fridgeCooldown)
                 {
                     if (currentStamina < maxStamina)
                     {
                         currentStamina = Mathf.Min(maxStamina, currentStamina + 5f);
                         Debug.Log("You ate. Stamina restored!");
-                        
-                        // CẬP NHẬT MỐC THỜI GIAN VỪA ĂN
                         lastEatTime = Time.time;
                     }
-                    else
-                    {
-                        Debug.Log("You are full!");
-                    }
+                    else Debug.Log("You are full!");
                 }
                 else
                 {
-                    // Tính toán thời gian còn lại để in ra console
                     float timeLeft = (lastEatTime + fridgeCooldown) - Time.time;
                     Debug.Log("You are still full! Wait " + Mathf.Ceil(timeLeft) + " seconds.");
                 }
@@ -206,7 +216,6 @@ public class Player : MonoBehaviour
         }
         else if (hitTag == "Bed")
         {
-            // ... logic cho Bed giữ nguyên ...
             if (Input.GetKeyDown(KeyCode.F))
             {
                 if (GameManager.Instance.isNight)
@@ -214,10 +223,7 @@ public class Player : MonoBehaviour
                     currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
                     GameManager.Instance.ForceSkipNight();
                 }
-                else
-                {
-                    Debug.Log("You are not sleepy!");
-                }
+                else Debug.Log("You are not sleepy!");
             }
         }
     }
@@ -226,7 +232,6 @@ public class Player : MonoBehaviour
     {
         if (interactIndicator == null) return;
 
-        // Quét các Collider2D trong phạm vi hình tròn xung quanh Player
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange);
         bool isNear = false;
 
@@ -241,14 +246,12 @@ public class Player : MonoBehaviour
 
         interactIndicator.SetActive(isNear);
         
-        // Giữ dấu chấm than không bị lật ngược khi Player đổi hướng scale
         if (isNear)
         {
             interactIndicator.transform.localScale = new Vector3(transform.localScale.x > 0 ? 1 : -1, 1, 1);
         }
     }
 
-    // Vẽ vòng tròn phạm vi trong Scene để bạn dễ căn chỉnh (không bắt buộc)
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

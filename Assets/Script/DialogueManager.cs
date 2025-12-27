@@ -30,7 +30,9 @@ public class DialogueManager : MonoBehaviour
     private int index;
     private NPC currentNPC;
     private bool isInteracting = false;
-    private bool isMenuOpen = false; 
+    
+    // Biến static để script di chuyển của Player có thể truy cập mà không cần reference phức tạp
+    public static bool IsMenuOpen = false; 
 
     private bool chooseRightMurderer = false;
 
@@ -75,6 +77,28 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
+        // Chặn phím mũi tên khi đang mở Menu để ép người dùng dùng W/S (tùy chọn)
+        // Hoặc đơn giản là để tránh xung đột di chuyển
+        if (IsMenuOpen)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+            GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(currentSelected);
+        }
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+            GameObject selectedButton = EventSystem.current.currentSelectedGameObject;
+                if (selectedButton != null)
+                {
+                    // Giả lập hành động Click chuột vào Button đang được chọn
+                    ExecuteEvents.Execute(selectedButton, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+                    return; // Thoát để tránh xung đột với logic F ở dưới
+                }
+            }
+        }
+
         currentNPC = FindClosestNPC();
 
         if (currentNPC != null)
@@ -101,26 +125,25 @@ public class DialogueManager : MonoBehaviour
 
         if (currentNPC != null)
         {
-            if (Input.GetKeyDown(KeyCode.F) && !isMenuOpen)
+            if (Input.GetKeyDown(KeyCode.F) && !IsMenuOpen)
             {
                 OpenSelectionMenu(currentNPC);
             }
         }
         else 
         {
-            if (isMenuOpen || StartConversationButton.activeInHierarchy)
+            if (IsMenuOpen || StartConversationButton.activeInHierarchy)
             {
                 CleanupState();
             }
         }
     }
 
-    // Đã sửa: Truyền NPC vào để không bị mất thông tin Tên/Ảnh
     void OpenSelectionMenu(NPC npc)
     {
         if (npc == null) return;
 
-        isMenuOpen = true;
+        IsMenuOpen = true; // Kích hoạt trạng thái mở Menu
         dialogueBox.SetActive(true);
         StartConversationButton.SetActive(true);
         PointMurderButton.SetActive(true);
@@ -174,7 +197,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (currentNPC != null && !isInteracting)
         {
-            isMenuOpen = false; 
+            IsMenuOpen = false; // Tắt menu để bắt đầu hội thoại
             CharacterUnlockManager.UnlockCharacter(currentNPC.profileIndex);
             isInteracting = true;
             StartConversationButton.SetActive(false);
@@ -288,7 +311,6 @@ public class DialogueManager : MonoBehaviour
 
     void FinishDialogueSequence()
     {
-        // Lưu lại NPC hiện tại để dùng sau khi Cleanup
         NPC savedNPC = currentNPC;
 
         if (currentBlock != null)
@@ -320,10 +342,8 @@ public class DialogueManager : MonoBehaviour
             else if (savedNPC.dialogueStage == 1) savedNPC.dialogueStage = 2;
         }
 
-        // Dọn dẹp UI
         CleanupState();
 
-        // Mở lại menu với dữ liệu NPC đã lưu
         if (savedNPC != null)
         {
             OpenSelectionMenu(savedNPC);
@@ -355,7 +375,8 @@ public class DialogueManager : MonoBehaviour
 
     void CleanupState()
     {
-        isMenuOpen = false;
+        IsMenuOpen = false;
+        isInteracting = false;
         dialogueBox.SetActive(false);
         StartConversationButton.SetActive(false);
         PointMurderButton.SetActive(false);
@@ -367,7 +388,6 @@ public class DialogueManager : MonoBehaviour
 
         currentLines = null;
         currentNPC = null;
-        isInteracting = false;
 
         if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
     }
