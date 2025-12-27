@@ -193,9 +193,11 @@ public class Evidence : MonoBehaviour
         {
             case "HangNoteBook":
             case "Limit1":
+            case "Limit2":
             case "Limit3":
             case "Limit4":
             case "Limit5":
+            case "Limit6":
             case "Hide":
                 return true;
 

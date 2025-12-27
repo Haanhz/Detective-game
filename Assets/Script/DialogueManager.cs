@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 
 public class DialogueManager : MonoBehaviour
 {
+    public AudioSource typeAudioSource;
+    public AudioClip typewriterSound;
     public static DialogueManager Instance;
     public GameObject player;
     public GameObject dialogueBox;
@@ -240,11 +242,21 @@ public class DialogueManager : MonoBehaviour
         
         UpdateSpeakerUI(currentLines[index]);
         DialogueText.text = "";
+        if (typeAudioSource != null && typewriterSound != null)
+        {
+            typeAudioSource.clip = typewriterSound;
+            if (!typeAudioSource.isPlaying)
+                typeAudioSource.Play();
+        }
 
         foreach (char c in currentLines[index].text.ToCharArray())
         {
             DialogueText.text += c;
             yield return new WaitForSeconds(textSpeed);
+        }
+        if (typeAudioSource != null && typeAudioSource.isPlaying)
+        {
+            typeAudioSource.Stop();
         }
     }
 

@@ -6,6 +6,9 @@ using UnityEngine.Rendering.Universal;
 
 public class GameManager : MonoBehaviour
 {
+    public AudioSource audioSource;
+    public AudioClip dayMusic;
+    public AudioClip nightMusic;
     public static GameManager Instance;
     public GameObject limit1;
     public GameObject limit2;
@@ -134,6 +137,13 @@ public class GameManager : MonoBehaviour
         environmentLight.color = Color.white;
         Debug.Log("GOOD MORNING!");
         SetNPCActive(true);
+        if (audioSource != null && dayMusic != null)
+        {
+            audioSource.Stop();              // chắc kèo tắt nhạc cũ
+            audioSource.clip = dayMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
 
     void StartNight()
@@ -156,6 +166,13 @@ public class GameManager : MonoBehaviour
             61f / 255f
         );
         Debug.Log("IS NIGHT ALREADY? Night = "+ currentNight);
+        if (audioSource != null && nightMusic != null)
+        {
+            audioSource.Stop();              // chắc kèo tắt nhạc cũ
+            audioSource.clip = nightMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
 
     // Các hàm còn lại giữ nguyên logic cũ của bạn

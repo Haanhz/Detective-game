@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ChaseManager : MonoBehaviour
 {
+    public AudioSource audioSource;
+    public AudioClip chaseMusic;
     public Player player;
     public GameObject black;
     public Animator blackAnimator;
@@ -159,7 +161,15 @@ public class ChaseManager : MonoBehaviour
             blackSpawned = true;
             
             if(blackAnimator) blackAnimator.ResetTrigger("Kill");
+            if (audioSource != null && chaseMusic != null && !audioSource.isPlaying)
+        {
+            audioSource.Stop();   
+            audioSource.clip = chaseMusic;
+            audioSource.loop = true;
+            audioSource.Play();
         }
+        }
+
 
         timer += Time.deltaTime;
         if (timer >= chaseDelay)

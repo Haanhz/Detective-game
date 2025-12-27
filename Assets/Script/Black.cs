@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 public class Black : MonoBehaviour
 {
     public Rigidbody2D rb;
+    public AudioSource audioSource;
+    public AudioClip killSound;
 
     public void Start()
     {
@@ -21,6 +23,10 @@ public class Black : MonoBehaviour
             ChaseManager.instance.player.gameObject.SetActive(false);
             ScoreBoard.scoreValue = 0;
             Debug.Log("You died!");
+            if (audioSource != null && killSound != null)
+            {
+                audioSource.PlayOneShot(killSound);
+            }
         }
     }
     

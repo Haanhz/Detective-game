@@ -14,6 +14,8 @@ public class EvidenceData
 public class EvidenceManager : MonoBehaviour
 {
     public static EvidenceManager Instance;
+    public AudioSource audioSource;
+    public AudioClip pickSound;
 
     [Header("Data Database")]
     public List<EvidenceData> evidenceDatabase = new List<EvidenceData>();
@@ -28,6 +30,10 @@ public class EvidenceManager : MonoBehaviour
 
     public void AddEvidence(string tagName, float weight)
     {
+        if (audioSource != null && pickSound != null)
+        {
+            audioSource.PlayOneShot(pickSound);
+        }
         collectedEvidence.Add(tagName);
         evidenceWeights[tagName] = weight;
 
