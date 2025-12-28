@@ -168,6 +168,7 @@ public class Evidence : MonoBehaviour
             case "Limit5": return "May's Diary";
             case "Limit6": return "The ghost mom";
             case "Hide": return "Hide";
+            case "SangStuff": return "Mr.Sang precious thing";
             default: return "Unknown Evidence";
         }
     }
@@ -199,6 +200,7 @@ public class Evidence : MonoBehaviour
             case "Limit5":
             case "Limit6":
             case "Hide":
+            case "SangStuff":
                 return true;
 
             default:

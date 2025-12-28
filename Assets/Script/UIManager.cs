@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+    public AudioSource audioSource;
+    public AudioSource typeAudioSource;
+    public AudioClip thumbnailMusic;
+    public AudioClip typewriterSound;
 
     [Header("Gameplay UI")]
     public TextMeshProUGUI dayRemainText;
@@ -37,6 +41,7 @@ public class UIManager : MonoBehaviour
     public float textSpeed = 0.03f;
 
     private bool gameStarted = false;
+    private bool canReplay = false;
 
     private ChaseManager chase => ChaseManager.instance;
     private GameManager gm => GameManager.Instance;
@@ -56,7 +61,7 @@ public class UIManager : MonoBehaviour
         if (dayRemainText != null) dayRemainText.gameObject.SetActive(false);
         if (staminaSlider != null) staminaSlider.gameObject.SetActive(false);
 
-        if (menuButtonObject != null) 
+        if (menuButtonObject != null)
             menuButtonObject.SetActive(false);
 
         // if (loseText != null) loseText.gameObject.SetActive(false);
@@ -72,11 +77,19 @@ public class UIManager : MonoBehaviour
 
         // Cutscene off đầu game
         cutscenePanel.SetActive(false);
-         if (cutscenePlayed)
-    {
-        startPanel.SetActive(false);
-        StartGameplay();
-    }
+        // ===== THUMBNAIL MUSIC =====
+        if (!cutscenePlayed && audioSource != null && thumbnailMusic != null)
+        {
+            audioSource.clip = thumbnailMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+        if (cutscenePlayed)
+        {
+            startPanel.SetActive(false);
+            StartGameplay();
+            
+        }
     }
 
     void Update()
@@ -89,6 +102,11 @@ public class UIManager : MonoBehaviour
         //     }
         //     return;
         // }
+        if (canReplay && Input.GetKeyDown(KeyCode.F))
+    {
+        ReplayScene();
+        return;
+    }
 
         if (!gameStarted) return; // gameplay UI chưa chạy
 
@@ -103,6 +121,10 @@ public class UIManager : MonoBehaviour
     void OnStartPressed()
     {
         startPanel.SetActive(false);
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
         StartCoroutine(PlayCutscene());
     }
 
@@ -117,6 +139,12 @@ public class UIManager : MonoBehaviour
             "Hang: If not ... he ... ... ... ...",
             "Hello ... Helllo ... Hang ... Are you there? Hello..."
         };
+        if (typeAudioSource != null && typewriterSound != null)
+        {
+            typeAudioSource.clip = typewriterSound;
+            if (!typeAudioSource.isPlaying)
+                typeAudioSource.Play();
+        }
 
         foreach (string line in lines)
         {
@@ -125,6 +153,10 @@ public class UIManager : MonoBehaviour
 
             // Chờ người chơi bấm Z mới chuyển
             yield return StartCoroutine(WaitForNext());
+        }
+        if (typeAudioSource != null && typeAudioSource.isPlaying)
+        {
+            typeAudioSource.Stop();
         }
 
         // Hết cutscene
@@ -160,12 +192,13 @@ public class UIManager : MonoBehaviour
     void StartGameplay()
     {
         gameStarted = true;
+        GameManager.Instance.StartDay();
 
         // bật UI
         dayRemainText.gameObject.SetActive(true);
         staminaSlider.gameObject.SetActive(true);
 
-        if (menuButtonObject != null) 
+        if (menuButtonObject != null)
             menuButtonObject.SetActive(true);
     }
 
@@ -215,12 +248,14 @@ public class UIManager : MonoBehaviour
         {
             // loseText.gameObject.SetActive(true);
             replayButton.gameObject.SetActive(true);
+            canReplay = true;
         }
     }
 
     void ReplayScene()
     {
         Time.timeScale = 1f;
+        canReplay = false;
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }

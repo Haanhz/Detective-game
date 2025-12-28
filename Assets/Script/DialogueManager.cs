@@ -226,10 +226,10 @@ public class DialogueManager : MonoBehaviour
         return closestNPC;
     }
 
-    void StartDialogue(NPC npc)
+    public void StartDialogue(NPC npc)
     {
         NPC.DialogueBlock blockToPlay = null;
-        if (npc.dialogueStage == 0) blockToPlay = npc.introBlock;
+        if (npc.dialogueStage == -1 || npc.dialogueStage == 0) blockToPlay = npc.introBlock;
         else if (npc.dialogueStage == 1) blockToPlay = npc.followUpBlock;
         else blockToPlay = GetConditionalDialogue(npc);
 
@@ -338,7 +338,11 @@ public class DialogueManager : MonoBehaviour
 
         if (savedNPC != null)
         {
-            if (savedNPC.dialogueStage == 0) savedNPC.dialogueStage = 1;
+            if (savedNPC.dialogueStage == -1)
+            {
+                // Giữ nguyên stage -1, không tăng
+            }
+            else if (savedNPC.dialogueStage == 0) savedNPC.dialogueStage = 1;
             else if (savedNPC.dialogueStage == 1) savedNPC.dialogueStage = 2;
         }
 

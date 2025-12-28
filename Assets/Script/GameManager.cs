@@ -53,10 +53,10 @@ public class GameManager : MonoBehaviour
         if (countdownText != null) countdownText.gameObject.SetActive(false);
     }
 
-    void Start()
-    {
-        StartDay();
-    }
+    // void Start()
+    // {
+    //     StartDay();
+    // }
 
     void Update()
     {
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
         isCountingDown = false;
     }
 
-    void StartDay()
+    public void StartDay()
     {
         isNight = false;
         timer = 0f;
