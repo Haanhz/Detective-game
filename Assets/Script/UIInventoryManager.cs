@@ -56,6 +56,15 @@ public class UIInventoryManager : MonoBehaviour
         foreach (Transform child in gridContent) Destroy(child.gameObject);
         spawnedIcons.Clear();
 
+        // KIỂM TRA TRỐNG: Nếu chưa có bằng chứng nào
+        if (EvidenceManager.Instance.collectedEvidence == null || EvidenceManager.Instance.collectedEvidence.Count == 0)
+        {
+            nameText.text = "???";
+            descText.text = "You didn't get anything yet.";
+            if (bigPortrait != null) bigPortrait.enabled = false;
+            return; // Thoát hàm sớm, không chạy tiếp logic sinh icon
+        }
+
         bool firstItem = true;
 
         foreach (string evName in EvidenceManager.Instance.collectedEvidence)
@@ -66,8 +75,10 @@ public class UIInventoryManager : MonoBehaviour
             GameObject item = Instantiate(iconPrefab, gridContent);
             spawnedIcons.Add(item);
 
-            // 3. Tìm chính xác Component Image của Icon (thường là con của Prefab)
-            // Đảm bảo trong Prefab bạn đặt tên đối tượng chứa ảnh là "Icon"
+            // Đảm bảo bật lại ảnh chân dung lớn nếu trước đó nó bị tắt
+            if (bigPortrait != null) bigPortrait.enabled = true;
+
+            // 3. Tìm chính xác Component Image của Icon
             Transform iconTransform = item.transform.Find("Icon");
             if (iconTransform != null)
             {
@@ -78,7 +89,7 @@ public class UIInventoryManager : MonoBehaviour
             Transform highlight = item.transform.Find("HighlightFrame");
             if (highlight != null) highlight.gameObject.SetActive(false);
 
-            // 5. Gán sự kiện Click (Truyền cả Tên và cái GameObject này vào)
+            // 5. Gán sự kiện Click
             Button btn = item.GetComponent<Button>();
             if (btn != null)
                 btn.onClick.AddListener(() => DisplayDetails(evName, item));
