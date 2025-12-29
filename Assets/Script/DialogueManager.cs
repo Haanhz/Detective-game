@@ -74,6 +74,7 @@ public class DialogueManager : MonoBehaviour
         if (GameManager.Instance.isNight)
         {
             if (isInteracting) CleanupState();
+            if (IsMenuOpen) CleanupState();
             return;
         }
 
