@@ -30,6 +30,9 @@ public class EndingManager : MonoBehaviour
     private bool HalfEndingTriggered = false;
     private bool FullEndingTriggered = false;
 
+    // FIX: chặn gọi ending nhiều lần
+    private bool endingStarted = false;
+
     // Danh sách để lưu các AudioSource bị tắt để bật lại sau đó
     private List<AudioSource> activeAudioSources = new List<AudioSource>();
 
@@ -47,11 +50,14 @@ public class EndingManager : MonoBehaviour
 
     void Update()
     {
+        // FIX: không disable script, chỉ chặn chạy lại
+        if (endingStarted) return;
+
         if (chase.player.dead || GameEnd.gameEnded) 
         {
+            endingStarted = true;
             CleanupState();
             ShowEnding(playerDead: chase.player.dead);
-            enabled = false; 
         }
     }
     
@@ -103,20 +109,20 @@ public class EndingManager : MonoBehaviour
 
         if (selectedClip != null && videoPlayer != null)
         {
-            StartCoroutine(PlayVideoThenShowUI(selectedClip));
+            StartCoroutine(PlayVideoThenShowUI(selectedClip, playerDead)); // FIX
         }
         else
         {
-            DisplayEndingUI();
+            DisplayEndingUI(playerDead); // FIX
         }
     }
 
-    private System.Collections.IEnumerator PlayVideoThenShowUI(VideoClip clip)
+    private System.Collections.IEnumerator PlayVideoThenShowUI(VideoClip clip, bool pauseGame) // FIX
     {
-        // 1. TẮT TẤT CẢ ÂM THANH TRONG GAME
+        // 1. TẮT ÂM THANH
         MuteAllGameAudio(true);
 
-        // 2. ẨN CANVAS UI
+        // 2. ẨN UI
         if (mainGameCanvas != null) mainGameCanvas.enabled = false;
         if (ui != null) ui.enabled = false;
 
@@ -124,30 +130,24 @@ public class EndingManager : MonoBehaviour
         videoPlayer.Prepare();
 
         while (!videoPlayer.isPrepared)
-        {
             yield return null;
-        }
 
-        // 3. PHÁT VIDEO
         videoPlayer.Play();
-        yield return new WaitForSeconds(0.1f);
 
         while (videoPlayer.isPlaying)
-        {
             yield return null;
-        }
 
-        // 4. DỪNG VIDEO VÀ BẬT LẠI UI + ÂM THANH
+        // 3. KẾT THÚC VIDEO
         videoPlayer.Stop();
+
         if (mainGameCanvas != null) mainGameCanvas.enabled = true;
         if (ui != null) ui.enabled = true;
-        
-        // Mở lại âm thanh game trước khi hiện bảng thông báo
+
         MuteAllGameAudio(false);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
 
-        DisplayEndingUI();
+        DisplayEndingUI(pauseGame); // FIX
     }
 
     private void MuteAllGameAudio(bool mute)
@@ -158,7 +158,6 @@ public class EndingManager : MonoBehaviour
             AudioSource[] sources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
             foreach (AudioSource source in sources)
             {
-                // Không tắt AudioSource của chính VideoPlayer
                 if (source.gameObject != videoPlayer.gameObject && source.isPlaying)
                 {
                     source.Pause();
@@ -176,15 +175,18 @@ public class EndingManager : MonoBehaviour
         }
     }
 
-    private void DisplayEndingUI()
+    // FIX: chỉ pause game khi chết
+    private void DisplayEndingUI(bool pauseGame)
     {
         EndingBox.SetActive(true);
         EndingText.gameObject.SetActive(true);
         RestartButton.gameObject.SetActive(true);
-        Time.timeScale = 0f;
+
+        if (pauseGame)
+            Time.timeScale = 0f;
     }
 
-    // --- Các hàm check giữ nguyên ---
+    // ===== GIỮ NGUYÊN LOGIC CŨ =====
     public void checkHalfEnding()
     {
         string[] halfEndingEvidence = new string[] { "Limit1", "Crack", "OpenWindow", "Rope" };
@@ -193,17 +195,30 @@ public class EndingManager : MonoBehaviour
         {
             if (!EvidenceManager.Instance.HasEvidence(evidenceTag)) { hasEnoughEvidence = false; break; }
         }
-        if (hasEnoughEvidence && DialogueManager.Instance.CheckEndingConversation()) HalfEndingTriggered = true;
+        if (hasEnoughEvidence && DialogueManager.Instance.CheckEndingConversation())
+            HalfEndingTriggered = true;
     }
 
     public void checkFullEnding()
     {
-        string[] fullEndingEvidence = new string[] { "Limit1", "Limit2", "Limit3", "Limit4", "Limit5", "Limit6", "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", "StrangeTable", "OpenWindow", "Rope", "Crack" };
+        string[] fullEndingEvidence = new string[]
+        {
+            "Limit1","Limit2","Limit3","Limit4","Limit5","Limit6",
+            "LivingCorner","Ultimatum","HangPhone","HangNoteBook",
+            "StrangeTable","OpenWindow","Rope","Crack"
+        };
+
         bool hasAllEvidence = true;
         foreach (string evidenceTag in fullEndingEvidence)
         {
-            if (!EvidenceManager.Instance.HasEvidence(evidenceTag)) { hasAllEvidence = false; break; }
+            if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
+            {
+                hasAllEvidence = false;
+                break;
+            }
         }
-        if (hasAllEvidence && DialogueManager.Instance.CheckEndingConversation()) FullEndingTriggered = true;
+
+        if (hasAllEvidence && DialogueManager.Instance.CheckEndingConversation())
+            FullEndingTriggered = true;
     }
 }

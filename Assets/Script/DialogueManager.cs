@@ -377,7 +377,14 @@ public class DialogueManager : MonoBehaviour
         }
         return npc.followUpBlock;
     }
+    public void OnPointMurderButtonClicked()
+    {
+        // Kết thúc mọi trạng thái hội thoại
+        CleanupState();
 
+        // Báo cho game biết: GAME ĐÃ KẾT THÚC
+        GameManager.Instance.gameEnded = true;
+    }
     void CleanupState()
     {
         IsMenuOpen = false;
