@@ -779,8 +779,8 @@ MonoBehaviour:
   dialogueText: {fileID: 916306953}
   playerName: You
   playerPortrait: {fileID: 6363953028067035492, guid: ee50d834736a5d84ca4937b1ac542966, type: 3}
-  typingSpeed: 0.05
-  displayTime: 2
+  typingSpeed: 0.1
+  displayTime: 1
 --- !u!4 &112418589
 Transform:
   m_ObjectHideFlags: 0
@@ -57781,7 +57781,7 @@ MonoBehaviour:
   dayMusic: {fileID: 8300000, guid: fd32a9fcb11fd504c8bc5e9d02ba411d, type: 3}
   nightMusic: {fileID: 8300000, guid: 77845d30ec6b2bb42ac5bb5177b42785, type: 3}
   dayDuration: 20
-  nightDuration: 180
+  nightDuration: 20
   daysRemaining: 7
   isNight: 0
   currentNight: 0
