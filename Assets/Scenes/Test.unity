@@ -744,6 +744,58 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.9738188, y: 1.1614857}
   m_EdgeRadius: 0
+--- !u!1 &112418587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 112418589}
+  - component: {fileID: 112418588}
+  m_Layer: 0
+  m_Name: PlayerMonologue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &112418588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112418587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1138129ae82cd34694eeb210849de2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 1632895827}
+  avatarImage: {fileID: 1856452402}
+  nameText: {fileID: 621813209}
+  dialogueText: {fileID: 916306953}
+  playerName: You
+  playerPortrait: {fileID: 6363953028067035492, guid: ee50d834736a5d84ca4937b1ac542966, type: 3}
+  typingSpeed: 0.05
+  displayTime: 2
+--- !u!4 &112418589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112418587}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.38521, y: -29.55246, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &116031909
 GameObject:
   m_ObjectHideFlags: 0
@@ -4419,7 +4471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -5425,7 +5477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -6845,7 +6897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -7110,7 +7162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -7869,7 +7921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -9793,6 +9845,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 365244792}
+  - {fileID: 1964192525}
   m_Father: {fileID: 706580796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &695721486
@@ -10130,6 +10183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 723428896}
   - component: {fileID: 723428895}
+  - component: {fileID: 723428897}
   m_Layer: 0
   m_Name: OpenWindow
   m_TagString: OpenWindow
@@ -10207,6 +10261,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1146393783}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &723428897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723428894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10e80df6bbf4824c98d0095fa1d5ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DialogueBox: {fileID: 1632895827}
+  CatchName: {fileID: 323417375}
+  displayTime: 1
+  typingSpeed: 0.01
+  evidenceTag: 
+  spawnNight: 0
+  pickupKey: 102
 --- !u!1 &732961990
 GameObject:
   m_ObjectHideFlags: 0
@@ -11277,7 +11350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -15643,7 +15716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -45420,7 +45493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -58521,7 +58594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -58863,7 +58936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -61254,7 +61327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -61905,8 +61978,8 @@ PolygonCollider2D:
       - {x: 0.046609182, y: 5.1134067}
       - {x: -0.74869025, y: 4.924392}
       - {x: -2.567571, y: 4.4921064}
-      - {x: -2.5620742, y: 0.09507528}
-      - {x: 2.4116228, y: 0.116901696}
+      - {x: -2.5867972, y: -0.43648362}
+      - {x: 2.4487095, y: -0.41465533}
   m_UseDelaunayMesh: 0
 --- !u!1 &1674184963
 GameObject:
@@ -64299,7 +64372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -64567,7 +64640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DialogueBox: {fileID: 1632895827}
-  CatchName: {fileID: 916306953}
+  CatchName: {fileID: 323417375}
   displayTime: 1
   typingSpeed: 0.01
   evidenceTag: 
@@ -65487,7 +65560,7 @@ GameObject:
   - component: {fileID: 1964192526}
   - component: {fileID: 1964192527}
   m_Layer: 0
-  m_Name: TopDownHouse_SmallItems_4
+  m_Name: Duckling
   m_TagString: SangStuff
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65556,12 +65629,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964192523}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19.74, y: -26.89, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -11.1788025, y: 2.8882904, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 691717554}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1964192526
 BoxCollider2D:
@@ -67233,4 +67306,4 @@ SceneRoots:
   - {fileID: 2146128224}
   - {fileID: 1258275228}
   - {fileID: 872707802}
-  - {fileID: 1964192525}
+  - {fileID: 112418589}

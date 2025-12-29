@@ -146,6 +146,10 @@ public class GameManager : MonoBehaviour
             audioSource.loop = true;
             audioSource.Play();
         }
+        if (currentNight == 1)
+    {
+        PlayerMonologue.Instance.Say("Night is falling... I need to investigate using my UV light...Let me see...Press V right?", onceOnly: true, id: "first_night");
+    }
     }
 
     public void ResumeNightMusic()
