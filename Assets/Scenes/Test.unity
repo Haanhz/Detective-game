@@ -5399,7 +5399,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.2911148, y: 0.17387772}
+  m_Offset: {x: 0.031578064, y: -0.10562134}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -5409,7 +5409,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.2525482, y: 2.1538162}
+  m_Size: {x: 1.7334747, y: 1.5948181}
   m_EdgeRadius: 0
 --- !u!114 &356494843
 MonoBehaviour:
@@ -57674,7 +57674,7 @@ MonoBehaviour:
   limit4: {fileID: 1887335892}
   limit5: {fileID: 356494839}
   limit6: {fileID: 821264144}
-  dayDuration: 180
+  dayDuration: 30
   nightDuration: 180
   daysRemaining: 7
   isNight: 0
@@ -58160,7 +58160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1361394135
 RectTransform:
   m_ObjectHideFlags: 0
@@ -61856,11 +61856,12 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 2.524028, y: 4.4599113}
+    - - {x: 2.448909, y: 4.4348707}
       - {x: 0.046609182, y: 5.1134067}
       - {x: -0.74869025, y: 4.924392}
       - {x: -2.567571, y: 4.4921064}
-      - {x: 0.00777667, y: 0.04178244}
+      - {x: -2.5620742, y: 0.09507528}
+      - {x: 2.4116228, y: 0.116901696}
   m_UseDelaunayMesh: 0
 --- !u!1 &1674184963
 GameObject:
@@ -64179,6 +64180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1328244848}
   chaseMusic: {fileID: 8300000, guid: 8777baa33e3bbfe40a6fc311861f63bb, type: 3}
+  loseDistance: 15
   player: {fileID: 1913955321}
   black: {fileID: 1752609364}
   blackAnimator: {fileID: 0}

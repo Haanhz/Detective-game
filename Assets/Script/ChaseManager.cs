@@ -5,6 +5,7 @@ public class ChaseManager : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioClip chaseMusic;
+    public float loseDistance = 10f;
     public Player player;
     public GameObject black;
     public Animator blackAnimator;
@@ -109,6 +110,19 @@ public class ChaseManager : MonoBehaviour
                 break;
         }
     }
+    void StopChaseMusic()
+{
+    if (audioSource && audioSource.isPlaying)
+    {
+        audioSource.Stop();
+        audioSource.clip = null;
+    }
+    if (GameManager.Instance)
+    {
+        GameManager.Instance.ResumeNightMusic();
+    }
+}
+
 
     IEnumerator CalculateProbAppear()
     {
@@ -122,7 +136,7 @@ public class ChaseManager : MonoBehaviour
             }
 
             timeAtNight += Time.deltaTime;
-            probAppear = 0.3f;
+            probAppear = 0.1f;
             yield return null;
         }
     }
@@ -161,7 +175,7 @@ public class ChaseManager : MonoBehaviour
             blackSpawned = true;
             
             if(blackAnimator) blackAnimator.ResetTrigger("Kill");
-            if (audioSource != null && chaseMusic != null && !audioSource.isPlaying)
+            if (audioSource != null && chaseMusic != null && audioSource.isPlaying)
         {
             audioSource.Stop();   
             audioSource.clip = chaseMusic;
@@ -182,7 +196,13 @@ public class ChaseManager : MonoBehaviour
     void Chase()
     {
         float distanceToPlayer = Vector3.Distance(black.transform.position, target.position);
-        
+        if (distanceToPlayer > loseDistance)
+        {
+            StopChaseMusic();
+            EndChase();
+            currentState = State.EndChase;
+            return;
+        }
         if (distanceToPlayer <= killDistance && !player.dead)
         {
             currentState = State.Kill;
@@ -236,7 +256,7 @@ public class ChaseManager : MonoBehaviour
                 blackAnimator.SetFloat("MoveX", 0);
                 blackAnimator.SetFloat("MoveY", 0);
             }
-
+            StopChaseMusic();
             EndChase();
             currentState = State.EndChase;
         }
@@ -249,7 +269,7 @@ public class ChaseManager : MonoBehaviour
         player.dead = true;
         player.gameObject.SetActive(false);
         Debug.Log("You died by animation!");
-        
+        StopChaseMusic();
         EndChase();
         currentState = State.EndChase;
     }

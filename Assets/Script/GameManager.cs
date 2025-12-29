@@ -167,13 +167,26 @@ public class GameManager : MonoBehaviour
         );
         Debug.Log("IS NIGHT ALREADY? Night = "+ currentNight);
         if (audioSource != null && nightMusic != null)
+            {
+                audioSource.Stop();              // chắc kèo tắt nhạc cũ
+                audioSource.clip = nightMusic;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+    }
+    public void ResumeNightMusic()
+    {
+        if (!isNight) return;
+
+        if (audioSource && nightMusic)
         {
-            audioSource.Stop();              // chắc kèo tắt nhạc cũ
+            audioSource.Stop();
             audioSource.clip = nightMusic;
             audioSource.loop = true;
             audioSource.Play();
         }
     }
+
 
     // Các hàm còn lại giữ nguyên logic cũ của bạn
     void EndNightAndNextDay()

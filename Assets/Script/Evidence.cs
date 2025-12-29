@@ -141,7 +141,7 @@ public class Evidence : MonoBehaviour
         // Ẩn GameObject nếu cần (sau khi dialogue đã hiện xong)
         if (ShouldHide(evidenceTag))
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
 
         displayCoroutine = null;

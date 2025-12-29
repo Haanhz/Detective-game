@@ -17,7 +17,7 @@ public class NPC : MonoBehaviour
     public DialogueBlock followUpBlock;
 
     [HideInInspector]
-    public int dialogueStage = -1;
+    public int dialogueStage = 0;
 
     [Header("Stage 2+ - Conditional Dialogues")]
     public List<DialogueBlock> conditionalBlocks = new List<DialogueBlock>();
