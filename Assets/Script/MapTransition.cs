@@ -13,6 +13,9 @@ public class MapTransition : MonoBehaviour
     public enum Direction {Up, Down, Left, Right, Teleport}
     public CinemachineCamera vcam;
 
+    [Header("Area Settings")]
+    public string areaName;
+
     private void Awake()
     {
         confiner = FindFirstObjectByType<CinemachineConfiner2D>();
@@ -24,6 +27,10 @@ public class MapTransition : MonoBehaviour
         {
             // FadeTransition(collision.gameObject);
             StartCoroutine(FadeTransition(collision.gameObject));
+            if (!string.IsNullOrEmpty(areaName) && AreaManager.Instance != null)
+            {
+                AreaManager.Instance.ShowAreaName(areaName);
+            }
             // confiner.BoundingShape2D = mapBoundary;
             // UpdatePlayerPosition(collision.gameObject);
         }
