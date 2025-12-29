@@ -20,6 +20,9 @@ public class UIMenuManager : MonoBehaviour
     public Button inventoryTabButton;
     public Button noteTabButton;    // THÊM MỚI: Nút chuyển sang tab Note
 
+    [Header("Extra Buttons")]
+    public Button backToTitleButton;
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -36,6 +39,9 @@ public class UIMenuManager : MonoBehaviour
         profileTabButton.onClick.AddListener(ShowProfile);
         inventoryTabButton.onClick.AddListener(ShowInventory);
         noteTabButton.onClick.AddListener(ShowNote); // THÊM MỚI: Lắng nghe sự kiện nút Note
+
+        if (backToTitleButton != null)
+        backToTitleButton.onClick.AddListener(ReturnToStartMenu);
     }
 
     void OpenMenu()
@@ -86,5 +92,19 @@ public class UIMenuManager : MonoBehaviour
 
         // Nếu bạn có Script quản lý Note (ví dụ NoteUI), hãy gọi hàm cập nhật tại đây tương tự Profile
         // if (NoteUI.Instance != null) NoteUI.Instance.UpdateNoteList();
+    }
+    public void ReturnToStartMenu()
+    {
+        // LƯU TRƯỚC KHI THOÁT
+        SaveSystem.SaveAll(ChaseManager.instance.player.gameObject);
+
+        menuPanel.SetActive(false);
+        if (UIManager.Instance != null) {
+            UIManager.Instance.startPanel.SetActive(true);
+            UIManager.Instance.dayRemainText.gameObject.SetActive(false);
+            UIManager.Instance.staminaSlider.gameObject.SetActive(false);
+            UIManager.Instance.menuButtonObject.SetActive(false);
+        }
+        Time.timeScale = 0f;
     }
 }

@@ -30,12 +30,15 @@ public class EvidenceManager : MonoBehaviour
 
     public void AddEvidence(string tagName, float weight)
     {
+        if (collectedEvidence.Contains(tagName)) return;
         if (audioSource != null && pickSound != null)
         {
             audioSource.PlayOneShot(pickSound);
         }
         collectedEvidence.Add(tagName);
         evidenceWeights[tagName] = weight;
+        if (ChaseManager.instance != null) 
+        SaveSystem.SaveAll(ChaseManager.instance.player.gameObject);
 
         Debug.Log($"You found: {tagName} with weight {weight}");
 
