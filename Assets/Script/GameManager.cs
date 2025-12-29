@@ -10,22 +10,15 @@ public class GameManager : MonoBehaviour
     public AudioClip dayMusic;
     public AudioClip nightMusic;
     public static GameManager Instance;
-    public GameObject limit1;
-    public GameObject limit2;
-    public GameObject limit3;
-    public GameObject limit4;
-    public GameObject limit5;
-    public GameObject limit6;
 
     public float dayDuration = 60f;
     public float nightDuration = 60f;
 
     public int daysRemaining = 7;
     public bool isNight = false;
-    public bool isLight = false;
     public int currentNight = 0;
     private float timer = 0f;
-    // public CanvasGroup nightPanel;
+    
     public Light2D environmentLight;
 
     // --- CÁC BIẾN CHO ĐẾM NGƯỢC ---
@@ -53,18 +46,12 @@ public class GameManager : MonoBehaviour
         if (countdownText != null) countdownText.gameObject.SetActive(false);
     }
 
-    // void Start()
-    // {
-    //     StartDay();
-    // }
-
     void Update()
     {
         timer += Time.deltaTime;
 
         if (!isNight)
         {
-            // Đếm ngược từ Sáng -> Tối
             float timeLeftDay = dayDuration - timer;
             if (timeLeftDay <= countdownThreshold && !isCountingDown && timeLeftDay > 0)
             {
@@ -78,7 +65,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // Đếm ngược từ Tối -> Sáng
             float timeLeftNight = nightDuration - timer;
             if (timeLeftNight <= countdownThreshold && !isCountingDown && timeLeftNight > 0)
             {
@@ -91,16 +77,10 @@ public class GameManager : MonoBehaviour
             }
         }
         
-        if (gameEnded) return;
-        limit1.SetActive(isNight && isLight);
-        limit2.SetActive(isNight && isLight);
-        limit3.SetActive(isNight && isLight);
-        limit4.SetActive(isNight && isLight);
-        limit5.SetActive(isNight && isLight);
-        limit6.SetActive(isNight && isLight);
+        // BỎ HẾT LOGIC SET ACTIVE LIMIT Ở ĐÂY
+        // Giờ mỗi Limit tự quản lý
     }
 
-    // Coroutine dùng chung cho cả sáng và tối
     IEnumerator CountdownSequence(float targetDuration)
     {
         isCountingDown = true;
@@ -111,7 +91,6 @@ public class GameManager : MonoBehaviour
             if (countdownText != null)
             {
                 int secondsDisplay = Mathf.CeilToInt(targetDuration - timer);
-                // Đảm bảo không hiện số <= 0 trước khi chuyển giao diện
                 if (secondsDisplay > 0) 
                     countdownText.text = secondsDisplay.ToString();
             }
@@ -127,19 +106,18 @@ public class GameManager : MonoBehaviour
         isNight = false;
         timer = 0f;
         
-        // Dừng đếm ngược cũ nếu có và ẩn UI
         StopAllCoroutines();
         isCountingDown = false;
         if (countdownText != null) countdownText.gameObject.SetActive(false);
 
         OnDayStart?.Invoke();
-        //nightPanel.alpha = 0;
         environmentLight.color = Color.white;
         Debug.Log("GOOD MORNING!");
         SetNPCActive(true);
+        
         if (audioSource != null && dayMusic != null)
         {
-            audioSource.Stop();              // chắc kèo tắt nhạc cũ
+            audioSource.Stop();
             audioSource.clip = dayMusic;
             audioSource.loop = true;
             audioSource.Play();
@@ -153,27 +131,23 @@ public class GameManager : MonoBehaviour
         currentNight++;
         SetNPCActive(false);
 
-        // Dừng đếm ngược cũ nếu có và ẩn UI
         StopAllCoroutines(); 
         isCountingDown = false;
         if (countdownText != null) countdownText.gameObject.SetActive(false);
 
         OnNightStart?.Invoke();
-        //nightPanel.alpha = 1;
-        environmentLight.color = new Color(
-            31f / 255f,
-            31f / 255f,
-            61f / 255f
-        );
+        environmentLight.color = new Color(31f / 255f, 31f / 255f, 61f / 255f);
         Debug.Log("IS NIGHT ALREADY? Night = "+ currentNight);
+        
         if (audioSource != null && nightMusic != null)
-            {
-                audioSource.Stop();              // chắc kèo tắt nhạc cũ
-                audioSource.clip = nightMusic;
-                audioSource.loop = true;
-                audioSource.Play();
-            }
+        {
+            audioSource.Stop();
+            audioSource.clip = nightMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
+
     public void ResumeNightMusic()
     {
         if (!isNight) return;
@@ -187,8 +161,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    // Các hàm còn lại giữ nguyên logic cũ của bạn
     void EndNightAndNextDay()
     {
         daysRemaining--;

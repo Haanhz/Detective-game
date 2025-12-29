@@ -5288,6 +5288,7 @@ GameObject:
   - component: {fileID: 356494841}
   - component: {fileID: 356494842}
   - component: {fileID: 356494843}
+  - component: {fileID: 356494844}
   m_Layer: 0
   m_Name: Limit5_MayDia
   m_TagString: Limit5
@@ -5430,6 +5431,18 @@ MonoBehaviour:
   evidenceTag: 
   spawnNight: 0
   pickupKey: 102
+--- !u!114 &356494844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356494839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ad1af09800e624992f29a6c9f08aad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &365244791
 GameObject:
   m_ObjectHideFlags: 0
@@ -7057,6 +7070,7 @@ GameObject:
   - component: {fileID: 472858580}
   - component: {fileID: 472858582}
   - component: {fileID: 472858581}
+  - component: {fileID: 472858583}
   m_Layer: 0
   m_Name: Limit1_Footprint
   m_TagString: Limit1
@@ -7148,6 +7162,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 40.38996, y: 17.766874}
   m_EdgeRadius: 0
+--- !u!114 &472858583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472858579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ad1af09800e624992f29a6c9f08aad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &474939110
 GameObject:
   m_ObjectHideFlags: 0
@@ -11215,6 +11241,7 @@ GameObject:
   - component: {fileID: 821264148}
   - component: {fileID: 821264147}
   - component: {fileID: 821264146}
+  - component: {fileID: 821264150}
   m_Layer: 0
   m_Name: Limit6_Ghost_past_0
   m_TagString: Limit6
@@ -11379,6 +11406,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &821264150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821264144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ad1af09800e624992f29a6c9f08aad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &829323956
 GameObject:
   m_ObjectHideFlags: 0
@@ -57668,17 +57707,10 @@ MonoBehaviour:
   audioSource: {fileID: 1328244848}
   dayMusic: {fileID: 8300000, guid: fd32a9fcb11fd504c8bc5e9d02ba411d, type: 3}
   nightMusic: {fileID: 8300000, guid: 77845d30ec6b2bb42ac5bb5177b42785, type: 3}
-  limit1: {fileID: 472858579}
-  limit2: {fileID: 1477621532}
-  limit3: {fileID: 1886118872}
-  limit4: {fileID: 1887335892}
-  limit5: {fileID: 356494839}
-  limit6: {fileID: 821264144}
-  dayDuration: 30
+  dayDuration: 20
   nightDuration: 180
   daysRemaining: 7
   isNight: 0
-  isLight: 0
   currentNight: 0
   environmentLight: {fileID: 1343506538}
   countdownText: {fileID: 1737190957}
@@ -58749,6 +58781,7 @@ GameObject:
   - component: {fileID: 1477621536}
   - component: {fileID: 1477621535}
   - component: {fileID: 1477621534}
+  - component: {fileID: 1477621538}
   m_Layer: 0
   m_Name: Limit2_Ghost_Present
   m_TagString: Limit2
@@ -58913,6 +58946,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1477621538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477621532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ad1af09800e624992f29a6c9f08aad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1477804078
 GameObject:
   m_ObjectHideFlags: 0
@@ -64218,7 +64263,7 @@ GameObject:
   - component: {fileID: 1886118877}
   - component: {fileID: 1886118876}
   - component: {fileID: 1886118875}
-  - component: {fileID: 1886118874}
+  - component: {fileID: 1886118878}
   m_Layer: 0
   m_Name: 'Limit3_MaiDia '
   m_TagString: Limit3
@@ -64241,24 +64286,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1261815797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1886118874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886118872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 0.99215686, g: 1, b: 0.050980393, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!114 &1886118875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64379,6 +64406,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1886118878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886118872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ad1af09800e624992f29a6c9f08aad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1887335892
 GameObject:
   m_ObjectHideFlags: 0
@@ -64391,6 +64430,7 @@ GameObject:
   - component: {fileID: 1887335893}
   - component: {fileID: 1887335895}
   - component: {fileID: 1887335896}
+  - component: {fileID: 1887335897}
   m_Layer: 0
   m_Name: Limit4_FamilyPhoto
   m_TagString: Limit4
@@ -64533,6 +64573,18 @@ MonoBehaviour:
   evidenceTag: 
   spawnNight: 0
   pickupKey: 102
+--- !u!114 &1887335897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887335892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ad1af09800e624992f29a6c9f08aad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1901940292
 GameObject:
   m_ObjectHideFlags: 0

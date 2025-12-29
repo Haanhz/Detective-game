@@ -3,44 +3,41 @@ using TMPro;
 using System;
 using System.Collections;
 
-// Script này được gắn vào từng vật phẩm bằng chứng
+// Script này gắn vào Evidence
 public class Evidence : MonoBehaviour
 {
-    // Tham chiếu UI (Gắn DialogueBox và TextMeshProUGUI vào đây)
     public GameObject DialogueBox;
     public TextMeshProUGUI CatchName;
 
-    // Cài đặt hiển thị
-    public float displayTime = 1f; // Thời gian hộp thoại tồn tại sau khi gõ xong
-    public float typingSpeed = 0.01f; // Tốc độ gõ chữ
+    public float displayTime = 1f;
+    public float typingSpeed = 0.01f;
 
-    // Quản lý Coroutine
     private Coroutine displayCoroutine;
 
-    // Dữ liệu Evidence
     [Tooltip("Nếu để trống, sẽ dùng tag của GameObject")]
     public string evidenceTag;
     private float weight = 0f;
 
     public int spawnNight;
 
-    // Logic Thu thập
     public KeyCode pickupKey = KeyCode.F;
     private bool collected = false;
     private readonly string announceText = "You have found: ";
 
+    // Tham chiếu LimitController nếu đây là Limit Evidence
+    private LimitController limitController;
+
     void Start()
     {
-        // Khởi tạo UI
         if (DialogueBox != null) DialogueBox.SetActive(false);
         if (CatchName != null) CatchName.text = string.Empty;
 
-        // Thiết lập Tag nếu chưa được gán trong Inspector
         if (string.IsNullOrEmpty(evidenceTag))
             evidenceTag = gameObject.tag;
+        
+        // Kiểm tra xem có phải Limit không
+        limitController = GetComponent<LimitController>();
     }
-
-    // --- LOGIC THU THẬP ---
 
     private bool playerInRange = false;
 
@@ -50,10 +47,6 @@ public class Evidence : MonoBehaviour
         {
             playerInRange = true;
         }
-        if (other.CompareTag("UVLight"))
-        {
-            GameManager.Instance.isLight= true;
-        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -62,17 +55,25 @@ public class Evidence : MonoBehaviour
         {
             playerInRange = false;
         }
-        if (other.CompareTag("UVLight"))
-        {
-            GameManager.Instance.isLight= false;
-        }
     }
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(pickupKey) && !collected)
+        // Nếu là Limit, chỉ cho collect khi visible
+        if (limitController != null)
         {
-            CollectEvidence();
+            if (playerInRange && limitController.IsVisible && Input.GetKeyDown(pickupKey) && !collected)
+            {
+                CollectEvidence();
+            }
+        }
+        else
+        {
+            // Evidence bình thường
+            if (playerInRange && Input.GetKeyDown(pickupKey) && !collected)
+            {
+                CollectEvidence();
+            }
         }
     }
 
@@ -88,12 +89,14 @@ public class Evidence : MonoBehaviour
             EvidenceManager.Instance.AddEvidence(evidenceTag, weight);
         }
 
+        // Nếu là Hide thì ẩn ngay không cần dialogue
         if (evidenceTag == "Hide")
         {
             gameObject.SetActive(false);
             return;
         }
 
+        // Hiển thị dialogue
         if (DialogueBox != null && CatchName != null)
         {
             if (displayCoroutine != null)
@@ -103,42 +106,38 @@ public class Evidence : MonoBehaviour
             string fullMessage = announceText + evidenceName;
             displayCoroutine = StartCoroutine(TypeEvidenceFound(fullMessage));
         }
+        else
+        {
+            // Nếu không có dialogue box, destroy luôn
+            if (ShouldHide(evidenceTag))
+            {
+                Destroy(gameObject, 0.1f);
+            }
+        }
     }
 
-    // --- COROUTINE HIỂN THỊ UI CÓ HIỆU ỨNG GÕ CHỮ ---
-
-    /// <summary>
-    /// Hiển thị thông báo bằng cách gõ từng ký tự.
-    /// </summary>
     private IEnumerator TypeEvidenceFound(string fullMessage)
     {
         CatchName.text = string.Empty;
 
+        // Gõ từng ký tự
         foreach (char c in fullMessage.ToCharArray())
         {
             CatchName.text += c;
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        // Sau khi gõ xong, bắt đầu Coroutine ẩn hộp thoại
-        displayCoroutine = StartCoroutine(HideDialogueAfterTime(displayTime));
-    }
+        // Chờ thêm thời gian displayTime
+        yield return new WaitForSeconds(displayTime);
 
-    /// <summary>
-    /// Chờ thời gian quy định rồi ẩn hộp thoại.
-    /// </summary>
-    private IEnumerator HideDialogueAfterTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        // Ẩn hộp thoại
+        // Ẩn dialogue box
         if (DialogueBox != null)
         {
             DialogueBox.SetActive(false);
-            CatchName.text = string.Empty; // Xóa text khi ẩn
+            CatchName.text = string.Empty;
         }
 
-        // Ẩn GameObject nếu cần (sau khi dialogue đã hiện xong)
+        // Destroy GameObject nếu cần
         if (ShouldHide(evidenceTag))
         {
             Destroy(gameObject);
@@ -146,8 +145,6 @@ public class Evidence : MonoBehaviour
 
         displayCoroutine = null;
     }
-
-    // --- HÀM HỖ TRỢ DỮ LIỆU ---
 
     string GetEvidenceName(string evidenceTag)
     {
