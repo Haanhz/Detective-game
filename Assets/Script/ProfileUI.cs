@@ -193,4 +193,13 @@ public class ProfileUI : MonoBehaviour
             UpdateUI();
         }
     }
+
+    public void ResetAllDescriptions()
+    {
+        if (characterDescriptions == null) return;
+        for (int i = 0; i < characterDescriptions.Length; i++)
+        {
+            characterDescriptions[i] = ""; // Xóa sạch dữ liệu trong mảng
+        }
+    }
 }

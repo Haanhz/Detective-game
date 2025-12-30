@@ -25,6 +25,7 @@ public class MapTransition : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            PlayerPrefs.SetString("CurrentRoomName", areaName);
             // FadeTransition(collision.gameObject);
             StartCoroutine(FadeTransition(collision.gameObject));
             if (!string.IsNullOrEmpty(areaName) && AreaManager.Instance != null)

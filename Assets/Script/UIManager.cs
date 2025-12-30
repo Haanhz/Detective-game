@@ -55,53 +55,54 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        Time.timeScale = 1f;
     }
 
     void Start()
     {
-        // 1. Khởi tạo tham chiếu UI cho thanh Stamina
+        Time.timeScale = 1f;
+        // 1. Khởi tạo tham chiếu UI Stamina
         if (staminaSlider != null && staminaSlider.fillRect != null)
         {
             staminaFill = staminaSlider.fillRect.GetComponent<Image>();
         }
 
-        // 2. KIỂM TRA TRẠNG THÁI TẢI DỮ LIỆU (Continue/Replay)
-        // Nếu biến static isLoadingSave là true, nghĩa là chúng ta vừa nạp lại Scene để chơi tiếp
-        if (isLoadingSave)
-        {
-            isLoadingSave = false; // Reset ngay lập tức để tránh vòng lặp
-            
-            // Nạp lại toàn bộ dữ liệu từ ổ cứng vào RAM (Vị trí, Đồ, Hội thoại, Profile)
-            if (chase.player != null)
-            {
-                SaveSystem.LoadAll(chase.player.gameObject);
-            }
+        // 2. XỬ LÝ KHI LOAD GAME (Continue / Replay)
+        // if (isLoadingSave)
+        // {
+        //     isLoadingSave = false; // Reset ngay để tránh vòng lặp
 
-            // Tắt các màn hình chờ để vào thẳng Gameplay
-            if (startPanel != null) startPanel.SetActive(false);
-            if (cutscenePanel != null) cutscenePanel.SetActive(false);
-            
-            StartGameplay(); // Kích hoạt các Manager khác (GameManager, v.v.)
-            Time.timeScale = 1f; // Chạy lại thời gian
-            return; // Thoát hàm Start, không chạy logic màn hình tiêu đề phía dưới
-        }
+        //     // Nạp dữ liệu từ SaveSystem
+        //     if (chase.player != null)
+        //     {
+        //         SaveSystem.LoadAll(chase.player.gameObject);
+        //     }
 
-        // 3. THIẾT LẬP MẶC ĐỊNH CHO MÀN HÌNH TIÊU ĐỀ (Start Menu)
+        //     // --- QUAN TRỌNG: Cập nhật lại giao diện Profile sau khi Load xong ---
+        //     // Điều này sửa lỗi "Knowledge Gain" bị trống khi Continue
+        //     if (ProfileUI.Instance != null)
+        //     {
+        //         ProfileUI.Instance.UpdateUI(); 
+        //     }
+
+        //     // Tắt các panel chờ, vào thẳng game
+        //     if (startPanel != null) startPanel.SetActive(false);
+        //     if (cutscenePanel != null) cutscenePanel.SetActive(false);
+            
+        //     StartGameplay(); 
+        //     Time.timeScale = 1f; // Đảm bảo thời gian chạy lại, sửa lỗi "đơ" nút
+        //     return; 
+        // }
+
+        // 3. THIẾT LẬP MẶC ĐỊNH MÀN HÌNH CHỜ (Start Menu)
         
-        // Ẩn toàn bộ UI gameplay và các panel không liên quan lúc đầu game
+        // Ẩn các UI gameplay không cần thiết lúc này
         if (dayRemainText != null) dayRemainText.gameObject.SetActive(false);
         if (staminaSlider != null) staminaSlider.gameObject.SetActive(false);
         if (menuButtonObject != null) menuButtonObject.SetActive(false);
         if (cutscenePanel != null) cutscenePanel.SetActive(false);
 
-        // Xóa các sự kiện cũ và gán sự kiện mới cho các nút bấm để tránh lỗi nạp chồng
-        if (replayButton != null)
-        {
-            replayButton.gameObject.SetActive(false);
-            replayButton.onClick.RemoveAllListeners();
-            replayButton.onClick.AddListener(ReplayScene);
-        }
-
+        // DỌN DẸP VÀ GÁN LẠI SỰ KIỆN NÚT BẤM (Sửa lỗi nút không bấm được lần 2)
         if (startButton != null)
         {
             startButton.onClick.RemoveAllListeners();
@@ -110,25 +111,51 @@ public class UIManager : MonoBehaviour
 
         if (continueButton != null)
         {
-            // Kiểm tra xem máy đã có file lưu chưa để hiện nút Continue
             bool hasSaved = PlayerPrefs.GetInt("HasSavedGame", 0) == 1;
             continueButton.gameObject.SetActive(hasSaved);
             continueButton.onClick.RemoveAllListeners();
             continueButton.onClick.AddListener(OnContinuePressed);
         }
 
-        // Đảm bảo dừng thời gian nếu Start Panel đang hiện
-        if (startPanel != null && startPanel.activeSelf)
+        if (replayButton != null)
         {
-            Time.timeScale = 0f;
+            // Nút Replay chỉ hiện khi chết, lúc Start game thì ẩn đi
+            replayButton.gameObject.SetActive(false); 
+            replayButton.onClick.RemoveAllListeners();
+            replayButton.onClick.AddListener(ReplayScene);
         }
 
-        // 4. CHƠI NHẠC NỀN CHO MÀN HÌNH CHỜ
+        if (isLoadingSave)
+        {
+            isLoadingSave = false;
+
+            if (chase.player != null)
+                SaveSystem.LoadAll(chase.player.gameObject);
+
+            if (ProfileUI.Instance != null)
+                ProfileUI.Instance.UpdateUI();
+
+            startPanel.SetActive(false);
+            cutscenePanel.SetActive(false);
+
+            StartGameplay();
+            return;
+        }
+
+        // 4. QUẢN LÝ THỜI GIAN VÀ NHẠC
+        if (startPanel != null && startPanel.activeSelf)
+        {
+            Time.timeScale = 0f; // Dừng game khi đang ở menu
+        }
+
         if (!cutscenePlayed && audioSource != null && thumbnailMusic != null)
         {
-            audioSource.clip = thumbnailMusic;
-            audioSource.loop = true;
-            audioSource.Play();
+            if (audioSource.clip != thumbnailMusic) // Tránh việc nhạc bị load lại từ đầu nếu đã đang chạy
+            {
+                audioSource.clip = thumbnailMusic;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
         }
     }
 
@@ -160,33 +187,48 @@ public class UIManager : MonoBehaviour
     //===========================================
     void OnStartPressed() 
     {
-        // 1. Reset trạng thái Static
+        // 1. Reset các biến điều hướng
         isLoadingSave = false;
         cutscenePlayed = false;
 
-        // 2. Xóa sạch ổ cứng
+        // 2. Xóa sạch ổ cứng hoàn toàn
         PlayerPrefs.DeleteAll(); 
         PlayerPrefs.Save();
         
-        // 3. Xóa sạch RAM hội thoại
-        DialogueManager.Instance.Sang.Clear();
-        DialogueManager.Instance.Mai.Clear();
-        DialogueManager.Instance.Tan.Clear();
-        DialogueManager.Instance.May.Clear();
-        EvidenceManager.Instance.collectedEvidence.Clear();
+        // 3. Xóa sạch dữ liệu trong RAM (Dictionary, List, Unlocks)
+        if (DialogueManager.Instance != null) {
+            DialogueManager.Instance.Sang.Clear();
+            DialogueManager.Instance.Mai.Clear();
+            DialogueManager.Instance.Tan.Clear();
+            DialogueManager.Instance.May.Clear();
+        }
+        if (EvidenceManager.Instance != null) {
+            EvidenceManager.Instance.collectedEvidence.Clear();
+            EvidenceManager.Instance.evidenceWeights.Clear();
+        }
         CharacterUnlockManager.unlockedIndices.Clear();
+
+        // 4. RESET TRẠNG THÁI NPC TRONG SCENE HIỆN TẠI
+        NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
+        foreach (NPC npc in allNPCs) {
+            npc.dialogueStage = 0; // Đưa về Intro
+            foreach (var block in npc.conditionalBlocks) {
+                block.hasRead = false; // Xóa trạng thái đã đọc
+            }
+        }
         
+        // 5. Bắt đầu Cutscene mới
         Time.timeScale = 1f;
         startPanel.SetActive(false);
-        if (audioSource.isPlaying) audioSource.Stop();
+        if (audioSource != null && audioSource.isPlaying) audioSource.Stop();
         StartCoroutine(PlayCutscene());
     }
 
     // Hàm mới cho nút Continue để nhảy cóc qua Cutscene
     void OnContinuePressed() 
     {
-        isLoadingSave = true; // Đánh dấu để nạp save sau khi load scene
-        Time.timeScale = 1f;
+        Time.timeScale = 1f; // BẮT BUỘC: Mở khóa thời gian trước
+        isLoadingSave = true; // Đánh dấu để hàm Start biết đường nạp dữ liệu
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -318,10 +360,9 @@ public class UIManager : MonoBehaviour
 
     public void ReplayScene() 
     {
-        isLoadingSave = true; // Đánh dấu để nạp save sau khi load scene
-        Time.timeScale = 1f;
+        Time.timeScale = 1f; // BẮT BUỘC: Mở khóa thời gian trước
+        isLoadingSave = true; 
         
-        // Tắt nút ngay lập tức để không bị hiện lỗi
         if (replayButton != null) replayButton.gameObject.SetActive(false);
         
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

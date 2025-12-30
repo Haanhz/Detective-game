@@ -60280,7 +60280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.0627451, g: 0.04705883, b: 0.03529412, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -63982,7 +63982,8 @@ MonoBehaviour:
   tiredSpeed: 3.5
   staminaMoveSpeed: 0.3
   staminaRunSpeed: 0.5
-  dead: 0
+  killed: 0
+  exhausted: 0
   runDuration: 5
   cooldown: 5
   animator: {fileID: 0}

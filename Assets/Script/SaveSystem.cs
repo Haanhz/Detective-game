@@ -1,33 +1,49 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Cinemachine;
 
 public static class SaveSystem
 {
     public static void SaveAll(GameObject player)
     {
-        // 1. Lưu thông số cơ bản
+        // 1. Lưu thông số GameManager
         PlayerPrefs.SetInt("SavedDays", GameManager.Instance.daysRemaining);
         PlayerPrefs.SetInt("CurrentNight", GameManager.Instance.currentNight);
 
         // 2. Lưu Bằng chứng & Profile
         string evidenceData = string.Join(",", EvidenceManager.Instance.collectedEvidence);
         PlayerPrefs.SetString("SavedEvidence", evidenceData);
-
         string unlockData = string.Join(",", CharacterUnlockManager.unlockedIndices);
         PlayerPrefs.SetString("SavedUnlocks", unlockData);
 
-        // 3. Lưu Vị trí
+        // 3. Lưu Vị trí Player
         if (player != null) {
             PlayerPrefs.SetFloat("PlayerX", player.transform.position.x);
             PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
         }
 
-        // 4. Lưu Lời thoại (Dictionary)
+        // 4. Lưu Dictionary hội thoại
         SaveDict("SangInfo", DialogueManager.Instance.Sang);
         SaveDict("MaiInfo", DialogueManager.Instance.Mai);
         SaveDict("TanInfo", DialogueManager.Instance.Tan);
         SaveDict("MayInfo", DialogueManager.Instance.May);
+
+        // 5. LƯU TRẠNG THÁI TỪNG NPC TRONG SCENE
+        NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
+        foreach (NPC npc in allNPCs)
+        {
+            PlayerPrefs.SetInt("NPCStage_" + npc.npcName, npc.dialogueStage);
+            // Lưu trạng thái đã đọc của từng block hội thoại điều kiện
+            for (int i = 0; i < npc.conditionalBlocks.Count; i++)
+            {
+                PlayerPrefs.SetInt("NPCCond_" + npc.npcName + "_" + i, npc.conditionalBlocks[i].hasRead ? 1 : 0);
+            }
+        }
+
+        // Lưu tên phòng hiện tại
+        string currentRoom = PlayerPrefs.GetString("CurrentRoomName", "LivingRoom");
+        PlayerPrefs.SetString("SavedRoom", currentRoom);
 
         PlayerPrefs.SetInt("HasSavedGame", 1);
         PlayerPrefs.Save();
@@ -37,31 +53,69 @@ public static class SaveSystem
     {
         if (PlayerPrefs.GetInt("HasSavedGame", 0) == 0) return;
 
-        // 1. Tải thông số
+        // 1. Tải Manager
         GameManager.Instance.daysRemaining = PlayerPrefs.GetInt("SavedDays", 7);
         GameManager.Instance.currentNight = PlayerPrefs.GetInt("CurrentNight", 0);
 
-        // 2. Tải Bằng chứng
+        // 2. Tải Bằng chứng & Profile
         string evData = PlayerPrefs.GetString("SavedEvidence", "");
         EvidenceManager.Instance.collectedEvidence = string.IsNullOrEmpty(evData) ? new List<string>() : new List<string>(evData.Split(','));
-
-        // 3. Tải Profile
         string unData = PlayerPrefs.GetString("SavedUnlocks", "");
         CharacterUnlockManager.unlockedIndices.Clear();
         if (!string.IsNullOrEmpty(unData)) {
             foreach (var s in unData.Split(',')) CharacterUnlockManager.unlockedIndices.Add(int.Parse(s));
         }
 
-        // 4. Tải Vị trí
+        // 3. Tải Vị trí
         if (player != null) {
             player.transform.position = new Vector2(PlayerPrefs.GetFloat("PlayerX"), PlayerPrefs.GetFloat("PlayerY"));
         }
 
-        // 5. TẢI LỜI THOẠI (Rất quan trọng)
+        string savedRoom = PlayerPrefs.GetString("SavedRoom", "LivingRoom");
+        // Tìm tất cả các MapTransition trong cảnh để lấy đúng mapBoundary của phòng đó
+        MapTransition[] allTransitions = Object.FindObjectsByType<MapTransition>(FindObjectsSortMode.None);
+        foreach (var tr in allTransitions)
+        {
+            if (tr.areaName == savedRoom)
+            {
+                var confiner = Object.FindFirstObjectByType<CinemachineConfiner2D>();
+                if (confiner != null) {
+                    confiner.BoundingShape2D = tr.mapBoundary; // Cập nhật lại khung giới hạn camera
+                }
+                break;
+            }
+        }
+
+        // 4. Tải Dictionary hội thoại
         LoadDict("SangInfo", DialogueManager.Instance.Sang);
         LoadDict("MaiInfo", DialogueManager.Instance.Mai);
         LoadDict("TanInfo", DialogueManager.Instance.Tan);
         LoadDict("MayInfo", DialogueManager.Instance.May);
+
+        SyncDictionaryToProfile(0, DialogueManager.Instance.Sang);
+        SyncDictionaryToProfile(1, DialogueManager.Instance.Mai);
+        SyncDictionaryToProfile(2, DialogueManager.Instance.Tan);
+        SyncDictionaryToProfile(3, DialogueManager.Instance.May);
+
+        // 5. TẢI TRẠNG THÁI TỪNG NPC
+        NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
+        foreach (NPC npc in allNPCs)
+        {
+            npc.dialogueStage = PlayerPrefs.GetInt("NPCStage_" + npc.npcName, 0);
+            for (int i = 0; i < npc.conditionalBlocks.Count; i++)
+            {
+                npc.conditionalBlocks[i].hasRead = PlayerPrefs.GetInt("NPCCond_" + npc.npcName + "_" + i, 0) == 1;
+            }
+        }
+    }
+
+    private static void SyncDictionaryToProfile(int charIndex, Dictionary<int, string> dict)
+    {
+        if (ProfileUI.Instance == null) return;
+        foreach (var entry in dict)
+        {
+            ProfileUI.Instance.AddInfoToDescription(charIndex, entry.Value);
+        }
     }
 
     private static void SaveDict(string key, Dictionary<int, string> dict) {
