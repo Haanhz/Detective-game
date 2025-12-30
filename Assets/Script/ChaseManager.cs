@@ -203,7 +203,7 @@ public class ChaseManager : MonoBehaviour
             currentState = State.EndChase;
             return;
         }
-        if (distanceToPlayer <= killDistance && !player.dead)
+        if (distanceToPlayer <= killDistance && !player.killed)
         {
             currentState = State.Kill;
             if(rb) rb.linearVelocity = Vector2.zero;
@@ -246,7 +246,7 @@ public class ChaseManager : MonoBehaviour
 
         timer += Time.deltaTime;
         
-        if (timer >= chaseDur || player.dead)
+        if (timer >= chaseDur || player.killed)
         {
             timer = 0f;
             if(rb) rb.linearVelocity = Vector2.zero;
@@ -266,7 +266,7 @@ public class ChaseManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f); 
         
-        player.dead = true;
+        player.killed = true;
         player.gameObject.SetActive(false);
         Debug.Log("You died by animation!");
         StopChaseMusic();

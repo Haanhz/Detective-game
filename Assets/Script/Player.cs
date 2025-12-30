@@ -17,16 +17,23 @@ public class Player : MonoBehaviour
         "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", 
         "Limit1", "Limit2", "Hide", "Bed", "Murder", "NPC" 
     };
+
     public Vector2Int direction = Vector2Int.right;
     private Vector2Int input;
+
     public float maxStamina = 100f;
     public float currentStamina;
+
     public float moveSpeed = 4f;
     public float runSpeed = 10f;
     public float tiredSpeed = 1f;
+
     public float staminaMoveSpeed = 0.1f;
     public float staminaRunSpeed = 0.15f;
-    public bool dead = false;
+
+    public bool killed = false;
+    public bool exhausted = false;
+
     private float timer = 0f;
     private bool canRun = true;
     public float runDuration = 5f;
@@ -50,9 +57,12 @@ public class Player : MonoBehaviour
     {
         CheckForInteractables();
 
-        if (dead) {
+        if (killed || exhausted)
+        {
             return;
         }
+        
+        CheckStaminaDeath();
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -64,7 +74,6 @@ public class Player : MonoBehaviour
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputY = Input.GetAxisRaw("Vertical");
 
-        // KHÓA INPUT ANIMATION THEO CHIỀU DỌC KHI MENU MỞ
         if (DialogueManager.IsMenuOpen)
         {
             inputY = 0;
@@ -74,7 +83,6 @@ public class Player : MonoBehaviour
         {
             animator.SetFloat("InputX", inputX);
             animator.SetFloat("InputY", inputY);
-
             animator.SetFloat("LastInputX", inputX); 
             animator.SetFloat("LastInputY", inputY); 
         }
@@ -131,19 +139,27 @@ public class Player : MonoBehaviour
         }
     }
 
-    
+    void CheckStaminaDeath()
+    {
+        if (currentStamina <= 0f)
+        {
+            currentStamina = 0f;
+            exhausted = true;
+
+            GameManager.Instance.gameEnded = true;
+        }
+    }
+
     public void Move(float speed)
     {
         Vector2Int currentInput = Vector2Int.zero;
 
-        // CHỈNH SỬA: Kiểm tra nếu Menu KHÔNG mở thì mới nhận phím W/S hoặc Mũi tên lên/xuống
         if (!DialogueManager.IsMenuOpen)
         {
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) currentInput = Vector2Int.up;
             else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) currentInput = Vector2Int.down;
         }
 
-        // Các hướng Trái/Phải luôn hoạt động
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) currentInput = Vector2Int.right;
         else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) currentInput = Vector2Int.left;
 
@@ -180,7 +196,6 @@ public class Player : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        // CHỈNH SỬA: Nếu menu mở, coi như không có di chuyển theo chiều dọc để tránh đứng im mà vẫn chạy animation
         if (DialogueManager.IsMenuOpen)
         {
             vertical = 0;
@@ -202,15 +217,8 @@ public class Player : MonoBehaviour
                     if (currentStamina < maxStamina)
                     {
                         currentStamina = Mathf.Min(maxStamina, currentStamina + 5f);
-                        Debug.Log("You ate. Stamina restored!");
                         lastEatTime = Time.time;
                     }
-                    else Debug.Log("You are full!");
-                }
-                else
-                {
-                    float timeLeft = (lastEatTime + fridgeCooldown) - Time.time;
-                    Debug.Log("You are still full! Wait " + Mathf.Ceil(timeLeft) + " seconds.");
                 }
             }
         }
@@ -223,7 +231,6 @@ public class Player : MonoBehaviour
                     currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
                     GameManager.Instance.ForceSkipNight();
                 }
-                else Debug.Log("You are not sleepy!");
             }
         }
     }
@@ -245,10 +252,11 @@ public class Player : MonoBehaviour
         }
 
         interactIndicator.SetActive(isNear);
-        
+
         if (isNear)
         {
-            interactIndicator.transform.localScale = new Vector3(transform.localScale.x > 0 ? 1 : -1, 1, 1);
+            interactIndicator.transform.localScale =
+                new Vector3(transform.localScale.x > 0 ? 1 : -1, 1, 1);
         }
     }
 

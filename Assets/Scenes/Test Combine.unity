@@ -10744,62 +10744,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777141759}
   m_CullTransparentMesh: 1
---- !u!1 &780117413
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 780117415}
-  - component: {fileID: 780117414}
-  m_Layer: 0
-  m_Name: EndingManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &780117414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 780117413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbe5487cd8f9e97408e06d4af5c2c888, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainGameCanvas: {fileID: 0}
-  ui: {fileID: 0}
-  EndingBox: {fileID: 1505798652}
-  EndingText: {fileID: 1280515650}
-  RestartButton: {fileID: 365729535}
-  videoPlayer: {fileID: 0}
-  killedEndingClip: {fileID: 0}
-  exhaustedEndingClip: {fileID: 0}
-  fullEndingClip: {fileID: 0}
-  halfEndingClip: {fileID: 0}
-  WrongEndingClip: {fileID: 0}
-  NobodyEndingClip: {fileID: 0}
---- !u!4 &780117415
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 780117413}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1136.2767, y: 477.41614, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &786476743
 GameObject:
   m_ObjectHideFlags: 0
@@ -67131,7 +67075,8 @@ MonoBehaviour:
   tiredSpeed: 3.5
   staminaMoveSpeed: 0.3
   staminaRunSpeed: 0.5
-  dead: 0
+  killed: 0
+  exhausted: 0
   runDuration: 5
   cooldown: 5
   animator: {fileID: 0}
@@ -67561,7 +67506,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 780117414}
+      - m_Target: {fileID: 24800152}
         m_TargetAssemblyTypeName: EndingManager, Assembly-CSharp
         m_MethodName: ShowEnding
         m_Mode: 6
@@ -67573,7 +67518,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 780117414}
+      - m_Target: {fileID: 24800152}
         m_TargetAssemblyTypeName: EndingManager, Assembly-CSharp
         m_MethodName: CleanupState
         m_Mode: 1
@@ -69606,7 +69551,6 @@ SceneRoots:
   - {fileID: 446621276}
   - {fileID: 1328244847}
   - {fileID: 1793907736}
-  - {fileID: 780117415}
   - {fileID: 1680332610}
   - {fileID: 706580796}
   - {fileID: 1311190216}

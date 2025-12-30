@@ -24,13 +24,13 @@ public class EndingManager : MonoBehaviour
 
     private ChaseManager chase => ChaseManager.instance;
     private GameManager GameEnd => GameManager.Instance;
+
     private EvidenceManager EvidenceManager => EvidenceManager.Instance;
     private DialogueManager DialogueManager => DialogueManager.Instance;
 
     private bool HalfEndingTriggered = false;
     private bool FullEndingTriggered = false;
 
-    // FIX: chặn gọi ending nhiều lần
     private bool endingStarted = false;
 
     // Danh sách để lưu các AudioSource bị tắt để bật lại sau đó
@@ -50,14 +50,18 @@ public class EndingManager : MonoBehaviour
 
     void Update()
     {
-        // FIX: không disable script, chỉ chặn chạy lại
         if (endingStarted) return;
 
-        if (chase.player.dead || GameEnd.gameEnded) 
+        if (chase.player.killed) 
         {
             endingStarted = true;
             CleanupState();
-            ShowEnding(playerDead: chase.player.dead);
+            ShowEnding(playerDead: chase.player.killed);
+        } else if (chase.player.exhausted)
+        {
+            endingStarted = true;
+            CleanupState();
+            ShowEnding(playerDead: chase.player.exhausted);
         }
     }
     
@@ -76,10 +80,15 @@ public class EndingManager : MonoBehaviour
         VideoClip selectedClip = null;
         string resultText = "";
 
-        if (playerDead)
+        if (playerDead && chase.player.killed)
         {
-            resultText = "You died.";
+            resultText = "You died in the chase!";
             selectedClip = killedEndingClip;
+        }
+        else if (playerDead && chase.player.exhausted)
+        {
+            resultText = "You collapsed from exhaustion!";
+            selectedClip = exhaustedEndingClip;
         }
         else
         {
@@ -98,6 +107,11 @@ public class EndingManager : MonoBehaviour
                 resultText = "You've found a piece, but the whole truth remains hidden.";
                 selectedClip = halfEndingClip;
             }
+            else if ((FullEndingTriggered || HalfEndingTriggered) && !chooseRightMurderer)
+            {
+                resultText = "Hmm...you're not much of a detective, are you?";
+                selectedClip = WrongEndingClip;
+            }
             else
             {
                 resultText = "Nobody will ever believe you.";
@@ -109,11 +123,11 @@ public class EndingManager : MonoBehaviour
 
         if (selectedClip != null && videoPlayer != null)
         {
-            StartCoroutine(PlayVideoThenShowUI(selectedClip, playerDead)); // FIX
+            StartCoroutine(PlayVideoThenShowUI(selectedClip, playerDead)); 
         }
         else
         {
-            DisplayEndingUI(playerDead); // FIX
+            DisplayEndingUI(playerDead); 
         }
     }
 

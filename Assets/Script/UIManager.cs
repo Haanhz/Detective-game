@@ -310,7 +310,7 @@ public class UIManager : MonoBehaviour
     }
 
     void CheckPlayerDeath() {
-        if (chase.player.dead && !replayButton.gameObject.activeSelf) {
+        if (chase.player.killed && !replayButton.gameObject.activeSelf) {
             replayButton.gameObject.SetActive(true);
             canReplay = true;
         }
