@@ -52,22 +52,42 @@ public class QuestIntroNPC : MonoBehaviour
         npcComponent.dialogueStage = -1;
     }
 
+    // void Update()
+    // {
+    //     // Kiểm tra xem player đã có evidence chưa
+    //     if (EvidenceManager.Instance != null && 
+    //         EvidenceManager.Instance.HasEvidence(requiredEvidenceTag))
+    //     {
+    //         // Khôi phục lại intro block gốc
+    //         npcComponent.introBlock = originalIntroBlock;
+            
+    //         // Reset stage về 0 để chạy lại intro thật
+    //         npcComponent.dialogueStage = 0;
+            
+    //         Debug.Log("Quest completed! " + npcComponent.npcName + " chuyển sang intro thật.");
+            
+    //         // Tắt script này
+    //         enabled = false;
+    //     }
+    // }
+
     void Update()
     {
-        // Kiểm tra xem player đã có evidence chưa
-        if (EvidenceManager.Instance != null && 
-            EvidenceManager.Instance.HasEvidence(requiredEvidenceTag))
+        if (EvidenceManager.Instance == null) return;
+
+        // Nếu chưa nhặt được kính, hãy ép NPC ở lại Stage -1 
+        if (!EvidenceManager.Instance.HasEvidence(requiredEvidenceTag))
         {
-            // Khôi phục lại intro block gốc
-            npcComponent.introBlock = originalIntroBlock;
-            
-            // Reset stage về 0 để chạy lại intro thật
-            npcComponent.dialogueStage = 0;
-            
-            Debug.Log("Quest completed! " + npcComponent.npcName + " chuyển sang intro thật.");
-            
-            // Tắt script này
-            enabled = false;
+            npcComponent.dialogueStage = -1;
+            return; 
         }
+
+        // Nếu đã nhặt được kính (Quest xong)
+        npcComponent.introBlock = originalIntroBlock; // Trả lại intro thật
+        npcComponent.dialogueStage = 0; // Đưa về 0 để nói câu chào chính thức
+        
+        Debug.Log("Quest completed! " + npcComponent.npcName + " chuyển sang intro thật.");
+        
+        enabled = false; // Tắt script Quest vĩnh viễn
     }
 }

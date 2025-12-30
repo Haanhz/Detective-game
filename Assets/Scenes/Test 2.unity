@@ -59481,6 +59481,10 @@ MonoBehaviour:
       by ghosts\u2026By the man\u2026 she called father...Love became fear\u2026Fear
       became obedience\u2026She guards the house\u2026Because she believes\u2026If
       the truth escapes\u2026\u2026she deserves to disappear"
+  - tagName: SangStuff
+    icon: {fileID: 7304080193906203819, guid: 5dadc945c9a560f439ba0e54deb7085d, type: 3}
+    bigPortrait: {fileID: -447801828011365873, guid: 72eab3e7d7aa0354594c6d1fe5486e91, type: 3}
+    description: The favourite toy of Mr. Sang
   collectedEvidence: []
 --- !u!4 &1591563807
 Transform:

@@ -101,6 +101,10 @@ public static class SaveSystem
         NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
         foreach (NPC npc in allNPCs)
         {
+            if (npc.GetComponent<QuestIntroNPC>() == null || !npc.GetComponent<QuestIntroNPC>().enabled)
+            {
+                npc.dialogueStage = PlayerPrefs.GetInt("NPCStage_" + npc.npcName, 0);
+            }
             npc.dialogueStage = PlayerPrefs.GetInt("NPCStage_" + npc.npcName, 0);
             for (int i = 0; i < npc.conditionalBlocks.Count; i++)
             {

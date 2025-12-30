@@ -339,11 +339,11 @@ public class DialogueManager : MonoBehaviour
 
         if (savedNPC != null)
         {
-            if (savedNPC.dialogueStage == -1)
-            {
-                // Giữ nguyên stage -1, không tăng
-            }
-            else if (savedNPC.dialogueStage == 0) savedNPC.dialogueStage = 1;
+            // if (savedNPC.dialogueStage == -1)
+            // {
+            //     // Giữ nguyên stage -1, không tăng
+            // }
+            if (savedNPC.dialogueStage == 0) savedNPC.dialogueStage = 1;
             else if (savedNPC.dialogueStage == 1) savedNPC.dialogueStage = 2;
         }
 
