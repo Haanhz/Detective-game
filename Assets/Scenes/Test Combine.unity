@@ -5652,7 +5652,7 @@ GameObject:
   - component: {fileID: 365729536}
   - component: {fileID: 365729535}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ReplayButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11739,6 +11739,7 @@ MonoBehaviour:
   replayButton: {fileID: 365729535}
   startPanel: {fileID: 1645346070}
   startButton: {fileID: 1872445983}
+  continueButton: {fileID: 0}
   cutscenePanel: {fileID: 1361394134}
   cutsceneText: {fileID: 1676533071}
   menuButtonObject: {fileID: 1332214229}
@@ -11779,6 +11780,7 @@ MonoBehaviour:
   profileTabButton: {fileID: 1488555683}
   inventoryTabButton: {fileID: 418747786}
   noteTabButton: {fileID: 875820523}
+  backToTitleButton: {fileID: 0}
 --- !u!1 &869453645
 GameObject:
   m_ObjectHideFlags: 0
