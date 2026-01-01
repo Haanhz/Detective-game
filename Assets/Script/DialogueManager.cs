@@ -381,9 +381,10 @@ public class DialogueManager : MonoBehaviour
     {
         // Kết thúc mọi trạng thái hội thoại
         CleanupState();
+        CaseFileUI.Instance.OpenCaseFile();
 
         // Báo cho game biết: GAME ĐÃ KẾT THÚC
-        GameManager.Instance.gameEnded = true;
+        //GameManager.Instance.gameEnded = true;
     }
     void CleanupState()
     {

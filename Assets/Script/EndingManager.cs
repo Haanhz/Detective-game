@@ -207,9 +207,15 @@ public class EndingManager : MonoBehaviour
         bool hasEnoughEvidence = true;
         foreach (string evidenceTag in halfEndingEvidence)
         {
-            if (!EvidenceManager.Instance.HasEvidence(evidenceTag)) { hasEnoughEvidence = false; break; }
+            //if (!EvidenceManager.Instance.HasEvidence(evidenceTag)) { hasEnoughEvidence = false; break; }
+            if (!CaseFileUI.Instance.HasEvidence(evidenceTag)) { hasEnoughEvidence = false; break; }
         }
-        if (hasEnoughEvidence && DialogueManager.Instance.CheckEndingConversation())
+        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan",1) && CaseFileUI.Instance.HasInformation("Tan",2);
+        bool mayCondition = CaseFileUI.Instance.HasInformation("May",1);
+        bool maiCondition = CaseFileUI.Instance.HasInformation("Mai",3);
+        // if (hasEnoughEvidence && DialogueManager.Instance.CheckEndingConversation())
+        //     HalfEndingTriggered = true;
+        if (hasEnoughEvidence && tanCondition && mayCondition && maiCondition)
             HalfEndingTriggered = true;
     }
 
@@ -225,14 +231,17 @@ public class EndingManager : MonoBehaviour
         bool hasAllEvidence = true;
         foreach (string evidenceTag in fullEndingEvidence)
         {
-            if (!EvidenceManager.Instance.HasEvidence(evidenceTag))
+            if (!CaseFileUI.Instance.HasEvidence(evidenceTag))
             {
                 hasAllEvidence = false;
                 break;
             }
         }
+        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan",1) && CaseFileUI.Instance.HasInformation("Tan",2);
+        bool mayCondition = CaseFileUI.Instance.HasInformation("May",1);
+        bool maiCondition = CaseFileUI.Instance.HasInformation("Mai",3);
 
-        if (hasAllEvidence && DialogueManager.Instance.CheckEndingConversation())
+        if (hasAllEvidence && tanCondition && mayCondition && maiCondition)
             FullEndingTriggered = true;
     }
 }
