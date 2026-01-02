@@ -14,6 +14,8 @@ public static class SaveSystem
         // 2. Lưu Bằng chứng & Profile
         string evidenceData = string.Join(",", EvidenceManager.Instance.collectedEvidence);
         PlayerPrefs.SetString("SavedEvidence", evidenceData);
+        string weightsData = string.Join("|", EvidenceManager.Instance.evidenceWeights.Select(x => x.Key + ":" + x.Value));
+        PlayerPrefs.SetString("SavedWeights", weightsData);
         string unlockData = string.Join(",", CharacterUnlockManager.unlockedIndices);
         PlayerPrefs.SetString("SavedUnlocks", unlockData);
 
@@ -60,6 +62,17 @@ public static class SaveSystem
         // 2. Tải Bằng chứng & Profile
         string evData = PlayerPrefs.GetString("SavedEvidence", "");
         EvidenceManager.Instance.collectedEvidence = string.IsNullOrEmpty(evData) ? new List<string>() : new List<string>(evData.Split(','));
+        EvidenceManager.Instance.evidenceWeights.Clear();
+        string weightsData = PlayerPrefs.GetString("SavedWeights", "");
+        if (!string.IsNullOrEmpty(weightsData))
+        {
+            foreach (var pair in weightsData.Split('|'))
+            {
+                var parts = pair.Split(':');
+                if (parts.Length == 2) 
+                    EvidenceManager.Instance.evidenceWeights[parts[0]] = float.Parse(parts[1]);
+            }
+        }
         string unData = PlayerPrefs.GetString("SavedUnlocks", "");
         CharacterUnlockManager.unlockedIndices.Clear();
         if (!string.IsNullOrEmpty(unData)) {

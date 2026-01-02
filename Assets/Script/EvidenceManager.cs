@@ -107,5 +107,43 @@ public class EvidenceManager : MonoBehaviour
         return collectedEvidence.Contains(tagName);
     }
 
+    // public void DisableCollectedItems()
+    // {
+    //     foreach (string tagName in collectedEvidence)
+    //     {
+    //         // Tìm tất cả các object đang mang Tag của bằng chứng đã nhặt
+    //         GameObject[] items = GameObject.FindGameObjectsWithTag(tagName);
+    //         foreach (GameObject item in items)
+    //         {
+    //             // Đổi Tag sang Untagged. Player.cs sẽ không tìm thấy Tag này nữa
+    //             // nhưng Collider vẫn giữ nguyên nên vẫn có va chạm vật lý.
+    //             item.tag = "Untagged"; 
+                
+    //             Debug.Log($"Disabled interaction for item with tag: {tagName}. Collider still active.");
+    //         }
+    //     }
+    // }
 
+    // Thêm hàm này vào EvidenceManager.cs
+    public void LockCollectedItemsInScene()
+    {
+        // 1. Tìm tất cả các script Evidence đang có mặt trong cảnh
+        Evidence[] allItems = Object.FindObjectsByType<Evidence>(FindObjectsSortMode.None);
+
+        foreach (Evidence item in allItems)
+        {
+            // 2. Kiểm tra xem Tag của vật phẩm này đã nằm trong danh sách đã nhặt chưa
+            if (collectedEvidence.Contains(item.evidenceTag))
+            {
+                // 3. Sử dụng Reflection hoặc truy cập trực tiếp để khóa biến 'collected'
+                // Việc này chặn người chơi nhấn "F" nhưng giữ nguyên Collider và Tag
+                var field = item.GetType().GetField("collected", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                
+                if (field != null) field.SetValue(item, true);
+                
+                Debug.Log($"[System] Đã khóa tương tác vật phẩm: {item.evidenceTag}. Collider vẫn giữ nguyên.");
+            }
+        }
+    }
 }

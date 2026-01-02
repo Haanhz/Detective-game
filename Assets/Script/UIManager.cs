@@ -132,6 +132,8 @@ public class UIManager : MonoBehaviour
             if (chase.player != null)
                 SaveSystem.LoadAll(chase.player.gameObject);
 
+            EvidenceManager.Instance.LockCollectedItemsInScene();
+
             if (ProfileUI.Instance != null)
                 ProfileUI.Instance.UpdateUI();
 
