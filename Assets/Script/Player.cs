@@ -8,14 +8,14 @@ public class Player : MonoBehaviour
 {
     [Header("Interaction UI")]
     [Header("Fridge Settings")]
-    public float fridgeCooldown = 10f; 
-    private float lastEatTime = -100f; 
-    public GameObject interactIndicator; 
-    public float detectionRange = 1.5f;   
-    public System.Collections.Generic.List<string> interactableTags = new System.Collections.Generic.List<string> 
-    { 
-        "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook", 
-        "Limit1", "Limit2", "Hide", "Bed", "Murder", "NPC" 
+    public float fridgeCooldown = 10f;
+    private float lastEatTime = -100f;
+    public GameObject interactIndicator;
+    public float detectionRange = 1.5f;
+    public System.Collections.Generic.List<string> interactableTags = new System.Collections.Generic.List<string>
+    {
+        "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook",
+        "Limit1", "Limit2", "Hide", "Bed", "Murder", "NPC"
     };
 
     public Vector2Int direction = Vector2Int.right;
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        
+
         CheckStaminaDeath();
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -83,8 +83,8 @@ public class Player : MonoBehaviour
         {
             animator.SetFloat("InputX", inputX);
             animator.SetFloat("InputY", inputY);
-            animator.SetFloat("LastInputX", inputX); 
-            animator.SetFloat("LastInputY", inputY); 
+            animator.SetFloat("LastInputX", inputX);
+            animator.SetFloat("LastInputY", inputY);
         }
         else
         {
@@ -204,9 +204,9 @@ public class Player : MonoBehaviour
         return horizontal != 0 || vertical != 0;
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    void OnTriggerStay2D(Collider2D collision)
     {
-        string hitTag = collision.collider.tag;
+        string hitTag = collision.tag;
 
         if (hitTag == "Fridge")
         {
@@ -233,7 +233,10 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
     }
+
+
 
     void CheckForInteractables()
     {

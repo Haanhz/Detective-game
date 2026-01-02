@@ -2,54 +2,122 @@ using UnityEngine;
 
 public class AtticDoor : MonoBehaviour
 {
-    public string targetNPC = "Mai"; // NPC chứa thông tin chìa khóa
-    public int requiredKey = 2;      // Info Key cần thiết để mở cửa
+    public bool useImportantInfo = true;
+    public bool useEvidenceTag = false;
+    
+    [Header("Important Info Settings")]
+    public string targetNPC = "Mai";
+    public int requiredKey = 2;
+    
+    [Header("Evidence Tag Settings")]
+    public string evidenceTag = "AtticKey";
+    
+    [Header("Interaction Settings")]
+    public float interactionDistance = 2f;
+    public string lockedMessage = "Cửa bị khóa!";
     
     private BoxCollider2D doorCollider;
+    private Transform playerTransform;
     private bool isUnlocked = false;
+    private bool hasShownMessage = false; // Tránh spam message
 
     void Start()
     {
         doorCollider = GetComponent<BoxCollider2D>();
+        playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
+        
+        if (doorCollider != null)
+        {
+            doorCollider.isTrigger = false;
+        }
     }
 
     void Update()
     {
-        // Nếu đã mở khóa rồi thì không cần kiểm tra nữa
-        if (isUnlocked) return;
-
-        // Kiểm tra xem trong Dictionary của NPC tương ứng đã có key này chưa
-        if (DialogueManager.Instance != null)
+        // Check unlock condition
+        if (!isUnlocked && DialogueManager.Instance != null)
         {
-            if (CheckKeyInManager())
+            if (CheckUnlockCondition())
             {
                 UnlockDoor();
             }
         }
+
+        // Check dialogue interaction
+        if (playerTransform != null)
+        {
+            float distance = Vector2.Distance(transform.position, playerTransform.position);
+            
+            if (distance <= interactionDistance)
+            {
+                if (!hasShownMessage) // Chỉ hiện 1 lần khi vào vùng
+                {
+                    if (isUnlocked)
+                    {
+                        Debug.Log("Cửa đã mở!");
+                    }
+                    else
+                    {
+                        // Lấy tag của GameObject này
+                        if (gameObject.CompareTag("AtticDoor"))
+                        {
+                            PlayerMonologue.Instance.Say("This door is locked... I should go ask for a key.", onceOnly: false, id: "attic_door");
+                        }
+                        else if (gameObject.CompareTag("BeginDoor"))
+                        {
+                            PlayerMonologue.Instance.Say("I should go investigating the scene first!", onceOnly: false, id: "begin_door");
+                        }
+                    }
+                    hasShownMessage = true;
+                }
+            }
+            else
+            {
+                // Reset khi player ra khỏi vùng
+                hasShownMessage = false;
+            }
+        }
     }
 
-    bool CheckKeyInManager()
+    bool CheckUnlockCondition()
     {
-        // Sử dụng hàm HasImportantInfo có sẵn trong DialogueManager của bạn
-        // Lưu ý: Đảm bảo hàm HasImportantInfo trong DialogueManager đã được sửa thành public
-        
-        switch (targetNPC)
+        bool hasImportantInfo = false;
+        bool hasEvidence = false;
+
+        if (useImportantInfo)
         {
-            case "Sang": return DialogueManager.Instance.Sang.ContainsKey(requiredKey);
-            case "Mai":  return DialogueManager.Instance.Mai.ContainsKey(requiredKey);
-            case "Tan":  return DialogueManager.Instance.Tan.ContainsKey(requiredKey);
-            case "May":  return DialogueManager.Instance.May.ContainsKey(requiredKey);
-            default: return false;
+            hasImportantInfo = DialogueManager.Instance.HasImportantInfo(targetNPC, requiredKey);
         }
+
+        if (useEvidenceTag)
+        {
+            hasEvidence = EvidenceManager.Instance.HasEvidence(evidenceTag);
+        }
+
+        if (useImportantInfo && useEvidenceTag)
+        {
+            return hasImportantInfo && hasEvidence;
+        }
+        else if (useImportantInfo)
+        {
+            return hasImportantInfo;
+        }
+        else if (useEvidenceTag)
+        {
+            return hasEvidence;
+        }
+
+        return false;
     }
 
     void UnlockDoor()
     {
         isUnlocked = true;
+        
         if (doorCollider != null)
         {
-            doorCollider.isTrigger = true; // Chuyển sang Trigger để người chơi đi qua được
-            Debug.Log("Cửa gác mái đã được mở khóa!");
+            doorCollider.isTrigger = true;
+            Debug.Log("Door Unlocked!");
         }
     }
 }

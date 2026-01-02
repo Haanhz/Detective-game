@@ -25,6 +25,8 @@ TagManager:
   - Fridge
   - UVLight
   - SangStuff
+  - AtticDoor
+  - BeginDoor
   layers:
   - Default
   - TransparentFX

@@ -349,10 +349,10 @@ public class DialogueManager : MonoBehaviour
 
         CleanupState();
 
-        if (savedNPC != null)
-        {
-            OpenSelectionMenu(savedNPC);
-        }
+        // if (savedNPC != null)
+        // {
+        //     OpenSelectionMenu(savedNPC);
+        // }
     }
 
     NPC.DialogueBlock GetConditionalDialogue(NPC npc)

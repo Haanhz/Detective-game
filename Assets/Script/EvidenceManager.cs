@@ -70,7 +70,7 @@ public class EvidenceManager : MonoBehaviour
         { "Ultimatum", "YOU ARE BEING WATCHED" },
         { "HangNoteBook", "Page 1: It seems the house has been broken into, Page 2: Mai knows the house too well, is she hiding something?" },
         { "Limit1", "Footprint in the attic, beneath the open window." },
-        { "Limit2", "Hang the Ghost: Hồn ma của Hang: the intruder... the one....10 years ago.....why me?" },
+        { "Limit2", "Hang the Ghost:the intruder... the one....10 years ago.....why me?" },
         { "Crack", "Why there is crack outside this room?"},
         {  "StrangeTable", "Four chairs around the table, three of them fall, one of them stand."},
         { "OpenWindow", "The attic is locked for long time, who open the window? It is opened all the time?"},
