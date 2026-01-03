@@ -34,7 +34,19 @@ public class Evidence : MonoBehaviour
 
         if (string.IsNullOrEmpty(evidenceTag))
             evidenceTag = gameObject.tag;
-        
+        // KIỂM TRA KHI VỪA XUẤT HIỆN
+        if (EvidenceManager.Instance != null && EvidenceManager.Instance.HasEvidence(evidenceTag))
+        {
+            // Nếu đã nhặt rồi, kiểm tra xem loại này có phải loại biến mất không
+            if (ShouldHide(evidenceTag))
+            {
+                Destroy(this.gameObject); // Xóa ngay lập tức nếu là SangStuff, Limit...
+            }
+            else
+            {
+                collected = true; // Ở lại làm cảnh nhưng khóa tương tác
+            }
+        }
         // Kiểm tra xem có phải Limit không
         limitController = GetComponent<LimitController>();
     }

@@ -67,32 +67,7 @@ public class UIManager : MonoBehaviour
             staminaFill = staminaSlider.fillRect.GetComponent<Image>();
         }
 
-        // 2. XỬ LÝ KHI LOAD GAME (Continue / Replay)
-        // if (isLoadingSave)
-        // {
-        //     isLoadingSave = false; // Reset ngay để tránh vòng lặp
 
-        //     // Nạp dữ liệu từ SaveSystem
-        //     if (chase.player != null)
-        //     {
-        //         SaveSystem.LoadAll(chase.player.gameObject);
-        //     }
-
-        //     // --- QUAN TRỌNG: Cập nhật lại giao diện Profile sau khi Load xong ---
-        //     // Điều này sửa lỗi "Knowledge Gain" bị trống khi Continue
-        //     if (ProfileUI.Instance != null)
-        //     {
-        //         ProfileUI.Instance.UpdateUI(); 
-        //     }
-
-        //     // Tắt các panel chờ, vào thẳng game
-        //     if (startPanel != null) startPanel.SetActive(false);
-        //     if (cutscenePanel != null) cutscenePanel.SetActive(false);
-            
-        //     StartGameplay(); 
-        //     Time.timeScale = 1f; // Đảm bảo thời gian chạy lại, sửa lỗi "đơ" nút
-        //     return; 
-        // }
 
         // 3. THIẾT LẬP MẶC ĐỊNH MÀN HÌNH CHỜ (Start Menu)
         
@@ -133,6 +108,8 @@ public class UIManager : MonoBehaviour
                 SaveSystem.LoadAll(chase.player.gameObject);
 
             EvidenceManager.Instance.LockCollectedItemsInScene();
+            if (EvidenceManager.Instance != null)
+                EvidenceManager.Instance.CleanUpCollectedItemsInScene();
 
             if (ProfileUI.Instance != null)
                 ProfileUI.Instance.UpdateUI();
@@ -216,6 +193,27 @@ public class UIManager : MonoBehaviour
             npc.dialogueStage = 0; // Đưa về Intro
             foreach (var block in npc.conditionalBlocks) {
                 block.hasRead = false; // Xóa trạng thái đã đọc
+            }
+        }
+
+        if (ChaseManager.instance != null && ChaseManager.instance.player != null)
+        {
+            // 👉 TỌA ĐỘ SPAWN PHÒNG KHÁCH
+            ChaseManager.instance.player.transform.position = new Vector2(-17.58f, -30.6f);
+        }
+
+        // Reset camera confiner về phòng khách
+        MapTransition[] transitions = Object.FindObjectsByType<MapTransition>(FindObjectsSortMode.None);
+        foreach (var tr in transitions)
+        {
+            if (tr.areaName == "Living room 1")
+            {
+                var confiner = Object.FindFirstObjectByType<Unity.Cinemachine.CinemachineConfiner2D>();
+                if (confiner != null)
+                    confiner.BoundingShape2D = tr.mapBoundary;
+
+                PlayerPrefs.SetString("CurrentRoomName", "Living room 1");
+                break;
             }
         }
         

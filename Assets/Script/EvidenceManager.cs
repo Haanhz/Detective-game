@@ -146,4 +146,41 @@ public class EvidenceManager : MonoBehaviour
             }
         }
     }
+
+    public void CleanUpCollectedItemsInScene()
+    {
+        // Tìm tất cả các object có gắn script Evidence trong Scene
+        Evidence[] allItems = Object.FindObjectsByType<Evidence>(FindObjectsSortMode.None);
+
+        foreach (Evidence item in allItems)
+        {
+            // Kiểm tra xem món này đã có trong danh sách đã nhặt chưa
+            if (collectedEvidence.Contains(item.evidenceTag))
+            {
+                // Sử dụng Reflection để gọi hàm ShouldHide từ script Evidence của vật phẩm đó
+                var method = item.GetType().GetMethod("ShouldHide", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                
+                if (method != null)
+                {
+                    // Thực thi hàm ShouldHide(item.evidenceTag)
+                    bool shouldHide = (bool)method.Invoke(item, new object[] { item.evidenceTag });
+                    
+                    if (shouldHide)
+                    {
+                        // Nếu ShouldHide trả về true (như HangNoteBook, Limit1...) -> Xóa hẳn
+                        Destroy(item.gameObject);
+                    }
+                    else
+                    {
+                        // Nếu trả về false (như LivingCorner) -> Giữ nguyên nhưng khóa nhặt
+                        // Chúng ta ép biến 'collected' thành true để hàm Update của Evidence không chạy
+                        var field = item.GetType().GetField("collected", 
+                            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (field != null) field.SetValue(item, true);
+                    }
+                }
+            }
+        }
+    }
 }
