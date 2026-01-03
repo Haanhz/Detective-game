@@ -30,6 +30,8 @@ public class EndingManager : MonoBehaviour
 
     private bool HalfEndingTriggered = false;
     private bool FullEndingTriggered = false;
+     private bool WrongEndingTriggered = false;
+
 
     private bool endingStarted = false;
 
@@ -94,6 +96,7 @@ public class EndingManager : MonoBehaviour
         {
             checkFullEnding();
             if (!FullEndingTriggered) checkHalfEnding();
+            if (!FullEndingTriggered && !HalfEndingTriggered) checkWrongEnding();
 
             bool chooseRightMurderer = DialogueManager.Instance.ChooseRightMurderer();
 
@@ -107,7 +110,7 @@ public class EndingManager : MonoBehaviour
                 resultText = "You've found a piece, but the whole truth remains hidden.";
                 selectedClip = halfEndingClip;
             }
-            else if ((FullEndingTriggered || HalfEndingTriggered) && !chooseRightMurderer)
+            else if (WrongEndingTriggered && !chooseRightMurderer)
             {
                 resultText = "Hmm...you're not much of a detective, are you?";
                 selectedClip = WrongEndingClip;
@@ -201,6 +204,29 @@ public class EndingManager : MonoBehaviour
     }
 
     // ===== GIỮ NGUYÊN LOGIC CŨ =====
+public void checkWrongEnding()
+{
+    string[] wrongEndingEvidence = new string[] { "HangPhone", "HangNoteBook"};
+    
+    // Kiểm tra có ít nhất 1 evidence
+    bool hasAnyEvidence = false;
+    foreach (string evidenceTag in wrongEndingEvidence)
+    {
+        if (CaseFileUI.Instance.HasEvidence(evidenceTag))
+        {
+            hasAnyEvidence = true;
+            break;
+        }
+    }
+    
+    // Kiểm tra conditions
+    bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 0);
+    bool maiCondition = CaseFileUI.Instance.HasInformation("Mai", 3);
+    
+    // Chỉ cần 1 trong các điều kiện là true
+    if (hasAnyEvidence || tanCondition || maiCondition)
+        WrongEndingTriggered = true;
+}
     public void checkHalfEnding()
     {
         string[] halfEndingEvidence = new string[] { "Limit1", "Crack", "OpenWindow", "Rope" };

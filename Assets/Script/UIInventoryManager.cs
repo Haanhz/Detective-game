@@ -105,7 +105,7 @@ public class UIInventoryManager : MonoBehaviour
     void DisplayDetails(string evName, GameObject selectedItem)
     {
         // Cập nhật thông tin phía trên
-        nameText.text = evName;
+        nameText.text = GetEvidenceName(evName);
         descText.text = EvidenceManager.Instance.GetEvidenceDescription(evName);
         bigPortrait.sprite = EvidenceManager.Instance.GetEvidenceBigPortrait(evName);
 
@@ -122,5 +122,29 @@ public class UIInventoryManager : MonoBehaviour
         // Reset Scroll
         Canvas.ForceUpdateCanvases();
         if (descScrollRect != null) descScrollRect.verticalNormalizedPosition = 1f;
+    }
+
+        string GetEvidenceName(string evidenceTag)
+    {
+        switch (evidenceTag)
+        {
+            case "LivingCorner": return "Living Corner";
+            case "Ultimatum": return "Ultimatum";
+            case "HangPhone": return "Hang's Phone";
+            case "HangNoteBook": return "Hang's Notebook";
+            case "Crack": return "Crack outside the attic";
+            case "StrangeTable": return "Four chairs around the table, three of them fall";
+            case "OpenWindow": return "Open window in the attic";
+            case "Rope": return "Rope in the attic";
+            case "Limit1": return "Footprint in the attic";
+            case "Limit2": return "Hang the Ghost";
+            case "Limit3": return "Mai's Diary";
+            case "Limit4": return "Family Photo";
+            case "Limit5": return "May's Diary";
+            case "Limit6": return "The ghost mom";
+            case "Hide": return "Hide";
+            case "SangStuff": return "Mr.Sang precious duck";
+            default: return "Unknown Evidence";
+        }
     }
 }

@@ -67,58 +67,58 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             // Check xem có Fridge hoặc Bed trong range không
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange);
-        
-        bool foundFridge = false;
-        bool foundBed = false;
-        
-        foreach (var hit in hits)
-        {
-            if (hit.tag == "Fridge")
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange);
+
+            bool foundFridge = false;
+            bool foundBed = false;
+
+            foreach (var hit in hits)
             {
-                foundFridge = true;
-                break;
-            }
-            else if (hit.tag == "Bed")
-            {
-                foundBed = true;
-                break;
-            }
-        }
-        
-        if (foundFridge)
-        {
-            if (Time.time >= lastEatTime + fridgeCooldown)
-            {
-                if (currentStamina < maxStamina)
+                if (hit.tag == "Fridge")
                 {
-                    currentStamina = Mathf.Min(maxStamina, currentStamina + 5f);
-                    lastEatTime = Time.time;
-                    PlayerMonologue.Instance.Say("This food is so gooooood! I feel refreshing!", onceOnly: false, id: "eat");
+                    foundFridge = true;
+                    break;
+                }
+                else if (hit.tag == "Bed")
+                {
+                    foundBed = true;
+                    break;
+                }
+            }
+
+            if (foundFridge)
+            {
+                if (Time.time >= lastEatTime + fridgeCooldown)
+                {
+                    if (currentStamina < maxStamina)
+                    {
+                        currentStamina = Mathf.Min(maxStamina, currentStamina + 5f);
+                        lastEatTime = Time.time;
+                        PlayerMonologue.Instance.Say("This food is so gooooood! I feel refreshing!", onceOnly: false, id: "eat");
+                    }
+                }
+                else
+                {
+                    PlayerMonologue.Instance.Say("I am full!", onceOnly: false, id: "not_eat");
+                }
+            }
+            else if (foundBed)
+            {
+                if (GameManager.Instance.isNight)
+                {
+                    currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
+                    GameManager.Instance.ForceSkipNight();
+                    PlayerMonologue.Instance.Say("What a good sleep!", onceOnly: false, id: "sleep");
+                }
+                else
+                {
+                    PlayerMonologue.Instance.Say("I am not sleepy, better go investigate!", onceOnly: false, id: "not_sleep");
                 }
             }
             else
             {
-                PlayerMonologue.Instance.Say("I am full!", onceOnly: false, id: "not_eat");
+                animator.SetTrigger("Catch");
             }
-        }
-        else if (foundBed)
-        {
-            if (GameManager.Instance.isNight)
-            {
-                currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
-                GameManager.Instance.ForceSkipNight();
-                PlayerMonologue.Instance.Say("What a good sleep!", onceOnly: false, id: "sleep");
-            }
-            else
-            {
-                PlayerMonologue.Instance.Say("I am not sleepy, better go investigate!", onceOnly: false, id: "not_sleep");
-            }
-        }
-        else
-        {
-            animator.SetTrigger("Catch");
-        }
         }
 
         bool moving = IsMoving();
@@ -258,7 +258,7 @@ public class Player : MonoBehaviour
 
 
 
-void CheckForInteractables()
+  void CheckForInteractables()
 {
     if (interactIndicator == null) return;
 
@@ -267,13 +267,14 @@ void CheckForInteractables()
 
     foreach (var hit in hits)
     {
-        // Bỏ qua nếu object không active
-        if (!hit.gameObject.activeInHierarchy)
-            continue;
-
         // Kiểm tra tag có trong danh sách không
         if (interactableTags.Contains(hit.tag))
         {
+            // Bỏ qua nếu sprite renderer bị ẩn
+            SpriteRenderer sr = hit.GetComponent<SpriteRenderer>();
+            if (sr != null && !sr.enabled)
+                continue;
+
             // Với các tag đặc biệt (Bed, Fridge, NPC, Hide, Murder) → luôn hiện UI
             if (hit.tag == "Bed" || hit.tag == "Fridge" || hit.tag == "NPC" || 
                 hit.tag == "Hide" || hit.tag == "Murder")
@@ -304,7 +305,6 @@ void CheckForInteractables()
             new Vector3(transform.localScale.x > 0 ? 1 : -1, 1, 1);
     }
 }
-
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

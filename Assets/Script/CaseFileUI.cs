@@ -101,7 +101,7 @@ public class CaseFileUI : MonoBehaviour
             // Set tên
             TextMeshProUGUI nameText = card.GetComponentInChildren<TextMeshProUGUI>();
             if (nameText != null)
-                nameText.text = evName;
+                nameText.text = GetEvidenceName(evName);
 
             // Checkmark (ban đầu tắt)
             Transform checkmark = card.transform.Find("Checkmark");
@@ -318,6 +318,29 @@ public class CaseFileUI : MonoBehaviour
 
         // TODO: Xử lý ending ở script khác (EndingManager, GameManager, etc.)
         // EndingManager.Instance.DetermineEnding(selectedEvidenceNames, selectedInformationKeys);
+    }
+    string GetEvidenceName(string evidenceTag)
+    {
+        switch (evidenceTag)
+        {
+            case "LivingCorner": return "Living Corner";
+            case "Ultimatum": return "Ultimatum";
+            case "HangPhone": return "Hang's Phone";
+            case "HangNoteBook": return "Hang's Notebook";
+            case "Crack": return "Crack outside the attic";
+            case "StrangeTable": return "Four chairs around the table";
+            case "OpenWindow": return "Open window in the attic";
+            case "Rope": return "Rope in the attic";
+            case "Limit1": return "Footprint in the attic";
+            case "Limit2": return "Hang the Ghost";
+            case "Limit3": return "Mai's Diary";
+            case "Limit4": return "Family Photo";
+            case "Limit5": return "May's Diary";
+            case "Limit6": return "The ghost mom";
+            case "Hide": return "Hide";
+            case "SangStuff": return "Mr.Sang precious duck";
+            default: return "Unknown Evidence";
+        }
     }
 
     // === API Helper Functions ===
