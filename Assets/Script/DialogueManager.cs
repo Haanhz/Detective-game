@@ -30,9 +30,9 @@ public class DialogueManager : MonoBehaviour
     private int index;
     private NPC currentNPC;
     private bool isInteracting = false;
-    
+
     // Biến static để script di chuyển của Player có thể truy cập mà không cần reference phức tạp
-    public static bool IsMenuOpen = false; 
+    public static bool IsMenuOpen = false;
 
     private bool chooseRightMurderer = false;
 
@@ -84,13 +84,13 @@ public class DialogueManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-            GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(currentSelected);
-        }
+                GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
+                EventSystem.current.SetSelectedGameObject(null);
+                EventSystem.current.SetSelectedGameObject(currentSelected);
+            }
             if (Input.GetKeyDown(KeyCode.F))
             {
-            GameObject selectedButton = EventSystem.current.currentSelectedGameObject;
+                GameObject selectedButton = EventSystem.current.currentSelectedGameObject;
                 if (selectedButton != null)
                 {
                     // Giả lập hành động Click chuột vào Button đang được chọn
@@ -131,7 +131,7 @@ public class DialogueManager : MonoBehaviour
                 OpenSelectionMenu(currentNPC);
             }
         }
-        else 
+        else
         {
             if (IsMenuOpen || StartConversationButton.activeInHierarchy)
             {
@@ -156,7 +156,7 @@ public class DialogueManager : MonoBehaviour
             AvatarImage.gameObject.SetActive(true);
         }
 
-        EventSystem.current.SetSelectedGameObject(null); 
+        EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(StartConversationButton);
     }
 
@@ -174,9 +174,9 @@ public class DialogueManager : MonoBehaviour
         switch (npcName)
         {
             case "Sang": return Sang.ContainsKey(key);
-            case "Mai":  return Mai.ContainsKey(key);
-            case "Tan":  return Tan.ContainsKey(key);
-            case "May":  return May.ContainsKey(key);
+            case "Mai": return Mai.ContainsKey(key);
+            case "Tan": return Tan.ContainsKey(key);
+            case "May": return May.ContainsKey(key);
             default: return false;
         }
     }
@@ -263,7 +263,7 @@ public class DialogueManager : MonoBehaviour
             FinishDialogueSequence();
             yield break;
         }
-        
+
         UpdateSpeakerUI(currentLines[index]);
         DialogueText.text = "";
         if (typeAudioSource != null && typewriterSound != null)
@@ -303,9 +303,9 @@ public class DialogueManager : MonoBehaviour
         switch (name)
         {
             case "Sang": return 0;
-            case "Mai":  return 1;
-            case "Tan":  return 2;
-            case "May":  return 3;
+            case "Mai": return 1;
+            case "Tan": return 2;
+            case "May": return 3;
             default: return -1;
         }
     }
@@ -320,9 +320,9 @@ public class DialogueManager : MonoBehaviour
             switch (currentBlock.targetNPC)
             {
                 case "Sang": targetDict = Sang; break;
-                case "Mai":  targetDict = Mai;  break;
-                case "Tan":  targetDict = Tan;  break;
-                case "May":  targetDict = May;  break;
+                case "Mai": targetDict = Mai; break;
+                case "Tan": targetDict = Tan; break;
+                case "May": targetDict = May; break;
             }
 
             if (targetDict != null)
@@ -357,24 +357,68 @@ public class DialogueManager : MonoBehaviour
 
     NPC.DialogueBlock GetConditionalDialogue(NPC npc)
     {
+        NPC.DialogueBlock lastReadBlock = null;
+
         foreach (var block in npc.conditionalBlocks)
         {
-            if (block.readOnceOnly && block.hasRead) continue;
+            // Check evidence conditions
+            bool hasAllEvidence = true;
             foreach (string ev in block.requiredEvidenceTags)
             {
-                if (!EvidenceManager.Instance.HasEvidence(ev)) goto NextBlock;
+                if (!EvidenceManager.Instance.HasEvidence(ev))
+                {
+                    hasAllEvidence = false;
+                    break;
+                }
             }
+            if (!hasAllEvidence)
+            {
+                // Nếu block này đã đọc rồi, lưu lại để backup
+                if (block.hasRead) lastReadBlock = block;
+                continue;
+            }
+
+            // Check NPC info conditions
+            bool hasAllInfo = true;
             if (!string.IsNullOrEmpty(block.requiredNPC))
             {
                 foreach (int key in block.requiredKeys)
                 {
-                    if (!HasImportantInfo(block.requiredNPC, key)) goto NextBlock;
+                    if (!HasImportantInfo(block.requiredNPC, key))
+                    {
+                        hasAllInfo = false;
+                        break;
+                    }
                 }
             }
-            block.hasRead = true;
-            return block;
-            NextBlock:;
+            if (!hasAllInfo)
+            {
+                // Nếu block này đã đọc rồi, lưu lại để backup
+                if (block.hasRead) lastReadBlock = block;
+                continue;
+            }
+
+            // Block này thỏa mãn tất cả điều kiện
+            if (!block.hasRead)
+            {
+                // Block mới chưa đọc -> đánh dấu và trả về
+                block.hasRead = true;
+                return block;
+            }
+            else
+            {
+                // Block đã đọc nhưng vẫn thỏa mãn -> lưu lại
+                lastReadBlock = block;
+            }
         }
+
+        // Nếu có block cũ đã đọc -> trả về block đó (không đánh dấu lại)
+        if (lastReadBlock != null)
+        {
+            return lastReadBlock;
+        }
+
+        // Không có block nào -> trả về followUpBlock
         return npc.followUpBlock;
     }
     public void OnPointMurderButtonClicked()
@@ -384,7 +428,7 @@ public class DialogueManager : MonoBehaviour
         CaseFileUI.Instance.OpenCaseFile();
 
         // Báo cho game biết: GAME ĐÃ KẾT THÚC
-        //GameManager.Instance.gameEnded = true;
+        GameManager.Instance.gameEnded = true;
     }
     void CleanupState()
     {

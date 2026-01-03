@@ -31,11 +31,24 @@ public class InteractableDetector : MonoBehaviour
 
         foreach (var hitCollider in hitColliders)
         {
-            // Kiểm tra xem Tag của vật thể có nằm trong danh sách cho phép không
+            // Bỏ qua nếu object không active
+            if (!hitCollider.gameObject.activeInHierarchy)
+                continue;
+
+            // Kiểm tra xem Tag có nằm trong danh sách cho phép không
             if (interactableTags.Contains(hitCollider.tag))
             {
+                // Kiểm tra xem vật phẩm này đã được nhặt chưa (nếu có EvidenceManager)
+                if (EvidenceManager.Instance != null)
+                {
+                    // Nếu đã nhặt rồi thì bỏ qua
+                    if (EvidenceManager.Instance.HasEvidence(hitCollider.tag))
+                        continue;
+                }
+
+                // Nếu đến đây nghĩa là: active + chưa nhặt + có tag hợp lệ
                 isNearInteractable = true;
-                break; // Tìm thấy 1 cái là đủ để hiện UI rồi
+                break; // Tìm thấy 1 cái là đủ
             }
         }
 

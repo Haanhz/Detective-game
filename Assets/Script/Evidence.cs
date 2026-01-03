@@ -22,7 +22,7 @@ public class Evidence : MonoBehaviour
 
     public KeyCode pickupKey = KeyCode.F;
     private bool collected = false;
-    private readonly string announceText = "You have found: ";
+    private readonly string announceText = "Recorded in case file: ";
 
     // Tham chiếu LimitController nếu đây là Limit Evidence
     private LimitController limitController;

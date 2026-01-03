@@ -223,9 +223,7 @@ public class EndingManager : MonoBehaviour
     {
         string[] fullEndingEvidence = new string[]
         {
-            "Limit1","Limit2","Limit3","Limit4","Limit5","Limit6",
-            "LivingCorner","Ultimatum","HangPhone","HangNoteBook",
-            "StrangeTable","OpenWindow","Rope","Crack"
+            "Limit1","Limit2","Limit3","Limit4","Limit5","Limit6","OpenWindow","Rope","Crack"
         };
 
         bool hasAllEvidence = true;

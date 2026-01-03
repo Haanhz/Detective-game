@@ -240,9 +240,9 @@ public class UIManager : MonoBehaviour
 
         string[] lines =
         {
-            "Hang: The case from long ago ... and the mystery of this house ... I already know ...",
+            "Hang: The case from 10 years ago ... and the mystery of this house ... I already know ...",
             "Hang: You should come here quickly ...",
-            "Hang: If not ... he ... ... ... ...",
+            "Hang: If not ...AAAAAAAAAAAAA",
             "Hello ... Helllo ... Hang ... Are you there? Hello..."
         };
         if (typeAudioSource != null && typewriterSound != null)
