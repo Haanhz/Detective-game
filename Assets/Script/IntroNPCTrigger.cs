@@ -29,65 +29,64 @@ public class QuestIntroNPC : MonoBehaviour
         }
     };
 
-    private NPC npcComponent;
+    private NPC npc;
     private NPC.DialogueBlock originalIntroBlock;
+    private bool questCompleted = false;
 
     void Start()
     {
-        npcComponent = GetComponent<NPC>();
-        if (npcComponent == null)
+        npc = GetComponent<NPC>();
+        if (npc == null)
         {
-            Debug.LogError("QuestIntroNPC: Không tìm thấy NPC component!");
+            Debug.LogError("QuestIntroNPC: NPC component not found!");
             enabled = false;
             return;
         }
 
-        // Backup intro block gốc
-        originalIntroBlock = npcComponent.introBlock;
-        
-        // Thay thế intro block bằng quest block
-        npcComponent.introBlock = questBlock;
-        
-        // Đặt stage = -1 để không bị nhảy sang followup
-        npcComponent.dialogueStage = -1;
-    }
+        originalIntroBlock = npc.introBlock;
+        npc.lockDialogueStage = true;
 
-    // void Update()
-    // {
-    //     // Kiểm tra xem player đã có evidence chưa
-    //     if (EvidenceManager.Instance != null && 
-    //         EvidenceManager.Instance.HasEvidence(requiredEvidenceTag))
-    //     {
-    //         // Khôi phục lại intro block gốc
-    //         npcComponent.introBlock = originalIntroBlock;
-            
-    //         // Reset stage về 0 để chạy lại intro thật
-    //         npcComponent.dialogueStage = 0;
-            
-    //         Debug.Log("Quest completed! " + npcComponent.npcName + " chuyển sang intro thật.");
-            
-    //         // Tắt script này
-    //         enabled = false;
-    //     }
-    // }
+        // 🔒 Nếu NPC đã qua intro → quest coi như xong
+        if (npc.dialogueStage > 0)
+        {
+            questCompleted = true;
+            enabled = false;
+            return;
+        }
+
+        // 🔑 Nếu CHƯA có evidence → dùng quest intro
+        if (!EvidenceManager.Instance.HasEvidence(requiredEvidenceTag))
+        {
+            npc.introBlock = questBlock;
+            npc.dialogueStage = 0; // GIỮ NGUYÊN STAGE 0
+        }
+        else
+        {
+            CompleteQuest();
+        }
+    }
 
     void Update()
     {
+        if (questCompleted) return;
         if (EvidenceManager.Instance == null) return;
 
-        // Nếu chưa nhặt được kính, hãy ép NPC ở lại Stage -1 
-        if (!EvidenceManager.Instance.HasEvidence(requiredEvidenceTag))
+        if (EvidenceManager.Instance.HasEvidence(requiredEvidenceTag))
         {
-            npcComponent.dialogueStage = -1;
-            return; 
+            CompleteQuest();
         }
+    }
 
-        // Nếu đã nhặt được kính (Quest xong)
-        npcComponent.introBlock = originalIntroBlock; // Trả lại intro thật
-        npcComponent.dialogueStage = 0; // Đưa về 0 để nói câu chào chính thức
-        
-        Debug.Log("Quest completed! " + npcComponent.npcName + " chuyển sang intro thật.");
-        
-        enabled = false; // Tắt script Quest vĩnh viễn
+    void CompleteQuest()
+    {
+        questCompleted = true;
+
+        npc.introBlock = originalIntroBlock;
+        npc.lockDialogueStage = false;
+        npc.dialogueStage = 0; // intro thật sẽ chạy
+
+        Debug.Log($"[QuestIntroNPC] Quest completed for {npc.npcName}");
+
+        enabled = false;
     }
 }

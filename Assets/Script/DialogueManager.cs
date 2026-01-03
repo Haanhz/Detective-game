@@ -337,7 +337,7 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-        if (savedNPC != null)
+        if (savedNPC != null && !savedNPC.lockDialogueStage)
         {
             // if (savedNPC.dialogueStage == -1)
             // {

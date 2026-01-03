@@ -31,16 +31,10 @@ public static class SaveSystem
         SaveDict("TanInfo", DialogueManager.Instance.Tan);
         SaveDict("MayInfo", DialogueManager.Instance.May);
 
-        // 5. LƯU TRẠNG THÁI TỪNG NPC TRONG SCENE
+        // 5. Stage NPC
         NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
-        foreach (NPC npc in allNPCs)
-        {
+        foreach (NPC npc in allNPCs) {
             PlayerPrefs.SetInt("NPCStage_" + npc.npcName, npc.dialogueStage);
-            // Lưu trạng thái đã đọc của từng block hội thoại điều kiện
-            for (int i = 0; i < npc.conditionalBlocks.Count; i++)
-            {
-                PlayerPrefs.SetInt("NPCCond_" + npc.npcName + "_" + i, npc.conditionalBlocks[i].hasRead ? 1 : 0);
-            }
         }
 
         // Lưu tên phòng hiện tại
@@ -114,15 +108,7 @@ public static class SaveSystem
         NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
         foreach (NPC npc in allNPCs)
         {
-            if (npc.GetComponent<QuestIntroNPC>() == null || !npc.GetComponent<QuestIntroNPC>().enabled)
-            {
-                npc.dialogueStage = PlayerPrefs.GetInt("NPCStage_" + npc.npcName, 0);
-            }
-            npc.dialogueStage = PlayerPrefs.GetInt("NPCStage_" + npc.npcName, 0);
-            for (int i = 0; i < npc.conditionalBlocks.Count; i++)
-            {
-                npc.conditionalBlocks[i].hasRead = PlayerPrefs.GetInt("NPCCond_" + npc.npcName + "_" + i, 0) == 1;
-            }
+            npc.dialogueStage = PlayerPrefs.GetInt("NPCStage_" + npc.npcName, npc.dialogueStage);
         }
     }
 

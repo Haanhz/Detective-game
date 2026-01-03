@@ -19,6 +19,9 @@ public class NPC : MonoBehaviour
     [HideInInspector]
     public int dialogueStage = 0;
 
+    [HideInInspector]
+    public bool lockDialogueStage = false;
+
     [Header("Stage 2+ - Conditional Dialogues")]
     public List<DialogueBlock> conditionalBlocks = new List<DialogueBlock>();
 
