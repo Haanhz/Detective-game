@@ -113,7 +113,7 @@ public class EndingManager : MonoBehaviour
                 resultText = "You've found a piece, but the whole truth remains hidden.";
                 selectedClip = halfEndingClip;
             }
-            else if ((WrongEndingTriggered || !chooseRightMurderer) && (FullEndingTriggered || HalfEndingTriggered))
+            else if (WrongEndingTriggered)
             {
                 resultText = "Hmm...you're not much of a detective, are you?";
                 selectedClip = WrongEndingClip;

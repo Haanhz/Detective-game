@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        // DỪNG THỜI GIAN KHI GAME KẾT THÚC
+        if (gameEnded) return;
+
         timer += Time.deltaTime;
 
         if (!isNight)
@@ -76,9 +79,6 @@ public class GameManager : MonoBehaviour
                 EndNightAndNextDay();
             }
         }
-        
-        // BỎ HẾT LOGIC SET ACTIVE LIMIT Ở ĐÂY
-        // Giờ mỗi Limit tự quản lý
     }
 
     IEnumerator CountdownSequence(float targetDuration)
@@ -88,6 +88,14 @@ public class GameManager : MonoBehaviour
 
         while (timer < targetDuration)
         {
+            // Kiểm tra nếu game kết thúc thì dừng countdown
+            if (gameEnded)
+            {
+                if (countdownText != null) countdownText.gameObject.SetActive(false);
+                isCountingDown = false;
+                yield break;
+            }
+
             if (countdownText != null)
             {
                 int secondsDisplay = Mathf.CeilToInt(targetDuration - timer);
@@ -147,9 +155,9 @@ public class GameManager : MonoBehaviour
             audioSource.Play();
         }
         if (currentNight == 1)
-    {
-        PlayerMonologue.Instance.Say("Night is falling... I need to investigate using my UV light...Let me see...Press V right?", onceOnly: true, id: "first_night");
-    }
+        {
+            PlayerMonologue.Instance.Say("Night is falling... I need to investigate using my UV light...Let me see...Press V right?", onceOnly: true, id: "first_night");
+        }
     }
 
     public void ResumeNightMusic()
@@ -174,6 +182,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("TIME OUT! GAME OVER");
             gameEnded = true;
+            // Dừng countdown nếu đang chạy
+            StopAllCoroutines();
+            if (countdownText != null) countdownText.gameObject.SetActive(false);
             return;
         }
 
@@ -189,6 +200,9 @@ public class GameManager : MonoBehaviour
         if (daysRemaining <= 0)
         {
             gameEnded = true;
+            // Dừng countdown nếu đang chạy
+            StopAllCoroutines();
+            if (countdownText != null) countdownText.gameObject.SetActive(false);
             return;
         }
         StartDay();

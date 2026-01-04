@@ -24,6 +24,7 @@ public class CaseFileUI : MonoBehaviour
 
     [Header("Submission")]
     public Button submitButton;
+    public Button closeButton;
     public TextMeshProUGUI submitButtonText;
     public int maxSelection = 10; // Tổng số evidence + info có thể chọn
     public int minSelection = 3;
@@ -46,6 +47,7 @@ public class CaseFileUI : MonoBehaviour
     {
         if (submitButton != null)
             submitButton.onClick.AddListener(OnSubmitClicked);
+        closeButton.onClick.AddListener(CloseCaseFile);
     }
 
     public void OpenCaseFile()

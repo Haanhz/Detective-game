@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        Time.timeScale = 1f;
+        Time.timeScale = 0f;
     }
 
         // void Start()
@@ -140,7 +140,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         // 1. Khởi tạo cơ bản
-        Time.timeScale = 1f;
+        Time.timeScale = 0f;
 
         if (staminaSlider != null && staminaSlider.fillRect != null)
         {
@@ -358,6 +358,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator PlayCutscene()
     {
+        Time.timeScale = 1f;
         cutscenePanel.SetActive(true);
 
         string[] lines =
@@ -423,6 +424,7 @@ public class UIManager : MonoBehaviour
     void StartGameplay()
     {
         gameStarted = true;
+        Time.timeScale = 1f; 
         GameManager.Instance.StartDay();
 
         // Bật UI gameplay
