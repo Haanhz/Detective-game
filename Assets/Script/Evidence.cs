@@ -41,6 +41,7 @@ public class Evidence : MonoBehaviour
             if (ShouldHide(evidenceTag))
             {
                 Destroy(this.gameObject); // Xóa ngay lập tức nếu là SangStuff, Limit...
+                return;
             }
             else
             {

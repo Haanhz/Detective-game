@@ -12113,6 +12113,7 @@ MonoBehaviour:
     infoKey: 0
     infoValue: 
   dialogueStage: 0
+  lockDialogueStage: 0
   conditionalBlocks:
   - id: 
     lines:
@@ -13069,6 +13070,7 @@ MonoBehaviour:
     infoKey: 1
     infoValue: No rope at the scene
   dialogueStage: 0
+  lockDialogueStage: 0
   conditionalBlocks:
   - id: 
     lines:
@@ -57202,6 +57204,7 @@ MonoBehaviour:
     infoKey: 0
     infoValue: 
   dialogueStage: 0
+  lockDialogueStage: 0
   conditionalBlocks:
   - id: 
     lines:
@@ -57757,7 +57760,7 @@ MonoBehaviour:
   audioSource: {fileID: 1328244848}
   dayMusic: {fileID: 8300000, guid: a63565fdf8cef06499f98addfe6bd1e6, type: 3}
   nightMusic: {fileID: 8300000, guid: 77845d30ec6b2bb42ac5bb5177b42785, type: 3}
-  dayDuration: 300
+  dayDuration: 150
   nightDuration: 180
   daysRemaining: 7
   isNight: 0
@@ -61652,6 +61655,7 @@ MonoBehaviour:
     bigPortrait: {fileID: -447801828011365873, guid: 72eab3e7d7aa0354594c6d1fe5486e91, type: 3}
     description: Sang's precious duckling you help him find out!
   collectedEvidence: []
+  nightlyEvidenceTags: []
 --- !u!4 &1591563807
 Transform:
   m_ObjectHideFlags: 0
@@ -68939,6 +68943,7 @@ MonoBehaviour:
     infoValue: '"Tan used to like Hang, after argument he stop comming, but still
       standing at a distance watching the villa"'
   dialogueStage: 0
+  lockDialogueStage: 0
   conditionalBlocks:
   - id: 
     lines:

@@ -485,6 +485,23 @@ public class UIManager : MonoBehaviour
     public void ReplayScene() 
     {
         Time.timeScale = 1f; // BẮT BUỘC: Mở khóa thời gian trước
+        // KIỂM TRA NẾU CHẾT DO BLACK (KILL ENDING)
+        if (EndingManager.IsKilledByBlack)
+        {
+            // 1. Xóa dữ liệu bằng chứng nhặt trong đêm đó
+            if (EvidenceManager.Instance != null)
+                EvidenceManager.Instance.RevertNightlyEvidence();
+
+            // 2. NHẢY SANG NGÀY TIẾP THEO
+            GameManager.Instance.daysRemaining--; 
+            GameManager.Instance.isNight = false; // Ép về ban ngày
+            
+            // 3. Reset cờ chết để tránh lặp logic
+            EndingManager.IsKilledByBlack = false;
+
+            // 4. Lưu lại trạng thái "Mất đồ + Giảm ngày" vào PlayerPrefs trước khi nạp Scene
+            SaveSystem.SaveAll(chase.player.gameObject);
+        }
         isLoadingSave = true; 
         
         if (replayButton != null) replayButton.gameObject.SetActive(false);

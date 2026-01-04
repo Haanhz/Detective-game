@@ -20,6 +20,7 @@ public class EvidenceManager : MonoBehaviour
     [Header("Data Database")]
     public List<EvidenceData> evidenceDatabase = new List<EvidenceData>();
     public List<string> collectedEvidence = new List<string>();
+    public List<string> nightlyEvidenceTags = new List<string>();
     public Dictionary<string, float> evidenceWeights = new Dictionary<string, float>();
 
     void Awake()
@@ -37,6 +38,10 @@ public class EvidenceManager : MonoBehaviour
         }
         collectedEvidence.Add(tagName);
         evidenceWeights[tagName] = weight;
+        if (GameManager.Instance != null && GameManager.Instance.isNight)
+        {
+            nightlyEvidenceTags.Add(tagName);
+        }
         if (ChaseManager.instance != null) 
         SaveSystem.SaveAll(ChaseManager.instance.player.gameObject);
 
@@ -61,6 +66,17 @@ public class EvidenceManager : MonoBehaviour
             total += kv.Value;
 
         return total;
+    }
+
+    // Hàm để xóa dữ liệu buổi đêm khi Replay
+    public void RevertNightlyEvidence()
+    {
+        foreach (string tag in nightlyEvidenceTags)
+        {
+            collectedEvidence.Remove(tag);
+            evidenceWeights.Remove(tag);
+        }
+        nightlyEvidenceTags.Clear();
     }
 
     public Dictionary<string, string> evidenceDescriptions = new Dictionary<string, string>()
@@ -107,22 +123,6 @@ public class EvidenceManager : MonoBehaviour
         return collectedEvidence.Contains(tagName);
     }
 
-    // public void DisableCollectedItems()
-    // {
-    //     foreach (string tagName in collectedEvidence)
-    //     {
-    //         // Tìm tất cả các object đang mang Tag của bằng chứng đã nhặt
-    //         GameObject[] items = GameObject.FindGameObjectsWithTag(tagName);
-    //         foreach (GameObject item in items)
-    //         {
-    //             // Đổi Tag sang Untagged. Player.cs sẽ không tìm thấy Tag này nữa
-    //             // nhưng Collider vẫn giữ nguyên nên vẫn có va chạm vật lý.
-    //             item.tag = "Untagged"; 
-                
-    //             Debug.Log($"Disabled interaction for item with tag: {tagName}. Collider still active.");
-    //         }
-    //     }
-    // }
 
     // Thêm hàm này vào EvidenceManager.cs
     public void LockCollectedItemsInScene()

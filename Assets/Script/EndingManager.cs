@@ -35,6 +35,8 @@ public class EndingManager : MonoBehaviour
 
     private bool endingStarted = false;
 
+    public static bool IsKilledByBlack = false;
+
     // Danh sách để lưu các AudioSource bị tắt để bật lại sau đó
     private List<AudioSource> activeAudioSources = new List<AudioSource>();
 
@@ -84,6 +86,7 @@ public class EndingManager : MonoBehaviour
 
         if (playerDead && chase.player.killed)
         {
+            IsKilledByBlack = true;
             resultText = "You died in the chase!";
             selectedClip = killedEndingClip;
         }
@@ -110,7 +113,7 @@ public class EndingManager : MonoBehaviour
                 resultText = "You've found a piece, but the whole truth remains hidden.";
                 selectedClip = halfEndingClip;
             }
-            else if (WrongEndingTriggered && !chooseRightMurderer)
+            else if (WrongEndingTriggered || !chooseRightMurderer)
             {
                 resultText = "Hmm...you're not much of a detective, are you?";
                 selectedClip = WrongEndingClip;
