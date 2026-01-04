@@ -103,22 +103,22 @@ public class EndingManager : MonoBehaviour
 
             bool chooseRightMurderer = DialogueManager.Instance.ChooseRightMurderer();
 
-            if (FullEndingTriggered && chooseRightMurderer)
+            if (FullEndingTriggered && chooseRightMurderer && !WrongEndingTriggered)
             {
                 resultText = "Congratulations! You've uncovered the full truth.";
                 selectedClip = fullEndingClip;
             }
-            else if (HalfEndingTriggered && chooseRightMurderer)
+            else if (HalfEndingTriggered && chooseRightMurderer && !WrongEndingTriggered)
             {
                 resultText = "You've found a piece, but the whole truth remains hidden.";
                 selectedClip = halfEndingClip;
             }
-            else if (WrongEndingTriggered || !chooseRightMurderer)
+            else if ((WrongEndingTriggered || !chooseRightMurderer) && (FullEndingTriggered || HalfEndingTriggered))
             {
                 resultText = "Hmm...you're not much of a detective, are you?";
                 selectedClip = WrongEndingClip;
             }
-            else
+            else 
             {
                 resultText = "Nobody will ever believe you.";
                 selectedClip = NobodyEndingClip;
