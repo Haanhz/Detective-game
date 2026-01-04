@@ -100,6 +100,7 @@ public class UIMenuManager : MonoBehaviour
 
         menuPanel.SetActive(false);
         if (UIManager.Instance != null) {
+            UIManager.Instance.ShowStartMenuCustom();
             UIManager.Instance.startPanel.SetActive(true);
             UIManager.Instance.dayRemainText.gameObject.SetActive(false);
             UIManager.Instance.staminaSlider.gameObject.SetActive(false);
