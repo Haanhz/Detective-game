@@ -398,6 +398,13 @@ public class DialogueManager : MonoBehaviour
                 continue;
             }
 
+            if (!hasAllEvidence || !hasAllInfo)
+            {
+                // CHỈ lưu làm backup nếu thực sự ĐÃ ĐỌC và KHÔNG thỏa mãn điều kiện hiện tại
+                // Nhưng tốt nhất là bỏ qua để tìm các block khác thỏa mãn hơn
+                continue; 
+            }
+
             // Block này thỏa mãn tất cả điều kiện
             if (!block.hasRead)
             {
