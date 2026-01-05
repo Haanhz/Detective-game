@@ -36,6 +36,7 @@ public class EndingManager : MonoBehaviour
     private bool endingStarted = false;
 
     public static bool IsKilledByBlack = false;
+    public static bool IsDetectiveEnding = false;
 
     // Danh sách để lưu các AudioSource bị tắt để bật lại sau đó
     private List<AudioSource> activeAudioSources = new List<AudioSource>();
@@ -81,8 +82,19 @@ public class EndingManager : MonoBehaviour
 
     public void ShowEnding(bool playerDead = false)
     {
+        IsDetectiveEnding = false;
         VideoClip selectedClip = null;
         string resultText = "";
+
+        if (playerDead) 
+        {
+            if (chase.player.killed) IsKilledByBlack = true; // Chết do bị giết
+            // Nếu exhausted, IsKilledByBlack = false nhưng IsDetectiveEnding cũng = false
+        }
+        else 
+        {
+            IsDetectiveEnding = true; // Đây là nhóm ending suy luận
+        }
 
         if (playerDead && chase.player.killed)
         {

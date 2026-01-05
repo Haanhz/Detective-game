@@ -41,7 +41,11 @@ public class EvidenceManager : MonoBehaviour
         evidenceWeights[tagName] = weight;
         if (GameManager.Instance != null && GameManager.Instance.isNight)
         {
-            nightlyEvidenceTags.Add(tagName);
+            // Chỉ thêm vào danh sách "có thể bị mất" nếu nhặt vào ban đêm
+            if (!nightlyEvidenceTags.Contains(tagName)) 
+            {
+                nightlyEvidenceTags.Add(tagName);
+            }
         }
         if (ChaseManager.instance != null) 
         SaveSystem.SaveAll(ChaseManager.instance.player.gameObject);

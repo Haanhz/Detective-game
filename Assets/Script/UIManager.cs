@@ -487,26 +487,37 @@ public class UIManager : MonoBehaviour
 
     public void ReplayScene() 
     {
-        Time.timeScale = 1f; // BẮT BUỘC: Mở khóa thời gian trước
-        // KIỂM TRA NẾU CHẾT DO BLACK (KILL ENDING)
-        if (EndingManager.IsKilledByBlack)
+        Time.timeScale = 1f;
+        
+        // TRƯỜNG HỢP 1: CHẾT (BỊ GIẾT HOẶC KIỆT SỨC)
+        if (chase.player.killed || chase.player.exhausted)
         {
-            // 1. Xóa dữ liệu bằng chứng nhặt trong đêm đó
-            if (EvidenceManager.Instance != null)
+            // Nếu chết vào ban đêm, xử lý xóa bằng chứng tạm thời
+            if (gm.isNight && EvidenceManager.Instance != null)
+            {
                 EvidenceManager.Instance.RevertNightlyEvidence();
+            }
 
-            // 2. NHẢY SANG NGÀY TIẾP THEO
-            GameManager.Instance.daysRemaining--; 
-            GameManager.Instance.isNight = false; // Ép về ban ngày
+            // Cả 2 loại chết đều bị trừ ngày và ép về ban ngày
+            gm.daysRemaining--; 
+            gm.isNight = false;
             
-            // 3. Reset cờ chết để tránh lặp logic
             EndingManager.IsKilledByBlack = false;
 
-            // 4. Lưu lại trạng thái "Mất đồ + Giảm ngày" vào PlayerPrefs trước khi nạp Scene
+            // Lưu trạng thái Reset (Vị trí mặc định sẽ được nạp lại do nạp Scene)
             SaveSystem.SaveAll(chase.player.gameObject);
         }
-        isLoadingSave = true; 
-        
+        // TRƯỜNG HỢP 2: CÁC ENDING SUY LUẬN (GIỮ NGUYÊN EVIDENCE & STAMINA)
+        else if (EndingManager.IsDetectiveEnding)
+        {
+            gm.daysRemaining--; // Chỉ trừ ngày
+            EndingManager.IsDetectiveEnding = false;
+
+            // Lưu lại để giữ nguyên Stamina và Inventory hiện tại
+            SaveSystem.SaveAll(chase.player.gameObject);
+        }
+
+        isLoadingSave = true;
         if (replayButton != null) replayButton.gameObject.SetActive(false);
         
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

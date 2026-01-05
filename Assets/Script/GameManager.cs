@@ -113,6 +113,12 @@ public class GameManager : MonoBehaviour
     {
         isNight = false;
         timer = 0f;
+
+        // THÊM DÒNG NÀY: Xác nhận đồ đã nhặt đêm qua là vĩnh viễn, không phải đồ "tạm" nữa
+        if (EvidenceManager.Instance != null)
+        {
+            EvidenceManager.Instance.nightlyEvidenceTags.Clear(); 
+        }
         
         StopAllCoroutines();
         isCountingDown = false;
