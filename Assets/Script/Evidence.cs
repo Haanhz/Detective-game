@@ -35,7 +35,24 @@ public class Evidence : MonoBehaviour
         if (string.IsNullOrEmpty(evidenceTag))
             evidenceTag = gameObject.tag;
         // KIỂM TRA KHI VỪA XUẤT HIỆN
-        if (EvidenceManager.Instance != null && EvidenceManager.Instance.HasEvidence(evidenceTag))
+        if (EvidenceManager.Instance != null && EvidenceManager.Instance.permanentlyRemovedEvidence.Contains(evidenceTag))
+        {
+            // Kiểm tra ShouldHide để quyết định destroy hay lock
+            if (ShouldHide(evidenceTag))
+            {
+                // ShouldHide = true → Destroy (Limit1, HangNoteBook...)
+                Destroy(gameObject);
+                return;
+            }
+            else
+            {
+                // ShouldHide = false → Lock (LivingCorner, Ultimatum...)
+                collected = true;
+                Debug.Log($"[Evidence.Start] Locked permanently removed evidence: {evidenceTag}");
+                // Không return, tiếp tục chạy để giữ object
+            }
+        }
+        else if (EvidenceManager.Instance != null && EvidenceManager.Instance.HasEvidence(evidenceTag))
         {
             // Nếu đã nhặt rồi, kiểm tra xem loại này có phải loại biến mất không
             if (ShouldHide(evidenceTag))
@@ -47,6 +64,10 @@ public class Evidence : MonoBehaviour
             {
                 collected = true; // Ở lại làm cảnh nhưng khóa tương tác
             }
+        }
+        else
+        {
+            collected = false; // Chưa nhặt
         }
         // Kiểm tra xem có phải Limit không
         limitController = GetComponent<LimitController>();

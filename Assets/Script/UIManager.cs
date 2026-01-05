@@ -188,6 +188,7 @@ public class UIManager : MonoBehaviour
             // Dọn dẹp Evidence theo Save
             if (EvidenceManager.Instance != null)
             {
+                EvidenceManager.Instance.CleanUpPermanentlyRemovedEvidence();
                 EvidenceManager.Instance.CleanUpCollectedItemsInScene();
                 EvidenceManager.Instance.LockCollectedItemsInScene();
             }

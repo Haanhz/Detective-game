@@ -19,6 +19,11 @@ public static class SaveSystem
         string unlockData = string.Join(",", CharacterUnlockManager.unlockedIndices);
         PlayerPrefs.SetString("SavedUnlocks", unlockData);
 
+        // ← THÊM: Lưu danh sách permanently removed evidence
+        string removedData = string.Join(",", EvidenceManager.Instance.permanentlyRemovedEvidence);
+        PlayerPrefs.SetString("PermanentlyRemoved", removedData);
+        Debug.Log($"[SaveSystem] Saved permanently removed: {removedData}");
+
         // 3. Lưu Vị trí Player
         if (player != null) {
             PlayerPrefs.SetFloat("PlayerX", player.transform.position.x);
@@ -72,6 +77,19 @@ public static class SaveSystem
         if (!string.IsNullOrEmpty(unData)) {
             foreach (var s in unData.Split(',')) CharacterUnlockManager.unlockedIndices.Add(int.Parse(s));
         }
+
+        // ← THÊM: Tải danh sách permanently removed evidence
+        string removedData = PlayerPrefs.GetString("PermanentlyRemoved", "");
+        EvidenceManager.Instance.permanentlyRemovedEvidence.Clear();
+        if (!string.IsNullOrEmpty(removedData))
+        {
+            foreach (var tag in removedData.Split(','))
+            {
+                if (!string.IsNullOrEmpty(tag))
+                    EvidenceManager.Instance.permanentlyRemovedEvidence.Add(tag);
+            }
+        }
+        Debug.Log($"[LoadSystem] Loaded permanently removed: {removedData}");
 
         // 3. Tải Vị trí
         if (player != null) {

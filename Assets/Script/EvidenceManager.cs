@@ -21,6 +21,7 @@ public class EvidenceManager : MonoBehaviour
     public List<EvidenceData> evidenceDatabase = new List<EvidenceData>();
     public List<string> collectedEvidence = new List<string>();
     public List<string> nightlyEvidenceTags = new List<string>();
+    public List<string> permanentlyRemovedEvidence = new List<string>();
     public Dictionary<string, float> evidenceWeights = new Dictionary<string, float>();
 
     void Awake()
@@ -71,12 +72,70 @@ public class EvidenceManager : MonoBehaviour
     // Hàm để xóa dữ liệu buổi đêm khi Replay
     public void RevertNightlyEvidence()
     {
+        Debug.Log($"[RevertNightly] Before revert - Nightly: {nightlyEvidenceTags.Count}, Permanent: {permanentlyRemovedEvidence.Count}");
+        
         foreach (string tag in nightlyEvidenceTags)
         {
-            collectedEvidence.Remove(tag);
-            evidenceWeights.Remove(tag);
+            // ← THÊM: Thêm vào danh sách permanently removed
+            if (!permanentlyRemovedEvidence.Contains(tag))
+            {
+                permanentlyRemovedEvidence.Add(tag);
+                Debug.Log($"[RevertNightly] Added to permanent removal: {tag}");
+            }
+            
+            // Xóa khỏi danh sách chính để SaveSystem.SaveAll không lưu nó lại
+            if (collectedEvidence.Contains(tag))
+                collectedEvidence.Remove(tag);
+            
+            // Xóa trọng số để tránh cộng dồn sai
+            if (evidenceWeights.ContainsKey(tag))
+                evidenceWeights.Remove(tag);
         }
-        nightlyEvidenceTags.Clear();
+        
+        // Sau khi xóa xong phải làm trống danh sách tạm
+        nightlyEvidenceTags.Clear(); 
+        Debug.Log($"[RevertNightly] After revert - Permanent: {permanentlyRemovedEvidence.Count}");
+        Debug.Log($"[RevertNightly] Items permanently removed: {string.Join(", ", permanentlyRemovedEvidence)}");
+    }
+
+    public void CleanUpPermanentlyRemovedEvidence()
+    {
+        Evidence[] allItems = Object.FindObjectsByType<Evidence>(FindObjectsSortMode.None);
+
+        foreach (Evidence item in allItems)
+        {
+            // Kiểm tra xem evidence này có trong permanentlyRemovedEvidence không
+            if (permanentlyRemovedEvidence.Contains(item.evidenceTag))
+            {
+                // Sử dụng Reflection để gọi hàm ShouldHide
+                var method = item.GetType().GetMethod("ShouldHide", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                
+                if (method != null)
+                {
+                    bool shouldHide = (bool)method.Invoke(item, new object[] { item.evidenceTag });
+                    
+                    if (shouldHide)
+                    {
+                        // Nếu ShouldHide = true → DESTROY (Limit1, HangNoteBook, SangStuff...)
+                        Debug.Log($"[CleanUpPermanent] Destroying (ShouldHide=true): {item.evidenceTag}");
+                        Destroy(item.gameObject);
+                    }
+                    else
+                    {
+                        // Nếu ShouldHide = false → LOCK (LivingCorner, Ultimatum...)
+                        // Khóa biến 'collected' = true để không thể nhặt lại
+                        var field = item.GetType().GetField("collected", 
+                            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (field != null)
+                        {
+                            field.SetValue(item, true);
+                            Debug.Log($"[CleanUpPermanent] Locked (ShouldHide=false): {item.evidenceTag}");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public Dictionary<string, string> evidenceDescriptions = new Dictionary<string, string>()

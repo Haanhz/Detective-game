@@ -289,6 +289,9 @@ public class Player : MonoBehaviour
                 // Nếu đã nhặt rồi thì bỏ qua
                 if (EvidenceManager.Instance.HasEvidence(hit.tag))
                     continue;
+                
+                if (EvidenceManager.Instance.permanentlyRemovedEvidence.Contains(hit.tag))
+                    continue;
             }
 
             // Nếu chưa nhặt hoặc không thuộc evidence → hiện UI
