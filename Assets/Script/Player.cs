@@ -102,7 +102,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    PlayerMonologue.Instance.Say("I am full!", onceOnly: false, id: "not_eat");
+                    PlayerMonologue.Instance.Say("I can not eat anymore!", onceOnly: false, id: "not_eat");
                 }
             }
             else if (foundBed)
@@ -190,15 +190,19 @@ public class Player : MonoBehaviour
         if (GameManager.Instance.isNight)
         {
             isInteracting = true;
+            // Dừng thời gian
+            Time.timeScale = 0f;
 
             ScreenFader.Instance.FadeOut();
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSecondsRealtime(3f);
 
             currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
             GameManager.Instance.ForceSkipNight();
 
             ScreenFader.Instance.FadeIn();
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSecondsRealtime(3f);
+            // Tiếp tục thời gian
+            Time.timeScale = 1f;
 
             PlayerMonologue.Instance.Say("What a good sleep!", onceOnly: false, id: "sleep");
 

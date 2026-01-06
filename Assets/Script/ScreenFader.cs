@@ -32,7 +32,9 @@ public class ScreenFader : MonoBehaviour
 
         while (t < fadeDuration)
         {
-            t += Time.deltaTime;
+            // Dùng Time.unscaledDeltaTime thay vì Time.deltaTime
+            // để vẫn hoạt động khi Time.timeScale = 0
+            t += Time.unscaledDeltaTime;
             canvasGroup.alpha = Mathf.Lerp(start, target, t / fadeDuration);
             yield return null;
         }
@@ -64,6 +66,4 @@ public class ScreenFader : MonoBehaviour
 
         composer.Damping = d;
     }
-
-
 }

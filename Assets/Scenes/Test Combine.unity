@@ -1149,7 +1149,7 @@ MonoBehaviour:
   playerName: You
   playerPortrait: {fileID: 6363953028067035492, guid: ee50d834736a5d84ca4937b1ac542966, type: 3}
   typingSpeed: 0.01
-  displayTime: 2
+  displayTime: 1
 --- !u!4 &112418589
 Transform:
   m_ObjectHideFlags: 0
@@ -66053,6 +66053,7 @@ MonoBehaviour:
   chaseDur: 10
   chaseDelay: 2
   blackSpawned: 0
+  spawnIdleTime: 1.5
 --- !u!4 &1885482877
 Transform:
   m_ObjectHideFlags: 0

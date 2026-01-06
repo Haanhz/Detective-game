@@ -34,6 +34,7 @@ public class UVLightController : MonoBehaviour
             if (!GameManager.Instance.isNight)
             {
                 Debug.Log("You can not turn on UV light in the morning!");
+                PlayerMonologue.Instance.Say("Can not turn on UV Light in the morning!", onceOnly: false, id: "not_light");
                 return;
             }
 
