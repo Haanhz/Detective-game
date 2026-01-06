@@ -156,7 +156,7 @@ public class EvidenceManager : MonoBehaviour
         { "Rope", "No rope at the scene, but rope in the attic..."},
         { "Limit3", "Mai's Diary: It’s definitely her—there’s no way I could be mistaken… I can’t believe she’s still alive. But why doesn’t she recognize me? Could it be that she’s hiding something… or doesn’t want to talk about the past? Poor thing. Back then, she had to grow up in a family like that… Maybe I should keep quiet too. I promise I won’t ever leave you alone again."},
         {"Limit4", "Photo of a family of four. There is a little girl...so familiar...wait, is that May???"},
-        {"Limit5", "That past—I don’t want to remember it, no, I didn’t do that, I didn’t mean to, but Dad, Mom and my brother, Mom was wrong, Dad was wrong too, AAAAAAAAAAAAA, Hang… she has to d..."},
+        {"Limit5", "That past—I don’t want to remember it, no, I didn’t do that, I didn’t mean to, but Dad, Mom and my sister, Mom was wrong, Dad was wrong too, AAAAAAAAAAAAA, Hang… she has to d..."},
         {"Limit6", "My child… she is not evil……She was gentle… once…But her mind……was broken.…Not by strangers…Not by ghosts…By the man… she called father...Love became fear…Fear became obedience…She guards the house…Because she believes…If the truth escapes……she deserves to disappear"}
 
     };

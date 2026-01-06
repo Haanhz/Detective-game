@@ -109,6 +109,14 @@ public class Evidence : MonoBehaviour
                 CollectEvidence();
             }
         }
+
+        if (DialogueManager.Instance.HasImportantInfo("Mai", 2))
+        {
+            if (EvidenceManager.Instance != null)
+        {
+            EvidenceManager.Instance.AddEvidence("Key", 0);
+        }
+        }
     }
 
     private void CollectEvidence()

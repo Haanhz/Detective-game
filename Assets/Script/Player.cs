@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -41,6 +42,8 @@ public class Player : MonoBehaviour
 
     public Animator animator;
 
+    private bool isInteracting = false;
+
     public Animator GetAnimator()
     {
         return animator;
@@ -57,7 +60,7 @@ public class Player : MonoBehaviour
     {
         CheckForInteractables();
 
-        if (killed || exhausted)
+        if (killed || exhausted || isInteracting)
         {
             return;
         }
@@ -104,16 +107,7 @@ public class Player : MonoBehaviour
             }
             else if (foundBed)
             {
-                if (GameManager.Instance.isNight)
-                {
-                    currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
-                    GameManager.Instance.ForceSkipNight();
-                    PlayerMonologue.Instance.Say("What a good sleep!", onceOnly: false, id: "sleep");
-                }
-                else
-                {
-                    PlayerMonologue.Instance.Say("I am not sleepy, better go investigate!", onceOnly: false, id: "not_sleep");
-                }
+                StartCoroutine(SleepCoroutine());
             }
             else
             {
@@ -188,6 +182,31 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private IEnumerator SleepCoroutine()
+    {
+        if (GameManager.Instance.isNight)
+        {
+            isInteracting = true;
+
+            ScreenFader.Instance.FadeOut();
+            yield return new WaitForSeconds(3f);
+
+            currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
+            GameManager.Instance.ForceSkipNight();
+
+            ScreenFader.Instance.FadeIn();
+            yield return new WaitForSeconds(3f);
+
+            PlayerMonologue.Instance.Say("What a good sleep!", onceOnly: false, id: "sleep");
+
+            isInteracting = false;
+        }
+        else
+        {
+            PlayerMonologue.Instance.Say("I am not sleepy, better go investigate!", onceOnly: false, id: "not_sleep");
         }
     }
 

@@ -99,7 +99,7 @@ public class EndingManager : MonoBehaviour
         if (playerDead && chase.player.killed)
         {
             IsKilledByBlack = true;
-            resultText = "You died in the chase!";
+            resultText = "You died in the chase! The killer took all the items you collected during the night!";
             selectedClip = killedEndingClip;
         }
         else if (playerDead && chase.player.exhausted)
