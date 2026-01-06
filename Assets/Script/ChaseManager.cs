@@ -160,38 +160,38 @@ public class ChaseManager : MonoBehaviour
         }
     }
 
-    // void SpawnBlack()
-    // {
-    //     if (!blackSpawned)
-    //     {
-    //         timer = 0f;
-    //         Vector3 playerPos = target.position;
-    //         float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-    //         Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
-    //         Vector3 offset = direction * spawnDistance;
+    void SpawnBlack()
+    {
+        if (!blackSpawned)
+        {
+            timer = 0f;
+            Vector3 playerPos = target.position;
+            float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+            Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
+            Vector3 offset = direction * spawnDistance;
             
-    //         black.transform.position = playerPos + offset;
-    //         black.SetActive(true);
-    //         blackSpawned = true;
+            black.transform.position = playerPos + offset;
+            black.SetActive(true);
+            blackSpawned = true;
             
-    //         if(blackAnimator) blackAnimator.ResetTrigger("Kill");
-    //         if (audioSource != null && chaseMusic != null && audioSource.isPlaying)
-    //     {
-    //         audioSource.Stop();   
-    //         audioSource.clip = chaseMusic;
-    //         audioSource.loop = true;
-    //         audioSource.Play();
-    //     }
-    //     }
+            if(blackAnimator) blackAnimator.ResetTrigger("Kill");
+            if (audioSource != null && chaseMusic != null && audioSource.isPlaying)
+        {
+            audioSource.Stop();   
+            audioSource.clip = chaseMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+        }
 
 
-    //     timer += Time.deltaTime;
-    //     if (timer >= chaseDelay)
-    //     {
-    //         timer = 0f;
-    //         currentState = State.Chase;
-    //     }
-    // }
+        timer += Time.deltaTime;
+        if (timer >= chaseDelay)
+        {
+            timer = 0f;
+            currentState = State.Chase;
+        }
+    }
 
     // void SpawnBlack()
     // {
@@ -239,91 +239,91 @@ public class ChaseManager : MonoBehaviour
     //         currentState = State.Chase;
     //     }
     // }
-        void SpawnBlack()
-{
-    if (!blackSpawned)
-    {
-        timer = 0f;
-        Vector3 playerPos = target.position;
+//         void SpawnBlack()
+// {
+//     if (!blackSpawned)
+//     {
+//         timer = 0f;
+//         Vector3 playerPos = target.position;
         
-        // Lấy hướng player đang nhìn từ animator
-        float lastX = target.GetComponent<Animator>().GetFloat("LastInputX");
-        float lastY = target.GetComponent<Animator>().GetFloat("LastInputY");
+//         // Lấy hướng player đang nhìn từ animator
+//         float lastX = target.GetComponent<Animator>().GetFloat("LastInputX");
+//         float lastY = target.GetComponent<Animator>().GetFloat("LastInputY");
         
-        // Hướng ngược lại = sau lưng player
-        Vector3 direction = new Vector3(-lastX, -lastY, 0).normalized;
+//         // Hướng ngược lại = sau lưng player
+//         Vector3 direction = new Vector3(-lastX, -lastY, 0).normalized;
         
-        // NẾU KHÔNG CÓ HƯỚNG (player đứng yên), random 1 hướng
-        if (direction == Vector3.zero)
-        {
-            float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-            direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
-        }
+//         // NẾU KHÔNG CÓ HƯỚNG (player đứng yên), random 1 hướng
+//         if (direction == Vector3.zero)
+//         {
+//             float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+//             direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
+//         }
         
-        Vector3 spawnPos = Vector3.zero;
-        bool foundValidSpot = false;
-        int maxAttempts = 20;
-        int attempts = 0;
+//         Vector3 spawnPos = Vector3.zero;
+//         bool foundValidSpot = false;
+//         int maxAttempts = 20;
+//         int attempts = 0;
         
-        // Thử tìm vị trí hợp lệ
-        while (!foundValidSpot && attempts < maxAttempts)
-        {
-            // Tính vị trí spawn
-            if (attempts == 0)
-            {
-                // Lần đầu: thử sau lưng player
-                spawnPos = playerPos + (direction * spawnDistance);
-            }
-            else
-            {
-                // Các lần sau: thử random xung quanh player
-                float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-                Vector3 randomDir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
-                spawnPos = playerPos + (randomDir * spawnDistance);
-            }
+//         // Thử tìm vị trí hợp lệ
+//         while (!foundValidSpot && attempts < maxAttempts)
+//         {
+//             // Tính vị trí spawn
+//             if (attempts == 0)
+//             {
+//                 // Lần đầu: thử sau lưng player
+//                 spawnPos = playerPos + (direction * spawnDistance);
+//             }
+//             else
+//             {
+//                 // Các lần sau: thử random xung quanh player
+//                 float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+//                 Vector3 randomDir = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
+//                 spawnPos = playerPos + (randomDir * spawnDistance);
+//             }
             
-            // Kiểm tra xem vị trí có trống không (radius 0.5f để check vùng xung quanh)
-            Collider2D hit = Physics2D.OverlapCircle(spawnPos, 0.5f);
+//             // Kiểm tra xem vị trí có trống không (radius 0.5f để check vùng xung quanh)
+//             Collider2D hit = Physics2D.OverlapCircle(spawnPos, 0.5f);
             
-            // Nếu không có collider HOẶC chỉ va chạm với Player thì OK
-            if (hit == null || hit.CompareTag("Player"))
-            {
-                foundValidSpot = true;
-            }
+//             // Nếu không có collider HOẶC chỉ va chạm với Player thì OK
+//             if (hit == null || hit.CompareTag("Player"))
+//             {
+//                 foundValidSpot = true;
+//             }
             
-            attempts++;
-        }
+//             attempts++;
+//         }
         
-        // Nếu sau 20 lần vẫn không tìm được → spawn xa hơn
-        if (!foundValidSpot)
-        {
-            spawnPos = playerPos + (direction * (spawnDistance + 3f));
-        }
+//         // Nếu sau 20 lần vẫn không tìm được → spawn xa hơn
+//         if (!foundValidSpot)
+//         {
+//             spawnPos = playerPos + (direction * (spawnDistance + 3f));
+//         }
         
-        black.transform.position = spawnPos;
-        black.transform.rotation = Quaternion.identity; // Reset rotation
-        black.SetActive(true);
-        blackSpawned = true;
+//         black.transform.position = spawnPos;
+//         black.transform.rotation = Quaternion.identity; // Reset rotation
+//         black.SetActive(true);
+//         blackSpawned = true;
         
-        if(blackAnimator) blackAnimator.ResetTrigger("Kill");
+//         if(blackAnimator) blackAnimator.ResetTrigger("Kill");
         
-        // Sửa logic âm thanh
-        if (audioSource != null && chaseMusic != null)
-        {
-            if (audioSource.isPlaying) audioSource.Stop();
-            audioSource.clip = chaseMusic;
-            audioSource.loop = true;
-            audioSource.Play();
-        }
-    }
+//         // Sửa logic âm thanh
+//         if (audioSource != null && chaseMusic != null)
+//         {
+//             if (audioSource.isPlaying) audioSource.Stop();
+//             audioSource.clip = chaseMusic;
+//             audioSource.loop = true;
+//             audioSource.Play();
+//         }
+//     }
 
-    timer += Time.deltaTime;
-    if (timer >= chaseDelay)
-    {
-        timer = 0f;
-        currentState = State.Chase;
-    }
-}
+//     timer += Time.deltaTime;
+//     if (timer >= chaseDelay)
+//     {
+//         timer = 0f;
+//         currentState = State.Chase;
+//     }
+// }
 
     // void Chase()
     // {
