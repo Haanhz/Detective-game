@@ -18,12 +18,12 @@ public class GameManager : MonoBehaviour
     public bool isNight = false;
     public int currentNight = 0;
     private float timer = 0f;
-    
+
     public Light2D environmentLight;
 
     // --- CÁC BIẾN CHO ĐẾM NGƯỢC ---
-    public TextMeshProUGUI countdownText; 
-    public float countdownThreshold = 3f; 
+    public TextMeshProUGUI countdownText;
+    public float countdownThreshold = 3f;
     private bool isCountingDown = false;
     // ------------------------------
 
@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     public event Action OnNightStart;
     public event Action OnDayEnded;
     public bool gameEnded = false;
+    public TextMeshProUGUI dayDeductionText; // Text hiển thị "-1 Day"
+    public float dayDeductionDisplayTime = 2f;
 
     private GameObject[] allNPCs;
     private GameObject[] allMurders;
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-        
+
         allNPCs = GameObject.FindGameObjectsWithTag("NPC");
         allMurders = GameObject.FindGameObjectsWithTag("Murder");
 
@@ -80,6 +82,43 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    public IEnumerator ShowDayDeduction()
+    {
+        if (dayDeductionText == null) yield break;
+
+        dayDeductionText.gameObject.SetActive(true);
+        dayDeductionText.text = "-1";
+
+        Color color = dayDeductionText.color;
+        color.a = 0f;
+        dayDeductionText.color = color;
+
+        float fadeInTime = 0.5f;
+        float elapsed = 0f;
+
+        // ĐỔI: Time.deltaTime → Time.unscaledDeltaTime
+        while (elapsed < fadeInTime)
+        {
+            elapsed += Time.unscaledDeltaTime; // ← Không bị ảnh hưởng bởi timeScale
+            color.a = Mathf.Lerp(0f, 1f, elapsed / fadeInTime);
+            dayDeductionText.color = color;
+            yield return null;
+        }
+
+        // ĐỔI: WaitForSeconds → WaitForSecondsRealtime
+        yield return new WaitForSecondsRealtime(dayDeductionDisplayTime - fadeInTime * 2);
+
+        elapsed = 0f;
+        while (elapsed < fadeInTime)
+        {
+            elapsed += Time.unscaledDeltaTime; // ← Không bị ảnh hưởng bởi timeScale
+            color.a = Mathf.Lerp(1f, 0f, elapsed / fadeInTime);
+            dayDeductionText.color = color;
+            yield return null;
+        }
+
+        dayDeductionText.gameObject.SetActive(false);
+    }
 
     IEnumerator CountdownSequence(float targetDuration)
     {
@@ -99,10 +138,10 @@ public class GameManager : MonoBehaviour
             if (countdownText != null)
             {
                 int secondsDisplay = Mathf.CeilToInt(targetDuration - timer);
-                if (secondsDisplay > 0) 
+                if (secondsDisplay > 0)
                     countdownText.text = secondsDisplay.ToString();
             }
-            yield return null; 
+            yield return null;
         }
 
         if (countdownText != null) countdownText.gameObject.SetActive(false);
@@ -117,9 +156,9 @@ public class GameManager : MonoBehaviour
         // THÊM DÒNG NÀY: Xác nhận đồ đã nhặt đêm qua là vĩnh viễn, không phải đồ "tạm" nữa
         if (EvidenceManager.Instance != null)
         {
-            EvidenceManager.Instance.nightlyEvidenceTags.Clear(); 
+            EvidenceManager.Instance.nightlyEvidenceTags.Clear();
         }
-        
+
         StopAllCoroutines();
         isCountingDown = false;
         if (countdownText != null) countdownText.gameObject.SetActive(false);
@@ -128,7 +167,7 @@ public class GameManager : MonoBehaviour
         environmentLight.color = Color.white;
         Debug.Log("GOOD MORNING!");
         SetNPCActive(true);
-        
+
         if (audioSource != null && dayMusic != null)
         {
             audioSource.Stop();
@@ -145,14 +184,14 @@ public class GameManager : MonoBehaviour
         currentNight++;
         SetNPCActive(false);
 
-        StopAllCoroutines(); 
+        StopAllCoroutines();
         isCountingDown = false;
         if (countdownText != null) countdownText.gameObject.SetActive(false);
 
         OnNightStart?.Invoke();
         environmentLight.color = new Color(31f / 255f, 31f / 255f, 61f / 255f);
-        Debug.Log("IS NIGHT ALREADY? Night = "+ currentNight);
-        
+        Debug.Log("IS NIGHT ALREADY? Night = " + currentNight);
+
         if (audioSource != null && nightMusic != null)
         {
             audioSource.Stop();
@@ -182,6 +221,7 @@ public class GameManager : MonoBehaviour
     void EndNightAndNextDay()
     {
         daysRemaining--;
+        StartCoroutine(ShowDayDeduction());
         OnDayEnded?.Invoke();
 
         if (daysRemaining <= 0)
@@ -202,6 +242,7 @@ public class GameManager : MonoBehaviour
     {
         if (!isNight) return;
         daysRemaining--;
+        StartCoroutine(ShowDayDeduction());
         OnDayEnded?.Invoke();
         if (daysRemaining <= 0)
         {

@@ -233,11 +233,12 @@ public void checkWrongEnding()
             break;
         }
     }
-    
+
     // Kiểm tra conditions
-    bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 0);
-    bool maiCondition = CaseFileUI.Instance.HasInformation("Mai", 3);
-    
+    bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 0) 
+                        || CaseFileUI.Instance.HasInformation("Tan", 2);
+    bool maiCondition = CaseFileUI.Instance.HasInformation("Mai", 1);
+
     // Chỉ cần 1 trong các điều kiện là true
     if (hasAnyEvidence || tanCondition || maiCondition)
         WrongEndingTriggered = true;

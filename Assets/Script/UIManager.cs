@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
     public Color lowColor = Color.red;
     private Image staminaFill;
     private bool isFlashing = false;
-    
+
 
     // Lose + Replay
     // public TextMeshProUGUI loseText;
@@ -58,88 +58,94 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-        // void Start()
-        // {
-        //     Time.timeScale = 1f;
-        //     // 1. Khởi tạo tham chiếu UI Stamina
-        //     if (staminaSlider != null && staminaSlider.fillRect != null)
-        //     {
-        //         staminaFill = staminaSlider.fillRect.GetComponent<Image>();
-        //     }
+    // void Start()
+    // {
+    //     Time.timeScale = 1f;
+    //     // 1. Khởi tạo tham chiếu UI Stamina
+    //     if (staminaSlider != null && staminaSlider.fillRect != null)
+    //     {
+    //         staminaFill = staminaSlider.fillRect.GetComponent<Image>();
+    //     }
 
 
 
-        //     // 3. THIẾT LẬP MẶC ĐỊNH MÀN HÌNH CHỜ (Start Menu)
-            
-        //     // Ẩn các UI gameplay không cần thiết lúc này
-        //     if (dayRemainText != null) dayRemainText.gameObject.SetActive(false);
-        //     if (staminaSlider != null) staminaSlider.gameObject.SetActive(false);
-        //     if (menuButtonObject != null) menuButtonObject.SetActive(false);
-        //     if (cutscenePanel != null) cutscenePanel.SetActive(false);
+    //     // 3. THIẾT LẬP MẶC ĐỊNH MÀN HÌNH CHỜ (Start Menu)
 
-        //     // DỌN DẸP VÀ GÁN LẠI SỰ KIỆN NÚT BẤM (Sửa lỗi nút không bấm được lần 2)
-        //     if (startButton != null)
-        //     {
-        //         startButton.onClick.RemoveAllListeners();
-        //         startButton.onClick.AddListener(OnStartPressed);
-        //     }
+    //     // Ẩn các UI gameplay không cần thiết lúc này
+    //     if (dayRemainText != null) dayRemainText.gameObject.SetActive(false);
+    //     if (staminaSlider != null) staminaSlider.gameObject.SetActive(false);
+    //     if (menuButtonObject != null) menuButtonObject.SetActive(false);
+    //     if (cutscenePanel != null) cutscenePanel.SetActive(false);
 
-        //     if (continueButton != null)
-        //     {
-        //         bool hasSaved = PlayerPrefs.GetInt("HasSavedGame", 0) == 1;
-        //         continueButton.gameObject.SetActive(hasSaved);
-        //         continueButton.onClick.RemoveAllListeners();
-        //         continueButton.onClick.AddListener(OnContinuePressed);
-        //     }
+    //     // DỌN DẸP VÀ GÁN LẠI SỰ KIỆN NÚT BẤM (Sửa lỗi nút không bấm được lần 2)
+    //     if (startButton != null)
+    //     {
+    //         startButton.onClick.RemoveAllListeners();
+    //         startButton.onClick.AddListener(OnStartPressed);
+    //     }
 
-        //     if (replayButton != null)
-        //     {
-        //         // Nút Replay chỉ hiện khi chết, lúc Start game thì ẩn đi
-        //         replayButton.gameObject.SetActive(false); 
-        //         replayButton.onClick.RemoveAllListeners();
-        //         replayButton.onClick.AddListener(ReplayScene);
-        //     }
+    //     if (continueButton != null)
+    //     {
+    //         bool hasSaved = PlayerPrefs.GetInt("HasSavedGame", 0) == 1;
+    //         continueButton.gameObject.SetActive(hasSaved);
+    //         continueButton.onClick.RemoveAllListeners();
+    //         continueButton.onClick.AddListener(OnContinuePressed);
+    //     }
 
-        //     if (isLoadingSave)
-        //     {
-        //         isLoadingSave = false;
+    //     if (replayButton != null)
+    //     {
+    //         // Nút Replay chỉ hiện khi chết, lúc Start game thì ẩn đi
+    //         replayButton.gameObject.SetActive(false); 
+    //         replayButton.onClick.RemoveAllListeners();
+    //         replayButton.onClick.AddListener(ReplayScene);
+    //     }
 
-        //         if (chase.player != null)
-        //             SaveSystem.LoadAll(chase.player.gameObject);
+    //     if (isLoadingSave)
+    //     {
+    //         isLoadingSave = false;
 
-        //         EvidenceManager.Instance.LockCollectedItemsInScene();
-        //         if (EvidenceManager.Instance != null)
-        //             EvidenceManager.Instance.CleanUpCollectedItemsInScene();
+    //         if (chase.player != null)
+    //             SaveSystem.LoadAll(chase.player.gameObject);
 
-        //         if (ProfileUI.Instance != null)
-        //             ProfileUI.Instance.UpdateUI();
+    //         EvidenceManager.Instance.LockCollectedItemsInScene();
+    //         if (EvidenceManager.Instance != null)
+    //             EvidenceManager.Instance.CleanUpCollectedItemsInScene();
 
-        //         startPanel.SetActive(false);
-        //         cutscenePanel.SetActive(false);
+    //         if (ProfileUI.Instance != null)
+    //             ProfileUI.Instance.UpdateUI();
 
-        //         StartGameplay();
-        //         return;
-        //     }
+    //         startPanel.SetActive(false);
+    //         cutscenePanel.SetActive(false);
 
-        //     // 4. QUẢN LÝ THỜI GIAN VÀ NHẠC
-        //     if (startPanel != null && startPanel.activeSelf)
-        //     {
-        //         Time.timeScale = 0f; // Dừng game khi đang ở menu
-        //     }
+    //         StartGameplay();
+    //         return;
+    //     }
 
-        //     if (!cutscenePlayed && audioSource != null && thumbnailMusic != null)
-        //     {
-        //         if (audioSource.clip != thumbnailMusic) // Tránh việc nhạc bị load lại từ đầu nếu đã đang chạy
-        //         {
-        //             audioSource.clip = thumbnailMusic;
-        //             audioSource.loop = true;
-        //             audioSource.Play();
-        //         }
-        //     }
-        // }
+    //     // 4. QUẢN LÝ THỜI GIAN VÀ NHẠC
+    //     if (startPanel != null && startPanel.activeSelf)
+    //     {
+    //         Time.timeScale = 0f; // Dừng game khi đang ở menu
+    //     }
+
+    //     if (!cutscenePlayed && audioSource != null && thumbnailMusic != null)
+    //     {
+    //         if (audioSource.clip != thumbnailMusic) // Tránh việc nhạc bị load lại từ đầu nếu đã đang chạy
+    //         {
+    //             audioSource.clip = thumbnailMusic;
+    //             audioSource.loop = true;
+    //             audioSource.Play();
+    //         }
+    //     }
+    // }
     void Start()
     {
         // 1. Khởi tạo cơ bản
+        
+        if (PlayerPrefs.GetInt("ShowDayDeduction", 0) == 1)
+        {
+            StartCoroutine(ShowDayDeductionDelayed());
+        PlayerPrefs.SetInt("ShowDayDeduction", 0); // Reset flag
+        }
         Time.timeScale = 0f;
 
         if (staminaSlider != null && staminaSlider.fillRect != null)
@@ -171,13 +177,13 @@ public class UIManager : MonoBehaviour
         if (replayButton != null)
         {
 
-            replayButton.gameObject.SetActive(false); 
+            replayButton.gameObject.SetActive(false);
             replayButton.onClick.RemoveAllListeners();
             replayButton.onClick.AddListener(ReplayScene);
         }
 
         // 3. XỬ LÝ LOGIC NẠP GAME (CONTINUE HOẶC NEW GAME)
-        if (isLoadingSave) 
+        if (isLoadingSave)
         {
             // TRƯỜNG HỢP: CONTINUE
             isLoadingSave = false;
@@ -198,7 +204,7 @@ public class UIManager : MonoBehaviour
             startPanel.SetActive(false);
 
             StartGameplay();
-            
+
             // Nạp trễ Stage NPC để tránh bị reset
             Invoke("LateLoadNPCStage", 0.1f);
             return;
@@ -221,7 +227,7 @@ public class UIManager : MonoBehaviour
         // 4. TRẠNG THÁI CHỜ Ở MENU CHÍNH (Lần đầu mở game)
         if (startPanel != null && startPanel.activeSelf)
         {
-            Time.timeScale = 0f; 
+            Time.timeScale = 0f;
         }
 
         // Quản lý nhạc nền Menu
@@ -235,6 +241,15 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+    IEnumerator ShowDayDeductionDelayed()
+{
+    // Đợi cho đến khi GameManager đã sẵn sàng
+    yield return new WaitUntil(() => gm != null && gm.dayDeductionText != null);
+    
+    Debug.Log("Showing Day Deduction UI");
+    yield return StartCoroutine(gm.ShowDayDeduction());
+}
+
 
     // Thêm vào UIManager.cs
     public void ShowStartMenuCustom()
@@ -262,11 +277,12 @@ public class UIManager : MonoBehaviour
         //     }
         //     return;
         // }
+ 
         if (canReplay && Input.GetKeyDown(KeyCode.F))
-    {
-        ReplayScene();
-        return;
-    }
+        {
+            ReplayScene();
+            return;
+        }
 
         if (!gameStarted) return; // gameplay UI chưa chạy
 
@@ -278,71 +294,71 @@ public class UIManager : MonoBehaviour
     //===========================================
     // START GAME
     //===========================================
-        // void OnStartPressed() 
-        // {
-        //     // 1. Reset các biến điều hướng
-        //     isLoadingSave = false;
-        //     cutscenePlayed = false;
+    // void OnStartPressed() 
+    // {
+    //     // 1. Reset các biến điều hướng
+    //     isLoadingSave = false;
+    //     cutscenePlayed = false;
 
-        //     // 2. Xóa sạch ổ cứng hoàn toàn
-        //     PlayerPrefs.DeleteAll(); 
-        //     PlayerPrefs.Save();
-            
-        //     // 3. Xóa sạch dữ liệu trong RAM (Dictionary, List, Unlocks)
-        //     if (DialogueManager.Instance != null) {
-        //         DialogueManager.Instance.Sang.Clear();
-        //         DialogueManager.Instance.Mai.Clear();
-        //         DialogueManager.Instance.Tan.Clear();
-        //         DialogueManager.Instance.May.Clear();
-        //     }
-        //     if (EvidenceManager.Instance != null) {
-        //         EvidenceManager.Instance.collectedEvidence.Clear();
-        //         EvidenceManager.Instance.evidenceWeights.Clear();
-        //     }
-        //     CharacterUnlockManager.unlockedIndices.Clear();
+    //     // 2. Xóa sạch ổ cứng hoàn toàn
+    //     PlayerPrefs.DeleteAll(); 
+    //     PlayerPrefs.Save();
 
-        //     // 4. RESET TRẠNG THÁI NPC TRONG SCENE HIỆN TẠI
-        //     NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
-        //     foreach (NPC npc in allNPCs) {
-        //         npc.dialogueStage = 0; // Đưa về Intro
-        //         foreach (var block in npc.conditionalBlocks) {
-        //             block.hasRead = false; // Xóa trạng thái đã đọc
-        //         }
-        //     }
+    //     // 3. Xóa sạch dữ liệu trong RAM (Dictionary, List, Unlocks)
+    //     if (DialogueManager.Instance != null) {
+    //         DialogueManager.Instance.Sang.Clear();
+    //         DialogueManager.Instance.Mai.Clear();
+    //         DialogueManager.Instance.Tan.Clear();
+    //         DialogueManager.Instance.May.Clear();
+    //     }
+    //     if (EvidenceManager.Instance != null) {
+    //         EvidenceManager.Instance.collectedEvidence.Clear();
+    //         EvidenceManager.Instance.evidenceWeights.Clear();
+    //     }
+    //     CharacterUnlockManager.unlockedIndices.Clear();
 
-        //     if (ChaseManager.instance != null && ChaseManager.instance.player != null)
-        //     {
-        //         // 👉 TỌA ĐỘ SPAWN PHÒNG KHÁCH
-        //         ChaseManager.instance.player.transform.position = new Vector2(-17.58f, -30.6f);
-        //     }
+    //     // 4. RESET TRẠNG THÁI NPC TRONG SCENE HIỆN TẠI
+    //     NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
+    //     foreach (NPC npc in allNPCs) {
+    //         npc.dialogueStage = 0; // Đưa về Intro
+    //         foreach (var block in npc.conditionalBlocks) {
+    //             block.hasRead = false; // Xóa trạng thái đã đọc
+    //         }
+    //     }
 
-        //     // Reset camera confiner về phòng khách
-        //     MapTransition[] transitions = Object.FindObjectsByType<MapTransition>(FindObjectsSortMode.None);
-        //     foreach (var tr in transitions)
-        //     {
-        //         if (tr.areaName == "Living room 1")
-        //         {
-        //             var confiner = Object.FindFirstObjectByType<Unity.Cinemachine.CinemachineConfiner2D>();
-        //             if (confiner != null)
-        //                 confiner.BoundingShape2D = tr.mapBoundary;
+    //     if (ChaseManager.instance != null && ChaseManager.instance.player != null)
+    //     {
+    //         // 👉 TỌA ĐỘ SPAWN PHÒNG KHÁCH
+    //         ChaseManager.instance.player.transform.position = new Vector2(-17.58f, -30.6f);
+    //     }
 
-        //             PlayerPrefs.SetString("CurrentRoomName", "Living room 1");
-        //             break;
-        //         }
-        //     }
-            
-        //     // 5. Bắt đầu Cutscene mới
-        //     Time.timeScale = 1f;
-        //     startPanel.SetActive(false);
-        //     if (audioSource != null && audioSource.isPlaying) audioSource.Stop();
-        //     StartCoroutine(PlayCutscene());
-        // }
-    void OnStartPressed() 
+    //     // Reset camera confiner về phòng khách
+    //     MapTransition[] transitions = Object.FindObjectsByType<MapTransition>(FindObjectsSortMode.None);
+    //     foreach (var tr in transitions)
+    //     {
+    //         if (tr.areaName == "Living room 1")
+    //         {
+    //             var confiner = Object.FindFirstObjectByType<Unity.Cinemachine.CinemachineConfiner2D>();
+    //             if (confiner != null)
+    //                 confiner.BoundingShape2D = tr.mapBoundary;
+
+    //             PlayerPrefs.SetString("CurrentRoomName", "Living room 1");
+    //             break;
+    //         }
+    //     }
+
+    //     // 5. Bắt đầu Cutscene mới
+    //     Time.timeScale = 1f;
+    //     startPanel.SetActive(false);
+    //     if (audioSource != null && audioSource.isPlaying) audioSource.Stop();
+    //     StartCoroutine(PlayCutscene());
+    // }
+    void OnStartPressed()
     {
-        PlayerPrefs.DeleteAll(); 
+        PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("IsNewGameFlag", 1); // Đánh dấu đây là New Game
         PlayerPrefs.Save();
-        
+
         isLoadingSave = false;
         cutscenePlayed = false;
         Time.timeScale = 1f;
@@ -350,7 +366,7 @@ public class UIManager : MonoBehaviour
     }
 
     // Hàm mới cho nút Continue để nhảy cóc qua Cutscene
-    void OnContinuePressed() 
+    void OnContinuePressed()
     {
         Time.timeScale = 1f; // BẮT BUỘC: Mở khóa thời gian trước
         isLoadingSave = true; // Đánh dấu để hàm Start biết đường nạp dữ liệu
@@ -425,7 +441,7 @@ public class UIManager : MonoBehaviour
     void StartGameplay()
     {
         gameStarted = true;
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
         GameManager.Instance.StartDay();
 
         // Bật UI gameplay
@@ -478,17 +494,20 @@ public class UIManager : MonoBehaviour
         isFlashing = false;
     }
 
-    void CheckPlayerDeath() {
-        if (chase.player.killed && !replayButton.gameObject.activeSelf) {
+    void CheckPlayerDeath()
+    {
+        if (chase.player.killed && !replayButton.gameObject.activeSelf)
+        {
             replayButton.gameObject.SetActive(true);
             canReplay = true;
         }
     }
 
-    public void ReplayScene() 
+    public void ReplayScene()
     {
         Time.timeScale = 1f;
-        
+        bool shouldShowDayDeduction = false;
+
         // TRƯỜNG HỢP 1: CHẾT (BỊ GIẾT HOẶC KIỆT SỨC)
         if (chase.player.killed || chase.player.exhausted)
         {
@@ -499,13 +518,14 @@ public class UIManager : MonoBehaviour
             }
 
             // Cả 2 loại chết đều bị trừ ngày và ép về ban ngày
-            gm.daysRemaining--; 
+            gm.daysRemaining--;
             gm.isNight = false;
-            
+
             EndingManager.IsKilledByBlack = false;
 
             // Lưu trạng thái Reset (Vị trí mặc định sẽ được nạp lại do nạp Scene)
             SaveSystem.SaveAll(chase.player.gameObject);
+            shouldShowDayDeduction = true;
         }
         // TRƯỜNG HỢP 2: CÁC ENDING SUY LUẬN (GIỮ NGUYÊN EVIDENCE & STAMINA)
         else if (EndingManager.IsDetectiveEnding)
@@ -515,11 +535,14 @@ public class UIManager : MonoBehaviour
 
             // Lưu lại để giữ nguyên Stamina và Inventory hiện tại
             SaveSystem.SaveAll(chase.player.gameObject);
+            shouldShowDayDeduction = true;
         }
+        PlayerPrefs.SetInt("ShowDayDeduction", shouldShowDayDeduction ? 1 : 0);
+        PlayerPrefs.Save();
 
         isLoadingSave = true;
         if (replayButton != null) replayButton.gameObject.SetActive(false);
-        
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
