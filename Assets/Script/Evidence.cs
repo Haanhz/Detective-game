@@ -232,6 +232,7 @@ public class Evidence : MonoBehaviour
         switch (tagName)
         {
             case "HangNoteBook":
+            case "Ultimatum":
             case "Limit1":
             case "Limit2":
             case "Limit3":
