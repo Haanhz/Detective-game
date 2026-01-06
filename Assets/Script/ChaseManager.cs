@@ -160,30 +160,77 @@ public class ChaseManager : MonoBehaviour
         }
     }
 
+    // void SpawnBlack()
+    // {
+    //     if (!blackSpawned)
+    //     {
+    //         timer = 0f;
+    //         Vector3 playerPos = target.position;
+    //         float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+    //         Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
+    //         Vector3 offset = direction * spawnDistance;
+            
+    //         black.transform.position = playerPos + offset;
+    //         black.SetActive(true);
+    //         blackSpawned = true;
+            
+    //         if(blackAnimator) blackAnimator.ResetTrigger("Kill");
+    //         if (audioSource != null && chaseMusic != null && audioSource.isPlaying)
+    //     {
+    //         audioSource.Stop();   
+    //         audioSource.clip = chaseMusic;
+    //         audioSource.loop = true;
+    //         audioSource.Play();
+    //     }
+    //     }
+
+
+    //     timer += Time.deltaTime;
+    //     if (timer >= chaseDelay)
+    //     {
+    //         timer = 0f;
+    //         currentState = State.Chase;
+    //     }
+    // }
+
     void SpawnBlack()
     {
         if (!blackSpawned)
         {
             timer = 0f;
-            Vector3 playerPos = target.position;
-            float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-            Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
-            Vector3 offset = direction * spawnDistance;
-            
-            black.transform.position = playerPos + offset;
+            Vector3 spawnPos = Vector3.zero;
+            bool validSpot = false;
+            int attempts = 0;
+
+            // Thử tìm vị trí trống tối đa 10 lần
+            while (!validSpot && attempts < 20) // Thử nhiều lần hơn
+            {
+                // Spawn xa hơn một chút để tránh kẹt vào các căn phòng nhỏ
+                float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+                Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
+                spawnPos = target.position + (direction * (spawnDistance + 2f)); 
+
+                // Kiểm tra một vùng rộng (radius 1.0f) xem có chạm Collider-Wall không
+                Collider2D hit = Physics2D.OverlapCircle(spawnPos, 1.0f); 
+                if (hit == null) validSpot = true;
+                attempts++;
+            }
+
+            black.transform.position = spawnPos;
+            black.transform.rotation = Quaternion.identity; // Reset xoay để tránh bị ngược
             black.SetActive(true);
             blackSpawned = true;
             
             if(blackAnimator) blackAnimator.ResetTrigger("Kill");
-            if (audioSource != null && chaseMusic != null && audioSource.isPlaying)
-        {
-            audioSource.Stop();   
-            audioSource.clip = chaseMusic;
-            audioSource.loop = true;
-            audioSource.Play();
+            
+            // Sửa lỗi logic âm thanh (kiểm tra audioSource và phát nhạc)
+            if (audioSource != null && chaseMusic != null)
+            {
+                audioSource.clip = chaseMusic;
+                audioSource.loop = true;
+                if (!audioSource.isPlaying) audioSource.Play();
+            }
         }
-        }
-
 
         timer += Time.deltaTime;
         if (timer >= chaseDelay)
@@ -193,9 +240,80 @@ public class ChaseManager : MonoBehaviour
         }
     }
 
+    // void Chase()
+    // {
+    //     float distanceToPlayer = Vector3.Distance(black.transform.position, target.position);
+    //     if (distanceToPlayer > loseDistance)
+    //     {
+    //         StopChaseMusic();
+    //         EndChase();
+    //         currentState = State.EndChase;
+    //         return;
+    //     }
+    //     if (distanceToPlayer <= killDistance && !player.killed)
+    //     {
+    //         currentState = State.Kill;
+    //         if(rb) rb.linearVelocity = Vector2.zero;
+
+    //         if (blackAnimator)
+    //         {
+    //             blackAnimator.SetFloat("MoveX", 0);
+    //             blackAnimator.SetFloat("MoveY", 0);
+    //             blackAnimator.SetTrigger("Kill");
+    //         }
+            
+    //         StartCoroutine(KillProcess()); 
+    //         return;
+    //     }
+
+    //     Vector3 diff = target.position - black.transform.position;
+    //     Vector2 moveDir = Vector2.zero;
+
+    //     if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+    //     {
+    //         moveDir = new Vector2(Mathf.Sign(diff.x), 0);
+    //     }
+    //     else
+    //     {
+    //         moveDir = new Vector2(0, Mathf.Sign(diff.y));
+    //     }
+
+    //     if(rb) rb.linearVelocity = moveDir * moveSpeed;
+
+    //     if (moveDir.x != 0) 
+    //     {
+    //         black.transform.localScale = new Vector3(moveDir.x > 0 ? 1 : -1, 1, 1);
+    //     }
+
+    //     if (blackAnimator != null)
+    //     {
+    //         blackAnimator.SetFloat("MoveX", moveDir.x);
+    //         blackAnimator.SetFloat("MoveY", moveDir.y);
+    //     }
+
+    //     timer += Time.deltaTime;
+        
+    //     if (timer >= chaseDur || player.killed)
+    //     {
+    //         timer = 0f;
+    //         if(rb) rb.linearVelocity = Vector2.zero;
+            
+    //         if(blackAnimator) 
+    //         {
+    //             blackAnimator.SetFloat("MoveX", 0);
+    //             blackAnimator.SetFloat("MoveY", 0);
+    //         }
+    //         StopChaseMusic();
+    //         EndChase();
+    //         currentState = State.EndChase;
+    //     }
+    // }
+
+    // Hàm kiểm tra vật cản bằng Raycast
     void Chase()
     {
         float distanceToPlayer = Vector3.Distance(black.transform.position, target.position);
+
         if (distanceToPlayer > loseDistance)
         {
             StopChaseMusic();
@@ -203,63 +321,74 @@ public class ChaseManager : MonoBehaviour
             currentState = State.EndChase;
             return;
         }
+
         if (distanceToPlayer <= killDistance && !player.killed)
         {
             currentState = State.Kill;
-            if(rb) rb.linearVelocity = Vector2.zero;
-
-            if (blackAnimator)
-            {
-                blackAnimator.SetFloat("MoveX", 0);
-                blackAnimator.SetFloat("MoveY", 0);
-                blackAnimator.SetTrigger("Kill");
-            }
-            
-            StartCoroutine(KillProcess()); 
+            if (rb) rb.linearVelocity = Vector2.zero;
+            if (blackAnimator) blackAnimator.SetTrigger("Kill");
+            StartCoroutine(KillProcess());
             return;
         }
 
+        // --- LOGIC DI CHUYỂN 4 HƯỚNG ---
         Vector3 diff = target.position - black.transform.position;
-        Vector2 moveDir = Vector2.zero;
+        Vector2 primaryDir = (Mathf.Abs(diff.x) > Mathf.Abs(diff.y)) ? new Vector2(Mathf.Sign(diff.x), 0) : new Vector2(0, Mathf.Sign(diff.y));
+        Vector2 secondaryDir = (primaryDir.x != 0) ? new Vector2(0, Mathf.Sign(diff.y)) : new Vector2(Mathf.Sign(diff.x), 0);
 
-        if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
+        Vector2 finalDir = primaryDir;
+
+        if (IsPathBlocked(primaryDir))
         {
-            moveDir = new Vector2(Mathf.Sign(diff.x), 0);
+            // Nếu hướng chính bị chặn, thử hướng phụ
+            if (!IsPathBlocked(secondaryDir))
+            {
+                finalDir = secondaryDir;
+            }
+            else
+            {
+                // NẾU CẢ 2 BỊ CHẶN: Thử "lách" bằng cách đi ngược lại một chút hoặc đứng yên
+                finalDir = Vector2.zero; 
+            }
         }
-        else
-        {
-            moveDir = new Vector2(0, Mathf.Sign(diff.y));
-        }
 
-        if(rb) rb.linearVelocity = moveDir * moveSpeed;
+        if (rb) rb.linearVelocity = finalDir * moveSpeed;
 
-        if (moveDir.x != 0) 
+        // Cập nhật hiển thị
+        black.transform.rotation = Quaternion.identity;
+        if (finalDir.x != 0) 
         {
-            black.transform.localScale = new Vector3(moveDir.x > 0 ? 1 : -1, 1, 1);
+            black.transform.localScale = new Vector3(finalDir.x > 0 ? 1 : -1, 1, 1);
         }
 
         if (blackAnimator != null)
         {
-            blackAnimator.SetFloat("MoveX", moveDir.x);
-            blackAnimator.SetFloat("MoveY", moveDir.y);
+            blackAnimator.SetFloat("MoveX", finalDir.x);
+            blackAnimator.SetFloat("MoveY", finalDir.y);
         }
 
         timer += Time.deltaTime;
-        
         if (timer >= chaseDur || player.killed)
         {
             timer = 0f;
-            if(rb) rb.linearVelocity = Vector2.zero;
-            
-            if(blackAnimator) 
-            {
-                blackAnimator.SetFloat("MoveX", 0);
-                blackAnimator.SetFloat("MoveY", 0);
-            }
             StopChaseMusic();
             EndChase();
             currentState = State.EndChase;
         }
+    }
+    bool IsPathBlocked(Vector2 dir)
+    {
+        if (dir == Vector2.zero) return false;
+        float checkDistance = 0.6f; 
+        // Dùng LayerMask để chỉ check va chạm với Tường (Layer Default hoặc Tilemap)
+        Vector2 rayStart = (Vector2)black.transform.position + (dir * 0.2f);
+        RaycastHit2D hit = Physics2D.Raycast(rayStart, dir, checkDistance);
+        
+        if (hit.collider != null && !hit.collider.CompareTag("Player") && hit.collider.gameObject != black)
+        {
+            return true; 
+        }
+        return false;
     }
     
     IEnumerator KillProcess()
@@ -277,6 +406,8 @@ public class ChaseManager : MonoBehaviour
     void EndChase()
     {
         if (rb) rb.linearVelocity = Vector2.zero;
+        black.transform.rotation = Quaternion.identity;
+        black.transform.localScale = new Vector3(1, 1, 1);
         black.SetActive(false);
         blackSpawned = false;
         timer = 0f;
