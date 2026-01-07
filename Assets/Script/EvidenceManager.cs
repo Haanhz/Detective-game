@@ -76,10 +76,20 @@ public class EvidenceManager : MonoBehaviour
     // Hàm để xóa dữ liệu buổi đêm khi Replay
     public void RevertNightlyEvidence()
     {
+        // DANH SÁCH MIỄN TRỪ: Những tag này sẽ KHÔNG bị mất khi chết
+        HashSet<string> exemptTags = new HashSet<string> { 
+            "LivingCorner", "Crack", "StrangeTable", "OpenWindow", "Rope" 
+        };
         Debug.Log($"[RevertNightly] Before revert - Nightly: {nightlyEvidenceTags.Count}, Permanent: {permanentlyRemovedEvidence.Count}");
         
         foreach (string tag in nightlyEvidenceTags)
         {
+            // Nếu thuộc danh sách miễn trừ -> Bỏ qua, giữ nguyên trong Inventory
+            if (exemptTags.Contains(tag)) 
+            {
+                Debug.Log($"[RevertNightly] Exempted: {tag} (Stays in inventory)");
+                continue; 
+            }
             // ← THÊM: Thêm vào danh sách permanently removed
             if (!permanentlyRemovedEvidence.Contains(tag))
             {
