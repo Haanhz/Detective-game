@@ -3,17 +3,13 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
-public class CaseFileUI : MonoBehaviour
+public class CaseFileUIold : MonoBehaviour
 {
-    public static CaseFileUI Instance;
+    public static CaseFileUIold Instance;
 
     [Header("Panel Reference")]
     public GameObject caseFilePanel;
 
-    [Header("Accusation UI")]
-    public TextMeshProUGUI npcDialogueText;
-    public TextMeshProUGUI phaseText;
-    
     [Header("Evidence Section")]
     public Transform evidenceGrid;
     public GameObject evidenceCardPrefab;
@@ -22,63 +18,22 @@ public class CaseFileUI : MonoBehaviour
     public Transform informationGrid;
     public GameObject informationCardPrefab;
 
-    [Header("Buttons")]
+    [Header("Selection Display")]
+    public TextMeshProUGUI selectedCountText;
+    public TextMeshProUGUI instructionText;
+
+    [Header("Submission")]
     public Button submitButton;
     public Button closeButton;
     public TextMeshProUGUI submitButtonText;
+    public int maxSelection = 10; // Tổng số evidence + info có thể chọn
+    public int minSelection = 3;
 
-    // Accusation data
-    private int currentPhase = 0;
-    private bool accusationMode = false;
-    
-    // Dữ liệu lưu trữ (để EndingManager check)
+    // Dữ liệu lưu trữ
     private List<string> selectedEvidenceNames = new List<string>();
     private List<string> selectedInformationKeys = new List<string>(); // Format: "NPCName-Key"
     private List<GameObject> spawnedEvidenceCards = new List<GameObject>();
     private List<GameObject> spawnedInfoCards = new List<GameObject>();
-
-    // Accusation phases
-    private static readonly AccusationPhase[] phases = new AccusationPhase[]
-    {
-        new AccusationPhase
-        {
-            dialogue = "Tôi là hung thủ? Cậu nói gì vậy… Có vết dây thừng trên cổ Hằng, cậu nói xem tôi lấy đâu ra dây thừng được?",
-            requiredEvidence = new string[] { "Rope" },
-            requiredInfo = new string[] { },
-            wrongEndings = new string[] { "HangPhone", "HangNoteBook" }, // Nếu chọn những thứ này -> WRONG
-            correctResponse = "Dây thừng trên attic á, tôi có bao giờ lên đó đâu?",
-            wrongResponse = "NOBODY ENDING"
-        },
-        new AccusationPhase
-        {
-            dialogue = "Dây thừng trên attic á, tôi có bao giờ lên đó đâu?",
-            requiredEvidence = new string[] { "Crack", "OpenWindow" },
-            requiredInfo = new string[] { "May-1", "Tan-1" }, // may1, tan1
-            optionalEvidence = new string[] { "Limit1" },
-            wrongEndings = new string[] { "HangPhone", "HangNoteBook" },
-            correctResponse = "Ư... được rồi, có thể tôi có vào... nhưng cậu nói xem, thế hung khí hiện tại ở đâu?",
-            wrongResponse = "NOBODY ENDING"
-        },
-        new AccusationPhase
-        {
-            dialogue = "Cậu nói xem thế hung khí hiện tại ở đâu?",
-            requiredEvidence = new string[] { },
-            requiredInfo = new string[] { "Tan-2", "Mai-3" }, // tan2, mai3
-            wrongEndings = new string[] { "HangPhone", "HangNoteBook" },
-            correctResponse = "Tôi không có lý do gì để giết Hằng cả, tại sao tôi phải giết cô?",
-            wrongResponse = "NOBODY ENDING"
-        },
-        new AccusationPhase
-        {
-            dialogue = "Tôi không có lý do gì để giết Hằng cả, tại sao tôi phải giết cô?",
-            requiredEvidence = new string[] { },
-            requiredInfo = new string[] { },
-            optionalEvidence = new string[] { "Limit2", "Limit3", "Limit4", "Limit5", "Limit6" },
-            wrongEndings = new string[] { "HangPhone", "HangNoteBook", "Tan-0", "Mai-1" }, // Thông tin nhiễu
-            correctResponse = "...",
-            wrongResponse = "WRONG ENDING"
-        }
-    };
 
     void Awake()
     {
@@ -92,169 +47,38 @@ public class CaseFileUI : MonoBehaviour
     {
         if (submitButton != null)
             submitButton.onClick.AddListener(OnSubmitClicked);
-        if (closeButton != null)
-            closeButton.onClick.AddListener(CloseCaseFile);
+        closeButton.onClick.AddListener(CloseCaseFile);
     }
 
-    // ===== ACCUSATION MODE =====
-    
-    public void StartAccusation()
+    public void OpenCaseFile()
     {
-        accusationMode = true;
-        currentPhase = 0;
-        selectedEvidenceNames.Clear();
-        selectedInformationKeys.Clear();
-        
         if (caseFilePanel != null) caseFilePanel.SetActive(true);
-        ShowPhase(currentPhase);
-    }
-
-    void ShowPhase(int phaseIndex)
-    {
-        if (phaseIndex >= phases.Length)
-        {
-            // Hết phases -> check ending
-            FinishAccusation();
-            return;
-        }
-
-        AccusationPhase phase = phases[phaseIndex];
-        
-        // Update dialogue
-        if (npcDialogueText != null)
-            npcDialogueText.text = phase.dialogue;
-        
-        // Update phase counter
-        if (phaseText != null)
-            phaseText.text = $"Phase {phaseIndex + 1}/{phases.Length}";
-        
-        // Hiển thị evidence & info cards
-        RefreshEvidence();
-        RefreshInformation();
-        
-        // Update button
-        if (submitButtonText != null)
-            submitButtonText.text = "Continue";
-    }
-
-    void OnSubmitClicked()
-    {
-        if (!accusationMode)
-        {
-            // Old normal case file behavior (nếu cần)
-            CloseCaseFile();
-            return;
-        }
-
-        // Check phase hiện tại
-        AccusationPhase phase = phases[currentPhase];
-        
-        // Kiểm tra có chọn thông tin WRONG không
-        bool hasWrongInfo = false;
-        foreach (string wrong in phase.wrongEndings)
-        {
-            if (wrong.Contains("-")) // Info
-            {
-                if (selectedInformationKeys.Contains(wrong))
-                {
-                    hasWrongInfo = true;
-                    break;
-                }
-            }
-            else // Evidence
-            {
-                if (selectedEvidenceNames.Contains(wrong))
-                {
-                    hasWrongInfo = true;
-                    break;
-                }
-            }
-        }
-
-        if (hasWrongInfo)
-        {
-            // WRONG ENDING ngay lập tức
-            ShowWrongEnding();
-            return;
-        }
-
-        // Kiểm tra có đủ required evidence/info không
-        bool hasAllRequired = true;
-        
-        foreach (string ev in phase.requiredEvidence)
-        {
-            if (!selectedEvidenceNames.Contains(ev))
-            {
-                hasAllRequired = false;
-                break;
-            }
-        }
-        
-        foreach (string info in phase.requiredInfo)
-        {
-            if (!selectedInformationKeys.Contains(info))
-            {
-                hasAllRequired = false;
-                break;
-            }
-        }
-
-        if (!hasAllRequired)
-        {
-            // NOBODY ENDING ngay lập tức
-            ShowNobodyEnding();
-            return;
-        }
-
-        // Đúng -> chuyển phase tiếp
-        currentPhase++;
-        ShowPhase(currentPhase);
-    }
-
-    void FinishAccusation()
-    {
-        // Đã qua hết 4 phases đúng -> check HALF hoặc FULL
-        CloseCaseFile();
-        
-        // EndingManager sẽ tự check điều kiện
-        if (EndingManager.Instance != null)
-        {
-            EndingManager.Instance.ShowEnding(playerDead: false);
-        }
-    }
-
-    void ShowWrongEnding()
-    {
-        CloseCaseFile();
-        
-        // Force WRONG ending
-        if (EndingManager.Instance != null)
-        {
-            // Set flag để EndingManager biết
-            EndingManager.Instance.checkWrongEnding();
-            EndingManager.Instance.ShowEnding(playerDead: false);
-        }
-    }
-
-    void ShowNobodyEnding()
-    {
-        CloseCaseFile();
-        
-        // NOBODY ending = không đủ evidence
-        if (EndingManager.Instance != null)
-        {
-            EndingManager.Instance.ShowEnding(playerDead: false);
-        }
+        ResetSelection();
+        RefreshUI();
     }
 
     public void CloseCaseFile()
     {
         if (caseFilePanel != null) caseFilePanel.SetActive(false);
-        accusationMode = false;
     }
 
-    // ===== REFRESH UI (giữ nguyên logic cũ) =====
-    
+    void ResetSelection()
+    {
+        selectedEvidenceNames.Clear();
+        selectedInformationKeys.Clear();
+        UpdateSelectionUI();
+    }
+
+    void RefreshUI()
+    {
+        RefreshEvidence();
+        RefreshInformation();
+        UpdateSelectionUI();
+    }
+
+    /// <summary>
+    /// Hiển thị evidence từ EvidenceManager
+    /// </summary>
     void RefreshEvidence()
     {
         // Xóa các card cũ
@@ -292,6 +116,9 @@ public class CaseFileUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Hiển thị information từ 4 dictionary của DialogueManager
+    /// </summary>
     void RefreshInformation()
     {
         // Xóa các card cũ
@@ -314,12 +141,12 @@ public class CaseFileUI : MonoBehaviour
         {
             int key = kvp.Key;
             string value = kvp.Value;
-            string uniqueKey = $"{npcName}-{key}";
+            string uniqueKey = $"{npcName}-{key}"; // Format: "Sang-1", "Mai-3"
 
             GameObject card = Instantiate(informationCardPrefab, informationGrid);
             spawnedInfoCards.Add(card);
 
-            // Set portrait
+            // Set portrait (lấy từ ProfileUI)
             Image portrait = card.transform.Find("Portrait")?.GetComponent<Image>();
             if (portrait != null && ProfileUI.Instance != null)
             {
@@ -330,15 +157,16 @@ public class CaseFileUI : MonoBehaviour
                 }
             }
 
-            // Set text
+            // Set text (NPC name + info)
             TextMeshProUGUI infoText = card.GetComponentInChildren<TextMeshProUGUI>();
             if (infoText != null)
             {
+                // Rút gọn text nếu quá dài
                 string displayText = value.Length > 50 ? value.Substring(0, 47) + "..." : value;
                 infoText.text = $"<b>{npcName}:</b> {displayText}";
             }
 
-            // Checkmark
+            // Checkmark (ban đầu tắt)
             Transform checkmark = card.transform.Find("Checkmark");
             if (checkmark != null) checkmark.gameObject.SetActive(false);
 
@@ -361,38 +189,138 @@ public class CaseFileUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Toggle chọn/bỏ chọn evidence
+    /// </summary>
     void ToggleEvidence(string evName, GameObject card)
     {
         Transform checkmark = card.transform.Find("Checkmark");
+        int totalSelected = selectedEvidenceNames.Count + selectedInformationKeys.Count;
 
         if (selectedEvidenceNames.Contains(evName))
         {
+            // Bỏ chọn
             selectedEvidenceNames.Remove(evName);
             if (checkmark != null) checkmark.gameObject.SetActive(false);
         }
         else
         {
+            // Chọn (nếu chưa đạt giới hạn)
+            if (totalSelected >= maxSelection)
+            {
+                Debug.Log($"Đã đạt giới hạn! Tối đa {maxSelection} items.");
+                return;
+            }
+
             selectedEvidenceNames.Add(evName);
             if (checkmark != null) checkmark.gameObject.SetActive(true);
         }
+
+        UpdateSelectionUI();
     }
 
+    /// <summary>
+    /// Toggle chọn/bỏ chọn information
+    /// </summary>
     void ToggleInformation(string uniqueKey, GameObject card)
     {
         Transform checkmark = card.transform.Find("Checkmark");
+        int totalSelected = selectedEvidenceNames.Count + selectedInformationKeys.Count;
 
         if (selectedInformationKeys.Contains(uniqueKey))
         {
+            // Bỏ chọn
             selectedInformationKeys.Remove(uniqueKey);
             if (checkmark != null) checkmark.gameObject.SetActive(false);
         }
         else
         {
+            // Chọn (nếu chưa đạt giới hạn)
+            if (totalSelected >= maxSelection)
+            {
+                Debug.Log($"Đã đạt giới hạn! Tối đa {maxSelection} items.");
+                return;
+            }
+
             selectedInformationKeys.Add(uniqueKey);
             if (checkmark != null) checkmark.gameObject.SetActive(true);
         }
+
+        UpdateSelectionUI();
     }
 
+    void UpdateSelectionUI()
+    {
+        int totalSelected = selectedEvidenceNames.Count + selectedInformationKeys.Count;
+
+        // Hiển thị số lượng đã chọn
+        if (selectedCountText != null)
+        {
+            selectedCountText.text = $"Selected: {totalSelected}/{maxSelection} " +
+                                    $"(Evidence: {selectedEvidenceNames.Count}, Info: {selectedInformationKeys.Count})";
+        }
+
+        // Cập nhật instruction text
+        if (instructionText != null)
+        {
+            if (totalSelected < minSelection)
+            {
+                instructionText.text = $"Select at least {minSelection} items to submit your case.";
+            }
+            else
+            {
+                instructionText.text = "Ready to submit. Choose carefully!";
+            }
+        }
+
+        // Bật/tắt nút Submit
+        if (submitButton != null)
+        {
+            bool canSubmit = totalSelected >= minSelection;
+            submitButton.interactable = canSubmit;
+
+            if (submitButtonText != null)
+            {
+                submitButtonText.text = canSubmit ? "Submit Case" : "Select Items First";
+            }
+        }
+    }
+
+    void OnSubmitClicked()
+    {
+        int totalSelected = selectedEvidenceNames.Count + selectedInformationKeys.Count;
+        
+        if (totalSelected < minSelection)
+        {
+            Debug.LogWarning("Chưa chọn đủ items!");
+            return;
+        }
+
+        ProcessCaseSubmission();
+    }
+
+    void ProcessCaseSubmission()
+    {
+        Debug.Log("=== CASE SUBMITTED ===");
+        Debug.Log($"Total Selected: {selectedEvidenceNames.Count + selectedInformationKeys.Count}");
+        
+        Debug.Log("Evidence:");
+        foreach (string ev in selectedEvidenceNames)
+        {
+            Debug.Log($"  - {ev}");
+        }
+
+        Debug.Log("Information:");
+        foreach (string info in selectedInformationKeys)
+        {
+            Debug.Log($"  - {info}");
+        }
+
+        CloseCaseFile();
+
+        // TODO: Xử lý ending ở script khác (EndingManager, GameManager, etc.)
+        // EndingManager.Instance.DetermineEnding(selectedEvidenceNames, selectedInformationKeys);
+    }
     string GetEvidenceName(string evidenceTag)
     {
         switch (evidenceTag)
@@ -418,7 +346,7 @@ public class CaseFileUI : MonoBehaviour
         }
     }
 
-    // ===== API Helper Functions (giữ nguyên cho EndingManager) =====
+    // === API Helper Functions ===
 
     public bool HasEvidence(string evidenceName)
     {
@@ -444,17 +372,4 @@ public class CaseFileUI : MonoBehaviour
     {
         return selectedEvidenceNames.Count + selectedInformationKeys.Count;
     }
-}
-
-// ===== ACCUSATION PHASE DATA =====
-[System.Serializable]
-public class AccusationPhase
-{
-    public string dialogue;
-    public string[] requiredEvidence; // Bắt buộc phải có
-    public string[] requiredInfo; // Bắt buộc phải có
-    public string[] optionalEvidence; // Không bắt buộc nhưng cộng điểm
-    public string[] wrongEndings; // Nếu chọn -> WRONG hoặc NOBODY
-    public string correctResponse;
-    public string wrongResponse;
 }
