@@ -13,7 +13,6 @@ public class DialogueManager : MonoBehaviour
     public GameObject player;
     public GameObject dialogueBox;
     public TextMeshProUGUI DialogueText;
-
     public GameObject StartConversationButton;
     public GameObject PointMurderButton;
     public TextMeshProUGUI NameText;
@@ -30,23 +29,23 @@ public class DialogueManager : MonoBehaviour
     private int index;
     private NPC currentNPC;
     private bool isInteracting = false;
-
-    // Biến static để script di chuyển của Player có thể truy cập mà không cần reference phức tạp
     public static bool IsMenuOpen = false;
-
     private bool chooseRightMurderer = false;
 
     public Dictionary<int, string> Sang = new Dictionary<int, string>();
     public Dictionary<int, string> Mai = new Dictionary<int, string>();
     public Dictionary<int, string> Tan = new Dictionary<int, string>();
     public Dictionary<int, string> May = new Dictionary<int, string>();
+
     private NPC.DialogueBlock currentBlock;
     private NPC.DialogueLine[] currentLines;
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
 
     void Start()
@@ -56,8 +55,10 @@ public class DialogueManager : MonoBehaviour
         StartConversationButton.SetActive(false);
         PointMurderButton.SetActive(false);
 
-        if (NameText != null) NameText.text = string.Empty;
-        if (AvatarImage != null) AvatarImage.gameObject.SetActive(false);
+        if (NameText != null)
+            NameText.text = string.Empty;
+        if (AvatarImage != null)
+            AvatarImage.gameObject.SetActive(false);
     }
 
     void ChooseRightMurderer(string NPCTag)
@@ -66,20 +67,21 @@ public class DialogueManager : MonoBehaviour
         {
             chooseRightMurderer = true;
         }
-        else chooseRightMurderer = false;
+        else
+            chooseRightMurderer = false;
     }
 
     void Update()
     {
         if (GameManager.Instance.isNight)
         {
-            if (isInteracting) CleanupState();
-            if (IsMenuOpen) CleanupState();
+            if (isInteracting)
+                CleanupState();
+            if (IsMenuOpen)
+                CleanupState();
             return;
         }
 
-        // Chặn phím mũi tên khi đang mở Menu để ép người dùng dùng W/S (tùy chọn)
-        // Hoặc đơn giản là để tránh xung đột di chuyển
         if (IsMenuOpen)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
@@ -88,14 +90,14 @@ public class DialogueManager : MonoBehaviour
                 EventSystem.current.SetSelectedGameObject(null);
                 EventSystem.current.SetSelectedGameObject(currentSelected);
             }
+
             if (Input.GetKeyDown(KeyCode.F))
             {
                 GameObject selectedButton = EventSystem.current.currentSelectedGameObject;
                 if (selectedButton != null)
                 {
-                    // Giả lập hành động Click chuột vào Button đang được chọn
                     ExecuteEvents.Execute(selectedButton, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
-                    return; // Thoát để tránh xung đột với logic F ở dưới
+                    return;
                 }
             }
         }
@@ -117,6 +119,8 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
+                    // QUAN TRỌNG: Dừng tiếng typewriter khi skip
+                    StopTypewriterSound();
                     StopAllCoroutines();
                     DialogueText.text = currentLines[index].text;
                 }
@@ -140,16 +144,27 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    // Hàm helper để dừng tiếng typewriter
+    void StopTypewriterSound()
+    {
+        if (typeAudioSource != null && typeAudioSource.isPlaying)
+        {
+            typeAudioSource.Stop();
+        }
+    }
+
     void OpenSelectionMenu(NPC npc)
     {
-        if (npc == null) return;
+        if (npc == null)
+            return;
 
-        IsMenuOpen = true; // Kích hoạt trạng thái mở Menu
+        IsMenuOpen = true;
         dialogueBox.SetActive(true);
         StartConversationButton.SetActive(true);
         PointMurderButton.SetActive(true);
 
-        if (NameText != null) NameText.text = npc.npcName;
+        if (NameText != null)
+            NameText.text = npc.npcName;
         if (AvatarImage != null && npc.portrait != null)
         {
             AvatarImage.sprite = npc.portrait;
@@ -164,8 +179,10 @@ public class DialogueManager : MonoBehaviour
     {
         if (condition)
         {
-            if (dict.ContainsKey(key)) dict[key] = value;
-            else dict.Add(key, value);
+            if (dict.ContainsKey(key))
+                dict[key] = value;
+            else
+                dict.Add(key, value);
         }
     }
 
@@ -173,11 +190,16 @@ public class DialogueManager : MonoBehaviour
     {
         switch (npcName)
         {
-            case "Sang": return Sang.ContainsKey(key);
-            case "Mai": return Mai.ContainsKey(key);
-            case "Tan": return Tan.ContainsKey(key);
-            case "May": return May.ContainsKey(key);
-            default: return false;
+            case "Sang":
+                return Sang.ContainsKey(key);
+            case "Mai":
+                return Mai.ContainsKey(key);
+            case "Tan":
+                return Tan.ContainsKey(key);
+            case "May":
+                return May.ContainsKey(key);
+            default:
+                return false;
         }
     }
 
@@ -198,12 +220,11 @@ public class DialogueManager : MonoBehaviour
     {
         if (currentNPC != null && !isInteracting)
         {
-            IsMenuOpen = false; // Tắt menu để bắt đầu hội thoại
+            IsMenuOpen = false;
             CharacterUnlockManager.UnlockCharacter(currentNPC.profileIndex);
             isInteracting = true;
             StartConversationButton.SetActive(false);
             PointMurderButton.SetActive(false);
-
             DialogueText.text = string.Empty;
             StartDialogue(currentNPC);
         }
@@ -224,20 +245,24 @@ public class DialogueManager : MonoBehaviour
                 closestNPC = npc;
             }
         }
+
         return closestNPC;
     }
 
     public void StartDialogue(NPC npc)
     {
         NPC.DialogueBlock blockToPlay = null;
-        if (npc.dialogueStage == -1 || npc.dialogueStage == 0) blockToPlay = npc.introBlock;
-        else if (npc.dialogueStage == 1) blockToPlay = npc.followUpBlock;
-        else blockToPlay = GetConditionalDialogue(npc);
+
+        if (npc.dialogueStage == -1 || npc.dialogueStage == 0)
+            blockToPlay = npc.introBlock;
+        else if (npc.dialogueStage == 1)
+            blockToPlay = npc.followUpBlock;
+        else
+            blockToPlay = GetConditionalDialogue(npc);
 
         currentBlock = blockToPlay;
         currentLines = blockToPlay.lines;
         index = 0;
-
         StartCoroutine(TypeLine());
     }
 
@@ -266,6 +291,8 @@ public class DialogueManager : MonoBehaviour
 
         UpdateSpeakerUI(currentLines[index]);
         DialogueText.text = "";
+
+        // Bắt đầu phát tiếng typewriter
         if (typeAudioSource != null && typewriterSound != null)
         {
             typeAudioSource.clip = typewriterSound;
@@ -278,10 +305,9 @@ public class DialogueManager : MonoBehaviour
             DialogueText.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
-        if (typeAudioSource != null && typeAudioSource.isPlaying)
-        {
-            typeAudioSource.Stop();
-        }
+
+        // Dừng tiếng typewriter KHI chữ đã hiển thị xong
+        StopTypewriterSound();
     }
 
     void NextLine()
@@ -302,11 +328,16 @@ public class DialogueManager : MonoBehaviour
     {
         switch (name)
         {
-            case "Sang": return 0;
-            case "Mai": return 1;
-            case "Tan": return 2;
-            case "May": return 3;
-            default: return -1;
+            case "Sang":
+                return 0;
+            case "Mai":
+                return 1;
+            case "Tan":
+                return 2;
+            case "May":
+                return 3;
+            default:
+                return -1;
         }
     }
 
@@ -319,10 +350,18 @@ public class DialogueManager : MonoBehaviour
             Dictionary<int, string> targetDict = null;
             switch (currentBlock.targetNPC)
             {
-                case "Sang": targetDict = Sang; break;
-                case "Mai": targetDict = Mai; break;
-                case "Tan": targetDict = Tan; break;
-                case "May": targetDict = May; break;
+                case "Sang":
+                    targetDict = Sang;
+                    break;
+                case "Mai":
+                    targetDict = Mai;
+                    break;
+                case "Tan":
+                    targetDict = Tan;
+                    break;
+                case "May":
+                    targetDict = May;
+                    break;
             }
 
             if (targetDict != null)
@@ -339,20 +378,13 @@ public class DialogueManager : MonoBehaviour
 
         if (savedNPC != null && !savedNPC.lockDialogueStage)
         {
-            // if (savedNPC.dialogueStage == -1)
-            // {
-            //     // Giữ nguyên stage -1, không tăng
-            // }
-            if (savedNPC.dialogueStage == 0) savedNPC.dialogueStage = 1;
-            else if (savedNPC.dialogueStage == 1) savedNPC.dialogueStage = 2;
+            if (savedNPC.dialogueStage == 0)
+                savedNPC.dialogueStage = 1;
+            else if (savedNPC.dialogueStage == 1)
+                savedNPC.dialogueStage = 2;
         }
 
         CleanupState();
-
-        // if (savedNPC != null)
-        // {
-        //     OpenSelectionMenu(savedNPC);
-        // }
     }
 
     NPC.DialogueBlock GetConditionalDialogue(NPC npc)
@@ -361,7 +393,6 @@ public class DialogueManager : MonoBehaviour
 
         foreach (var block in npc.conditionalBlocks)
         {
-            // Check evidence conditions
             bool hasAllEvidence = true;
             foreach (string ev in block.requiredEvidenceTags)
             {
@@ -371,14 +402,14 @@ public class DialogueManager : MonoBehaviour
                     break;
                 }
             }
+
             if (!hasAllEvidence)
             {
-                // Nếu block này đã đọc rồi, lưu lại để backup
-                if (block.hasRead) lastReadBlock = block;
+                if (block.hasRead)
+                    lastReadBlock = block;
                 continue;
             }
 
-            // Check NPC info conditions
             bool hasAllInfo = true;
             if (!string.IsNullOrEmpty(block.requiredNPC))
             {
@@ -391,54 +422,50 @@ public class DialogueManager : MonoBehaviour
                     }
                 }
             }
+
             if (!hasAllInfo)
             {
-                // Nếu block này đã đọc rồi, lưu lại để backup
-                if (block.hasRead) lastReadBlock = block;
+                if (block.hasRead)
+                    lastReadBlock = block;
                 continue;
             }
 
             if (!hasAllEvidence || !hasAllInfo)
             {
-                // CHỈ lưu làm backup nếu thực sự ĐÃ ĐỌC và KHÔNG thỏa mãn điều kiện hiện tại
-                // Nhưng tốt nhất là bỏ qua để tìm các block khác thỏa mãn hơn
-                continue; 
+                continue;
             }
 
-            // Block này thỏa mãn tất cả điều kiện
             if (!block.hasRead)
             {
-                // Block mới chưa đọc -> đánh dấu và trả về
                 block.hasRead = true;
                 return block;
             }
             else
             {
-                // Block đã đọc nhưng vẫn thỏa mãn -> lưu lại
                 lastReadBlock = block;
             }
         }
 
-        // Nếu có block cũ đã đọc -> trả về block đó (không đánh dấu lại)
         if (lastReadBlock != null)
         {
             return lastReadBlock;
         }
 
-        // Không có block nào -> trả về followUpBlock
         return npc.followUpBlock;
     }
+
     public void OnPointMurderButtonClicked()
     {
-        // Kết thúc mọi trạng thái hội thoại
         CleanupState();
         CaseFileUI.Instance.OpenCaseFile();
-
-        // Báo cho game biết: GAME ĐÃ KẾT THÚC
         GameManager.Instance.gameEnded = true;
     }
+
     void CleanupState()
     {
+        // Dừng tiếng typewriter khi cleanup
+        StopTypewriterSound();
+        
         IsMenuOpen = false;
         isInteracting = false;
         dialogueBox.SetActive(false);
@@ -447,12 +474,15 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
         DialogueText.text = string.Empty;
 
-        if (NameText != null) NameText.text = string.Empty;
-        if (AvatarImage != null) AvatarImage.gameObject.SetActive(false);
+        if (NameText != null)
+            NameText.text = string.Empty;
+        if (AvatarImage != null)
+            AvatarImage.gameObject.SetActive(false);
 
         currentLines = null;
         currentNPC = null;
 
-        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
     }
 }
