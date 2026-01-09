@@ -42,6 +42,10 @@ public class UIManager : MonoBehaviour
     public GameObject menuButtonObject;
     public float textSpeed = 0.03f;
 
+    [Header("Radial Progress UI")]
+    public Image dayProgressImage;   // Kéo object 'day' vào đây
+    public Image nightProgressImage; // Kéo object 'night' vào đây
+
     private bool gameStarted = false;
     private bool canReplay = false;
 
@@ -58,85 +62,7 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    // void Start()
-    // {
-    //     Time.timeScale = 1f;
-    //     // 1. Khởi tạo tham chiếu UI Stamina
-    //     if (staminaSlider != null && staminaSlider.fillRect != null)
-    //     {
-    //         staminaFill = staminaSlider.fillRect.GetComponent<Image>();
-    //     }
-
-
-
-    //     // 3. THIẾT LẬP MẶC ĐỊNH MÀN HÌNH CHỜ (Start Menu)
-
-    //     // Ẩn các UI gameplay không cần thiết lúc này
-    //     if (dayRemainText != null) dayRemainText.gameObject.SetActive(false);
-    //     if (staminaSlider != null) staminaSlider.gameObject.SetActive(false);
-    //     if (menuButtonObject != null) menuButtonObject.SetActive(false);
-    //     if (cutscenePanel != null) cutscenePanel.SetActive(false);
-
-    //     // DỌN DẸP VÀ GÁN LẠI SỰ KIỆN NÚT BẤM (Sửa lỗi nút không bấm được lần 2)
-    //     if (startButton != null)
-    //     {
-    //         startButton.onClick.RemoveAllListeners();
-    //         startButton.onClick.AddListener(OnStartPressed);
-    //     }
-
-    //     if (continueButton != null)
-    //     {
-    //         bool hasSaved = PlayerPrefs.GetInt("HasSavedGame", 0) == 1;
-    //         continueButton.gameObject.SetActive(hasSaved);
-    //         continueButton.onClick.RemoveAllListeners();
-    //         continueButton.onClick.AddListener(OnContinuePressed);
-    //     }
-
-    //     if (replayButton != null)
-    //     {
-    //         // Nút Replay chỉ hiện khi chết, lúc Start game thì ẩn đi
-    //         replayButton.gameObject.SetActive(false); 
-    //         replayButton.onClick.RemoveAllListeners();
-    //         replayButton.onClick.AddListener(ReplayScene);
-    //     }
-
-    //     if (isLoadingSave)
-    //     {
-    //         isLoadingSave = false;
-
-    //         if (chase.player != null)
-    //             SaveSystem.LoadAll(chase.player.gameObject);
-
-    //         EvidenceManager.Instance.LockCollectedItemsInScene();
-    //         if (EvidenceManager.Instance != null)
-    //             EvidenceManager.Instance.CleanUpCollectedItemsInScene();
-
-    //         if (ProfileUI.Instance != null)
-    //             ProfileUI.Instance.UpdateUI();
-
-    //         startPanel.SetActive(false);
-    //         cutscenePanel.SetActive(false);
-
-    //         StartGameplay();
-    //         return;
-    //     }
-
-    //     // 4. QUẢN LÝ THỜI GIAN VÀ NHẠC
-    //     if (startPanel != null && startPanel.activeSelf)
-    //     {
-    //         Time.timeScale = 0f; // Dừng game khi đang ở menu
-    //     }
-
-    //     if (!cutscenePlayed && audioSource != null && thumbnailMusic != null)
-    //     {
-    //         if (audioSource.clip != thumbnailMusic) // Tránh việc nhạc bị load lại từ đầu nếu đã đang chạy
-    //         {
-    //             audioSource.clip = thumbnailMusic;
-    //             audioSource.loop = true;
-    //             audioSource.Play();
-    //         }
-    //     }
-    // }
+    
     void Start()
     {
         // 1. Khởi tạo cơ bản
@@ -269,14 +195,7 @@ public class UIManager : MonoBehaviour
     }
     void Update()
     {
-        // if (notePanel != null && notePanel.activeSelf)
-        // {
-        //     if (Input.GetKeyDown(KeyCode.V))
-        //     {
-        //         CloseNote();
-        //     }
-        //     return;
-        // }
+    
  
         if (canReplay && Input.GetKeyDown(KeyCode.F))
         {
@@ -288,71 +207,11 @@ public class UIManager : MonoBehaviour
 
         UpdateDayRemain();
         UpdateStamina();
+        UpdateRadialProgress();
         CheckPlayerDeath();
     }
 
-    //===========================================
-    // START GAME
-    //===========================================
-    // void OnStartPressed() 
-    // {
-    //     // 1. Reset các biến điều hướng
-    //     isLoadingSave = false;
-    //     cutscenePlayed = false;
 
-    //     // 2. Xóa sạch ổ cứng hoàn toàn
-    //     PlayerPrefs.DeleteAll(); 
-    //     PlayerPrefs.Save();
-
-    //     // 3. Xóa sạch dữ liệu trong RAM (Dictionary, List, Unlocks)
-    //     if (DialogueManager.Instance != null) {
-    //         DialogueManager.Instance.Sang.Clear();
-    //         DialogueManager.Instance.Mai.Clear();
-    //         DialogueManager.Instance.Tan.Clear();
-    //         DialogueManager.Instance.May.Clear();
-    //     }
-    //     if (EvidenceManager.Instance != null) {
-    //         EvidenceManager.Instance.collectedEvidence.Clear();
-    //         EvidenceManager.Instance.evidenceWeights.Clear();
-    //     }
-    //     CharacterUnlockManager.unlockedIndices.Clear();
-
-    //     // 4. RESET TRẠNG THÁI NPC TRONG SCENE HIỆN TẠI
-    //     NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
-    //     foreach (NPC npc in allNPCs) {
-    //         npc.dialogueStage = 0; // Đưa về Intro
-    //         foreach (var block in npc.conditionalBlocks) {
-    //             block.hasRead = false; // Xóa trạng thái đã đọc
-    //         }
-    //     }
-
-    //     if (ChaseManager.instance != null && ChaseManager.instance.player != null)
-    //     {
-    //         // 👉 TỌA ĐỘ SPAWN PHÒNG KHÁCH
-    //         ChaseManager.instance.player.transform.position = new Vector2(-17.58f, -30.6f);
-    //     }
-
-    //     // Reset camera confiner về phòng khách
-    //     MapTransition[] transitions = Object.FindObjectsByType<MapTransition>(FindObjectsSortMode.None);
-    //     foreach (var tr in transitions)
-    //     {
-    //         if (tr.areaName == "Living room 1")
-    //         {
-    //             var confiner = Object.FindFirstObjectByType<Unity.Cinemachine.CinemachineConfiner2D>();
-    //             if (confiner != null)
-    //                 confiner.BoundingShape2D = tr.mapBoundary;
-
-    //             PlayerPrefs.SetString("CurrentRoomName", "Living room 1");
-    //             break;
-    //         }
-    //     }
-
-    //     // 5. Bắt đầu Cutscene mới
-    //     Time.timeScale = 1f;
-    //     startPanel.SetActive(false);
-    //     if (audioSource != null && audioSource.isPlaying) audioSource.Stop();
-    //     StartCoroutine(PlayCutscene());
-    // }
     void OnStartPressed()
     {
         PlayerPrefs.DeleteAll();
@@ -460,7 +319,7 @@ public class UIManager : MonoBehaviour
 
     void UpdateDayRemain()
     {
-        dayRemainText.text = $"days remain: {gm.daysRemaining}";
+        dayRemainText.text = $"{gm.daysRemaining}";
     }
 
     void UpdateStamina()
@@ -470,12 +329,12 @@ public class UIManager : MonoBehaviour
 
         float pct = chase.player.currentStamina / chase.player.maxStamina;
 
-        if (pct > 0.6f)
-            staminaFill.color = fullColor;
-        else if (pct > 0.3f)
-            staminaFill.color = midColor;
-        else
-            staminaFill.color = lowColor;
+        // if (pct > 0.6f)
+        //     staminaFill.color = fullColor;
+        // else if (pct > 0.3f)
+        //     staminaFill.color = midColor;
+        // else
+        //     staminaFill.color = lowColor;
 
         if (pct < 0.2f && !isFlashing)
             StartCoroutine(FlashStaminaBar());
@@ -492,6 +351,35 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
         }
         isFlashing = false;
+    }
+
+    void UpdateRadialProgress()
+    {
+        if (gm == null) return;
+
+        // 1. Xác định Max Duration và Image mục tiêu dựa trên trạng thái
+        float maxDuration = gm.isNight ? gm.nightDuration : gm.dayDuration;
+        float currentFill = 1f - (gm.timer / maxDuration);
+
+        // 2. Bật/Tắt và cập nhật Fill Amount
+        if (gm.isNight)
+        {
+            if (dayProgressImage != null) dayProgressImage.gameObject.SetActive(false);
+            if (nightProgressImage != null) 
+            {
+                nightProgressImage.gameObject.SetActive(true);
+                nightProgressImage.fillAmount = currentFill;
+            }
+        }
+        else
+        {
+            if (nightProgressImage != null) nightProgressImage.gameObject.SetActive(false);
+            if (dayProgressImage != null) 
+            {
+                dayProgressImage.gameObject.SetActive(true);
+                dayProgressImage.fillAmount = currentFill;
+            }
+        }
     }
 
     void CheckPlayerDeath()

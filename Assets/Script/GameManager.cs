@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviour
     public int daysRemaining = 7;
     public bool isNight = false;
     public int currentNight = 0;
-    private float timer = 0f;
+    public float timer = 0f;
+    public float GetTimer() => timer;
 
     public Light2D environmentLight;
 
