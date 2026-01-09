@@ -47,7 +47,7 @@ public class UIMenuManager : MonoBehaviour
     void OpenMenu()
     {
         menuPanel.SetActive(true);
-        ShowProfile(); // Mặc định mở Profile
+        ShowNote(); // Mặc định mở Profile
         Time.timeScale = 0f;
     }
 
