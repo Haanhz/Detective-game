@@ -6,7 +6,6 @@ using UnityEngine.Video;
 
 public class EndingManager : MonoBehaviour
 {
-    // ===== THÊM DÒNG NÀY =====
     public static EndingManager Instance { get; private set; }
     
     [Header("UI References")]
@@ -33,7 +32,7 @@ public class EndingManager : MonoBehaviour
 
     private bool HalfEndingTriggered = false;
     private bool FullEndingTriggered = false;
-    private bool WrongEndingTriggered = false;
+    // WrongEndingTriggered đã xóa - CaseFileUI tự handle
 
     private bool endingStarted = false;
 
@@ -42,7 +41,6 @@ public class EndingManager : MonoBehaviour
 
     private List<AudioSource> activeAudioSources = new List<AudioSource>();
 
-    // ===== THÊM METHOD NÀY =====
     void Awake()
     {
         if (Instance == null)
@@ -91,6 +89,7 @@ public class EndingManager : MonoBehaviour
         DialogueManager.Instance.AvatarImage.gameObject.SetActive(false);
     }
 
+    // ===== MAIN ENDING METHOD =====
     public void ShowEnding(bool playerDead = false)
     {
         IsDetectiveEnding = false;
@@ -119,29 +118,25 @@ public class EndingManager : MonoBehaviour
         }
         else
         {
+            // Chỉ check FULL và HALF thôi (WRONG và NOBODY đã được handle bởi CaseFileUI)
             checkFullEnding();
             if (!FullEndingTriggered) checkHalfEnding();
-            if (!FullEndingTriggered && !HalfEndingTriggered) checkWrongEnding();
 
             bool chooseRightMurderer = DialogueManager.Instance.ChooseRightMurderer();
 
-            if (FullEndingTriggered && chooseRightMurderer && !WrongEndingTriggered)
+            if (FullEndingTriggered && chooseRightMurderer)
             {
                 resultText = "Congratulations! You've uncovered the full truth.";
                 selectedClip = fullEndingClip;
             }
-            else if (HalfEndingTriggered && chooseRightMurderer && !WrongEndingTriggered)
+            else if (HalfEndingTriggered && chooseRightMurderer)
             {
                 resultText = "You've found a piece, but the whole truth remains hidden.";
                 selectedClip = halfEndingClip;
             }
-            else if (WrongEndingTriggered)
-            {
-                resultText = "Hmm...you're not much of a detective, are you?";
-                selectedClip = WrongEndingClip;
-            }
             else 
             {
+                // Fallback - không đủ evidence cho HALF
                 resultText = "Nobody will ever believe you.";
                 selectedClip = NobodyEndingClip;
             }
@@ -159,6 +154,50 @@ public class EndingManager : MonoBehaviour
         }
     }
 
+    // ===== FORCED ENDING METHODS (Called from CaseFileUI) =====
+    
+    public void ShowWrongEnding()
+    {
+        IsDetectiveEnding = true;
+        endingStarted = true;
+        
+        string resultText = "Hmm...you're not much of a detective, are you?";
+        VideoClip selectedClip = WrongEndingClip;
+
+        EndingText.text = resultText;
+
+        if (selectedClip != null && videoPlayer != null)
+        {
+            StartCoroutine(PlayVideoThenShowUI(selectedClip, false));
+        }
+        else
+        {
+            DisplayEndingUI(false);
+        }
+    }
+
+    public void ShowNobodyEnding()
+    {
+        IsDetectiveEnding = true;
+        endingStarted = true;
+        
+        string resultText = "Nobody will ever believe you.";
+        VideoClip selectedClip = NobodyEndingClip;
+
+        EndingText.text = resultText;
+
+        if (selectedClip != null && videoPlayer != null)
+        {
+            StartCoroutine(PlayVideoThenShowUI(selectedClip, false));
+        }
+        else
+        {
+            DisplayEndingUI(false);
+        }
+    }
+
+    // ===== VIDEO & UI HANDLING =====
+    
     private System.Collections.IEnumerator PlayVideoThenShowUI(VideoClip clip, bool pauseGame)
     {
         MuteAllGameAudio(true);
@@ -224,27 +263,8 @@ public class EndingManager : MonoBehaviour
             Time.timeScale = 0f;
     }
 
-    public void checkWrongEnding()
-    {
-        string[] wrongEndingEvidence = new string[] { "HangPhone", "HangNoteBook"};
-        
-        bool hasAnyEvidence = false;
-        foreach (string evidenceTag in wrongEndingEvidence)
-        {
-            if (CaseFileUI.Instance.HasEvidence(evidenceTag))
-            {
-                hasAnyEvidence = true;
-                break;
-            }
-        }
-
-        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 0) 
-                            || CaseFileUI.Instance.HasInformation("Tan", 2);
-        bool maiCondition = CaseFileUI.Instance.HasInformation("Mai", 1);
-
-        if (hasAnyEvidence || tanCondition || maiCondition)
-            WrongEndingTriggered = true;
-    }
+    // ===== ENDING CHECKS =====
+    // Note: checkWrongEnding() đã bị xóa vì CaseFileUI tự handle WRONG ending
     
     public void checkHalfEnding()
     {
@@ -271,7 +291,8 @@ public class EndingManager : MonoBehaviour
             }
         }
         
-        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan",1) && CaseFileUI.Instance.HasInformation("Tan",2);
+        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan",1) 
+                            && CaseFileUI.Instance.HasInformation("Tan",2);
         bool mayCondition = CaseFileUI.Instance.HasInformation("May",1);
         bool maiCondition = CaseFileUI.Instance.HasInformation("Mai",3);
         
@@ -296,7 +317,8 @@ public class EndingManager : MonoBehaviour
             }
         }
         
-        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan",1) && CaseFileUI.Instance.HasInformation("Tan",2);
+        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan",1) 
+                            && CaseFileUI.Instance.HasInformation("Tan",2);
         bool mayCondition = CaseFileUI.Instance.HasInformation("May",1);
         bool maiCondition = CaseFileUI.Instance.HasInformation("Mai",3);
 

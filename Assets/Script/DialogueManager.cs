@@ -456,8 +456,21 @@ public class DialogueManager : MonoBehaviour
 
     public void OnPointMurderButtonClicked()
     {
+        // Lưu NPC trước khi cleanup
+        NPC accusedNPC = currentNPC;
+
         CleanupState();
-        CaseFileUI.Instance.OpenCaseFile();
+
+        // Pass NPC vào StartAccusation
+        if (accusedNPC != null)
+        {
+            CaseFileUI.Instance.StartAccusation(accusedNPC);
+        }
+        else
+        {
+            Debug.LogWarning("No NPC selected for accusation!");
+        }
+
         GameManager.Instance.gameEnded = true;
     }
 
@@ -465,7 +478,7 @@ public class DialogueManager : MonoBehaviour
     {
         // Dừng tiếng typewriter khi cleanup
         StopTypewriterSound();
-        
+
         IsMenuOpen = false;
         isInteracting = false;
         dialogueBox.SetActive(false);
