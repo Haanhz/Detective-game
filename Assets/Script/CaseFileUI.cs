@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class CaseFileUI : MonoBehaviour
 {
     public static CaseFileUI Instance;
+    public AudioSource audioSource;
+    public AudioClip accuseMusic;
 
     [Header("Panel Reference")]
     public GameObject caseFilePanel;
@@ -26,6 +28,15 @@ public class CaseFileUI : MonoBehaviour
     public Button submitButton;
     public Button closeButton;
     public TextMeshProUGUI submitButtonText;
+    
+    [Header("Phase Progress")]
+    public TextMeshProUGUI phaseProgressText; // "Phase 1/4"
+    public TextMeshProUGUI selectionLimitText; // "Selected: 2/3"
+    
+    [Header("Typewriter Effect")]
+    public float typeSpeed = 0.03f; // Tốc độ gõ chữ (giây/ký tự)
+    
+    private Coroutine currentTypewriterCoroutine;
 
     // Accusation data
     private int currentPhase = 0;
@@ -52,22 +63,22 @@ public class CaseFileUI : MonoBehaviour
             requiredEvidence = new string[] { "Rope" },
             requiredInfo = new string[] { },
             wrongEndings = new string[] { "HangPhone", "HangNoteBook", "Tan-0", "Tan-2","Mai-1","Mai-2" },
-            correctResponse = "The rope in the attic? I've never been up there!",
+            correctResponse = "The rope in the attic? I've never been up there! Where is your evidence?",
             wrongResponse = "What are you even talking about? That proves nothing!"
         },
         new AccusationPhase
         {
-            dialogue = "The rope in the attic? I've never been up there!",
+            dialogue = "The rope in the attic? I've never been up there! Where is your evidence?",
             requiredEvidence = new string[] { "Crack", "OpenWindow" },
             requiredInfo = new string[] { "May-1", "Tan-1" },
             optionalEvidence = new string[] { "Limit1" },
             wrongEndings = new string[] {"HangPhone", "HangNoteBook", "Tan-0", "Tan-2","Mai-1","Mai-2"  },
-            correctResponse = "Uh... fine, maybe I was there... but tell me, where is the murder weapon now?",
+            correctResponse = "That doesn't prove anything, if you say so, where is the murder weapon now?",
             wrongResponse = "Ridiculous! That doesn't prove I went in there!"
         },
         new AccusationPhase
         {
-            dialogue = "Tell me, where is the murder weapon now?",
+            dialogue = "That doesn't prove anything, if you say so, where is the murder weapon now?",
             requiredEvidence = new string[] { },
             requiredInfo = new string[] { "Tan-2", "Mai-3" },
             wrongEndings = new string[] {"HangPhone", "HangNoteBook", "Tan-0","Mai-1","Mai-2" },
@@ -79,9 +90,9 @@ public class CaseFileUI : MonoBehaviour
             dialogue = "I had no reason to kill Hang, why would I do that?",
             requiredEvidence = new string[] { },
             requiredInfo = new string[] { },
-            optionalEvidence = new string[] { "Limit2", "Limit3", "Limit4", "Limit5", "Limit6" },
+            optionalEvidence = new string[] { "Limit2", "Limit3", "Limit4", "Limit5", "Limit6", "Limit1" },
             wrongEndings = new string[] {"HangPhone", "HangNoteBook", "Tan-0", "Tan-2","Mai-1","Mai-2"  },
-            correctResponse = "You... you know too much already...",
+            correctResponse = "...",
             wrongResponse = "That's just speculation! You have no real evidence!"
         }
     };
@@ -102,31 +113,17 @@ public class CaseFileUI : MonoBehaviour
             closeButton.onClick.AddListener(CloseCaseFile);
     }
 
-    // ===== NORMAL MODE (Xem evidence/info thường) =====
-    
-    public void OpenCaseFile()
-    {
-        accusationMode = false;
-        
-        if (caseFilePanel != null) caseFilePanel.SetActive(true);
-        
-        // Ẩn accusation UI
-        if (npcAvatarImage != null) npcAvatarImage.gameObject.SetActive(false);
-        if (npcDialogueText != null) npcDialogueText.gameObject.SetActive(false);
-        
-        // Hiển thị tất cả evidence/info (không filter)
-        RefreshEvidenceNormalMode();
-        RefreshInformationNormalMode();
-        
-        // Update button
-        if (submitButtonText != null)
-            submitButtonText.text = "Close";
-    }
-    
     // ===== ACCUSATION MODE =====
     
     public void StartAccusation(NPC npc)
     {
+        if (audioSource != null && accuseMusic != null)
+        {
+            audioSource.Stop();
+            audioSource.clip = accuseMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
         accusationMode = true;
         currentPhase = 0;
         accusedNPC = npc;
@@ -146,6 +143,8 @@ public class CaseFileUI : MonoBehaviour
             npcAvatarImage.gameObject.SetActive(true);
         }
         if (npcDialogueText != null) npcDialogueText.gameObject.SetActive(true);
+        if (phaseProgressText != null) phaseProgressText.gameObject.SetActive(true);
+        if (selectionLimitText != null) selectionLimitText.gameObject.SetActive(true);
         
         ShowPhase(currentPhase);
     }
@@ -161,9 +160,22 @@ public class CaseFileUI : MonoBehaviour
 
         AccusationPhase phase = phases[phaseIndex];
         
-        // Update dialogue ngay lập tức
-        if (npcDialogueText != null)
-            npcDialogueText.text = phase.dialogue;
+        // KHÔNG type lại dialogue khi chuyển phase (vì đã type ở correctResponse)
+        // Chỉ type dialogue ở phase đầu tiên
+        if (phaseIndex == 0)
+        {
+            TypeText(phase.dialogue);
+        }
+        else
+        {
+            // Các phase sau chỉ cập nhật text trực tiếp (đã type ở correctResponse)
+            if (npcDialogueText != null)
+                npcDialogueText.text = phase.dialogue;
+        }
+        
+        // Hiển thị phase progress
+        if (phaseProgressText != null)
+            phaseProgressText.text = $"Phase {phaseIndex + 1}/{phases.Length}";
         
         // Clear selections của phase hiện tại (giữ nguyên accumulated)
         currentPhaseEvidenceNames.Clear();
@@ -172,6 +184,9 @@ public class CaseFileUI : MonoBehaviour
         // Hiển thị evidence & info cards
         RefreshEvidence();
         RefreshInformation();
+        
+        // Update selection limit display
+        selectionLimitText.text = "";
         
         // Update button - DISABLE cho đến khi chọn gì đó
         if (submitButtonText != null)
@@ -218,76 +233,82 @@ public class CaseFileUI : MonoBehaviour
             AccumulateCurrentSelections();
             
             // Hiện phản ứng sai
-            if (npcDialogueText != null)
-                npcDialogueText.text = phase.wrongResponse;
+            TypeText(phase.wrongResponse);
+
             
             // Delay rồi show WRONG ending
-            StartCoroutine(DelayedEnding(1.5f, "WRONG"));
+            StartCoroutine(DelayedEnding(phase.wrongResponse.Length * typeSpeed + 1.5f, "WRONG"));
             return;
         }
 
         // ===== KIỂM TRA 2: Có chọn ít nhất 1 evidence/info ĐÚNG không? =====
-        bool hasAnyCorrect = false;
+        // Phase 4 (final phase): Chỉ cần có selection, không cần đúng required
+        bool isPhase4 = (currentPhase == 3); // Phase 4 = index 3
         
-        // Check evidence đúng
-        foreach (string ev in phase.requiredEvidence)
+        if (!isPhase4)
         {
-            if (currentPhaseEvidenceNames.Contains(ev))
+            // Phase 1-3: Phải chọn ít nhất 1 required/optional đúng
+            bool hasAnyCorrect = false;
+            
+            // Check evidence đúng
+            foreach (string ev in phase.requiredEvidence)
             {
-                hasAnyCorrect = true;
-                break;
-            }
-        }
-        
-        // Check info đúng
-        if (!hasAnyCorrect)
-        {
-            foreach (string info in phase.requiredInfo)
-            {
-                if (currentPhaseInformationKeys.Contains(info))
+                if (currentPhaseEvidenceNames.Contains(ev))
                 {
                     hasAnyCorrect = true;
                     break;
                 }
             }
-        }
-        
-        // Check optional evidence (vẫn tính là đúng)
-        if (!hasAnyCorrect && phase.optionalEvidence != null)
-        {
-            foreach (string opt in phase.optionalEvidence)
+            
+            // Check info đúng
+            if (!hasAnyCorrect)
             {
-                if (currentPhaseEvidenceNames.Contains(opt))
+                foreach (string info in phase.requiredInfo)
                 {
-                    hasAnyCorrect = true;
-                    break;
+                    if (currentPhaseInformationKeys.Contains(info))
+                    {
+                        hasAnyCorrect = true;
+                        break;
+                    }
                 }
             }
-        }
+            
+            // Check optional evidence (vẫn tính là đúng)
+            if (!hasAnyCorrect && phase.optionalEvidence != null)
+            {
+                foreach (string opt in phase.optionalEvidence)
+                {
+                    if (currentPhaseEvidenceNames.Contains(opt))
+                    {
+                        hasAnyCorrect = true;
+                        break;
+                    }
+                }
+            }
 
-        if (!hasAnyCorrect)
-        {
-            // Tích lũy selections trước khi kết thúc
-            AccumulateCurrentSelections();
-            
-            // Hiện phản ứng sai
-            if (npcDialogueText != null)
-                npcDialogueText.text = phase.wrongResponse;
-            
-            // Delay rồi show NOBODY ending
-            StartCoroutine(DelayedEnding(1.5f, "NOBODY"));
-            return;
+            if (!hasAnyCorrect)
+            {
+                // Tích lũy selections trước khi kết thúc
+                AccumulateCurrentSelections();
+                
+                // Hiện phản ứng sai
+                TypeText(phase.wrongResponse);
+                
+                // Delay rồi show NOBODY ending
+                StartCoroutine(DelayedEnding(phase.wrongResponse.Length * typeSpeed + 1.5f, "NOBODY"));
+                return;
+            }
         }
+        // Phase 4: Đã qua check wrong ở trên, có selection là đủ (không cần check correct)
 
         // ===== ĐÚNG -> Tích lũy selections và chuyển phase =====
         AccumulateCurrentSelections();
         
         // Hiện phản ứng đúng
-        if (npcDialogueText != null)
-            npcDialogueText.text = phase.correctResponse;
+        TypeText(phase.correctResponse);
         
         // Delay rồi chuyển phase
-        StartCoroutine(DelayedPhaseChange(1.5f));
+        StartCoroutine(DelayedPhaseChange(phase.correctResponse.Length * typeSpeed + 1.5f));
     }
     
     void AccumulateCurrentSelections()
@@ -351,10 +372,66 @@ public class CaseFileUI : MonoBehaviour
         }
     }
 
-    public void CloseCaseFile()
+public void CloseCaseFile()
     {
+        // Stop typewriter effect khi đóng
+        if (currentTypewriterCoroutine != null)
+        {
+            StopCoroutine(currentTypewriterCoroutine);
+            currentTypewriterCoroutine = null;
+        }
+        
+        // Stop accusation music và resume game music
+        if (audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
+        
+        // Resume game music (day hoặc night)
+        if (GameManager.Instance != null)
+        {
+           
+                // Resume day music
+                if (GameManager.Instance.audioSource != null && GameManager.Instance.dayMusic != null)
+                {
+                    GameManager.Instance.audioSource.Stop();
+                    GameManager.Instance.audioSource.clip = GameManager.Instance.dayMusic;
+                    GameManager.Instance.audioSource.loop = true;
+                    GameManager.Instance.audioSource.Play();
+                }
+            
+        }
+        
         if (caseFilePanel != null) caseFilePanel.SetActive(false);
         accusationMode = false;
+    }
+    
+    // ===== TYPEWRITER EFFECT =====
+    
+    void TypeText(string text)
+    {
+        // Stop coroutine cũ nếu đang chạy
+        if (currentTypewriterCoroutine != null)
+        {
+            StopCoroutine(currentTypewriterCoroutine);
+        }
+        
+        currentTypewriterCoroutine = StartCoroutine(TypeTextCoroutine(text));
+    }
+    
+    System.Collections.IEnumerator TypeTextCoroutine(string text)
+    {
+        if (npcDialogueText == null) yield break;
+        
+        npcDialogueText.text = "";
+        
+        foreach (char c in text)
+        {
+            npcDialogueText.text += c;
+            yield return new WaitForSeconds(typeSpeed);
+        }
+        
+        currentTypewriterCoroutine = null;
     }
 
     // ===== REFRESH UI (NORMAL MODE - Hiển thị tất cả) =====
@@ -551,6 +628,17 @@ public class CaseFileUI : MonoBehaviour
 
     void ToggleEvidence(string evName, GameObject card)
     {
+        AccusationPhase phase = phases[currentPhase];
+        
+        // Tính max = required + optional
+        int maxTotal = phase.requiredEvidence.Length + phase.requiredInfo.Length;
+        if (phase.optionalEvidence != null)
+        {
+            maxTotal += phase.optionalEvidence.Length;
+        }
+        
+        int currentTotal = currentPhaseEvidenceNames.Count + currentPhaseInformationKeys.Count;
+        
         Transform checkmark = card.transform.Find("Checkmark");
 
         if (currentPhaseEvidenceNames.Contains(evName))
@@ -558,20 +646,45 @@ public class CaseFileUI : MonoBehaviour
             // Bỏ chọn
             currentPhaseEvidenceNames.Remove(evName);
             if (checkmark != null) checkmark.gameObject.SetActive(false);
+            
+            // Xóa warning khi bỏ chọn
+            if (selectionLimitText != null)
+                selectionLimitText.text = "";
         }
         else
         {
-            // Thêm vào selection (cho phép nhiều evidence)
+            // Kiểm tra giới hạn tổng
+            if (currentTotal >= maxTotal)
+            {
+                // Đã đạt giới hạn - hiển thị warning và KHÔNG cho chọn
+                if (selectionLimitText != null)
+                    selectionLimitText.text = "<color=red>Cannot select more!</color>";
+                Debug.Log($"Cannot select more! Limit: {maxTotal}");
+                return;
+            }
+            
+            // Thêm vào selection
             currentPhaseEvidenceNames.Add(evName);
             if (checkmark != null) checkmark.gameObject.SetActive(true);
         }
         
-        // Enable/Disable button dựa vào có chọn gì không
+        // Update UI displays
         UpdateSubmitButton();
     }
 
     void ToggleInformation(string uniqueKey, GameObject card)
     {
+        AccusationPhase phase = phases[currentPhase];
+        
+        // Tính max = required + optional
+        int maxTotal = phase.requiredEvidence.Length + phase.requiredInfo.Length;
+        if (phase.optionalEvidence != null)
+        {
+            maxTotal += phase.optionalEvidence.Length;
+        }
+        
+        int currentTotal = currentPhaseEvidenceNames.Count + currentPhaseInformationKeys.Count;
+        
         Transform checkmark = card.transform.Find("Checkmark");
 
         if (currentPhaseInformationKeys.Contains(uniqueKey))
@@ -579,15 +692,29 @@ public class CaseFileUI : MonoBehaviour
             // Bỏ chọn
             currentPhaseInformationKeys.Remove(uniqueKey);
             if (checkmark != null) checkmark.gameObject.SetActive(false);
+            
+            // Xóa warning khi bỏ chọn
+            if (selectionLimitText != null)
+                selectionLimitText.text = "";
         }
         else
         {
-            // Thêm vào selection (cho phép nhiều info)
+            // Kiểm tra giới hạn tổng
+            if (currentTotal >= maxTotal)
+            {
+                // Đã đạt giới hạn - hiển thị warning và KHÔNG cho chọn
+                if (selectionLimitText != null)
+                    selectionLimitText.text = "<color=red>Cannot select more!</color>";
+                Debug.Log($"Cannot select more! Limit: {maxTotal}");
+                return;
+            }
+            
+            // Thêm vào selection
             currentPhaseInformationKeys.Add(uniqueKey);
             if (checkmark != null) checkmark.gameObject.SetActive(true);
         }
         
-        // Enable/Disable button dựa vào có chọn gì không
+        // Update UI displays
         UpdateSubmitButton();
     }
     
@@ -631,18 +758,18 @@ public class CaseFileUI : MonoBehaviour
             case "Ultimatum": return "Ultimatum";
             case "HangPhone": return "Hang's Phone";
             case "HangNoteBook": return "Hang's Notebook";
-            case "Crack": return "Crack outside the attic";
+            case "Crack": return "Crack";
             case "StrangeTable": return "Strange table";
-            case "OpenWindow": return "Open window in the attic";
-            case "Rope": return "Rope in the attic";
-            case "Limit1": return "Footprint in the attic";
+            case "OpenWindow": return "Open window";
+            case "Rope": return "Rope";
+            case "Limit1": return "Footprint";
             case "Limit2": return "Hang the Ghost";
             case "Limit3": return "Mai's Diary";
             case "Limit4": return "Family Photo";
             case "Limit5": return "May's Diary";
             case "Limit6": return "The ghost mom";
             case "Hide": return "Hide";
-            case "SangStuff": return "Mr.Sang precious duck";
+            case "SangStuff": return "Duck";
             case "Key": return "Key";
             default: return "Unknown Evidence";
         }

@@ -269,7 +269,6 @@ public class EndingManager : MonoBehaviour
     public void checkHalfEnding()
     {
         string[] halfEndingEvidence = new string[] { "Crack", "OpenWindow", "Rope" };
-        string[] limitEvidence = new string[] { "Limit1", "Limit2", "Limit3", "Limit4", "Limit5", "Limit6" };
         
         bool hasEnoughEvidence = true;
         foreach (string evidenceTag in halfEndingEvidence)
@@ -281,22 +280,12 @@ public class EndingManager : MonoBehaviour
             }
         }
         
-        bool hasAtLeastOneLimit = false;
-        foreach (string limitTag in limitEvidence)
-        {
-            if (CaseFileUI.Instance.HasEvidence(limitTag))
-            {
-                hasAtLeastOneLimit = true;
-                break;
-            }
-        }
-        
         bool tanCondition = CaseFileUI.Instance.HasInformation("Tan",1) 
                             && CaseFileUI.Instance.HasInformation("Tan",2);
         bool mayCondition = CaseFileUI.Instance.HasInformation("May",1);
         bool maiCondition = CaseFileUI.Instance.HasInformation("Mai",3);
         
-        if (hasEnoughEvidence && hasAtLeastOneLimit && tanCondition && mayCondition && maiCondition)
+        if (hasEnoughEvidence && tanCondition && mayCondition && maiCondition)
             HalfEndingTriggered = true;
     }
 
