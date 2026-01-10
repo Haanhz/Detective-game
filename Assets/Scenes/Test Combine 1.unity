@@ -66867,7 +66867,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fridgeCooldown: 10
   interactIndicator: {fileID: 1998562810}
-  detectionRange: 1.5
+  detectionRange: 1
   interactableTags:
   - LivingCorner
   - Ultimatum
