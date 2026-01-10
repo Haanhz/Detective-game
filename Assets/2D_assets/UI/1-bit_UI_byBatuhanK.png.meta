@@ -347,10 +347,10 @@ TextureImporter:
       name: 1-bit_UI_byBatuhanK_10
       rect:
         serializedVersion: 2
-        x: 262
-        y: 227
-        width: 29
-        height: 27
+        x: 268
+        y: 231
+        width: 9
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
