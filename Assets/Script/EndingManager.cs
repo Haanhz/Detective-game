@@ -8,21 +8,25 @@ using NUnit.Framework;
 public class EndingManager : MonoBehaviour
 {
     public static EndingManager Instance { get; private set; }
-    
+    [Header("Ending Music")]
+    public AudioSource endingAudioSource;
+    public AudioClip sadEndingMusic;    // Nhạc buồn
+    public AudioClip happyEndingMusic;
+
     [Header("UI References")]
-    public Canvas mainGameCanvas;   
+    public Canvas mainGameCanvas;
     public Canvas ui;
     public GameObject EndingBox;
     public TextMeshProUGUI EndingText;
     public Button RestartButton;
 
     [Header("Cutscene Settings")]
-    public VideoPlayer videoPlayer; 
-    public VideoClip killedEndingClip;  
-    public VideoClip exhaustedEndingClip;   
-    public VideoClip fullEndingClip; 
-    public VideoClip halfEndingClip; 
-    public VideoClip WrongEndingClip;  
+    public VideoPlayer videoPlayer;
+    public VideoClip killedEndingClip;
+    public VideoClip exhaustedEndingClip;
+    public VideoClip fullEndingClip;
+    public VideoClip halfEndingClip;
+    public VideoClip WrongEndingClip;
     public VideoClip NobodyEndingClip;
 
     private ChaseManager chase => ChaseManager.instance;
@@ -34,7 +38,7 @@ public class EndingManager : MonoBehaviour
     private bool HalfEndingTriggered = false;
     private bool FullEndingTriggered = false;
     // WrongEndingTriggered đã xóa - CaseFileUI tự handle
-    
+
     private bool endingStarted = false;
     private bool isTimeOut = false;
 
@@ -72,15 +76,15 @@ public class EndingManager : MonoBehaviour
             endingStarted = true;
             CleanupState();
             ShowEnding(playerDead: isTimeOut);
-        } 
-        else 
+        }
+        else
         {
-            if(chase.player.killed) 
+            if (chase.player.killed)
             {
                 endingStarted = true;
                 CleanupState();
                 ShowEnding(playerDead: chase.player.killed);
-            } 
+            }
             else if (chase.player.exhausted)
             {
                 endingStarted = true;
@@ -89,7 +93,7 @@ public class EndingManager : MonoBehaviour
             }
         }
     }
-    
+
     public void CleanupState()
     {
         DialogueManager.Instance.dialogueBox.SetActive(false);
@@ -107,11 +111,11 @@ public class EndingManager : MonoBehaviour
         VideoClip selectedClip = null;
         string resultText = "";
 
-        if (playerDead) 
+        if (playerDead)
         {
             if (chase.player.killed) IsKilledByBlack = true;
         }
-        else 
+        else
         {
             IsDetectiveEnding = true;
         }
@@ -150,7 +154,7 @@ public class EndingManager : MonoBehaviour
                 resultText = "You've found a piece, but the whole truth remains hidden.";
                 selectedClip = halfEndingClip;
             }
-            else 
+            else
             {
                 // Fallback - không đủ evidence cho HALF
                 resultText = "Nobody will ever believe you.";
@@ -162,21 +166,21 @@ public class EndingManager : MonoBehaviour
 
         if (selectedClip != null && videoPlayer != null)
         {
-            StartCoroutine(PlayVideoThenShowUI(selectedClip, playerDead)); 
+            StartCoroutine(PlayVideoThenShowUI(selectedClip, playerDead));
         }
         else
         {
-            DisplayEndingUI(playerDead); 
+            DisplayEndingUI(playerDead);
         }
     }
 
     // ===== FORCED ENDING METHODS (Called from CaseFileUI) =====
-    
+
     public void ShowWrongEnding()
     {
         IsDetectiveEnding = true;
         endingStarted = true;
-        
+
         string resultText = "Hmm...you're not much of a detective, are you?";
         VideoClip selectedClip = WrongEndingClip;
 
@@ -196,7 +200,7 @@ public class EndingManager : MonoBehaviour
     {
         IsDetectiveEnding = true;
         endingStarted = true;
-        
+
         string resultText = "Nobody will ever believe you.";
         VideoClip selectedClip = NobodyEndingClip;
 
@@ -213,7 +217,7 @@ public class EndingManager : MonoBehaviour
     }
 
     // ===== VIDEO & UI HANDLING =====
-    
+
     private System.Collections.IEnumerator PlayVideoThenShowUI(VideoClip clip, bool pauseGame)
     {
         MuteAllGameAudio(true);
@@ -252,19 +256,19 @@ public class EndingManager : MonoBehaviour
             AudioSource[] sources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
             foreach (AudioSource source in sources)
             {
-                if (source.gameObject != videoPlayer.gameObject && source.isPlaying)
+                if (source.gameObject != videoPlayer.gameObject && source.isPlaying && source != endingAudioSource)
                 {
-                    source.Pause();
+                    source.Stop();
                     activeAudioSources.Add(source);
                 }
             }
         }
         else
         {
-            foreach (AudioSource source in activeAudioSources)
-            {
-                if (source != null) source.UnPause();
-            }
+            // foreach (AudioSource source in activeAudioSources)
+            // {
+            //     if (source != null) source.UnPause();
+            // }
             activeAudioSources.Clear();
         }
     }
@@ -273,34 +277,73 @@ public class EndingManager : MonoBehaviour
     {
         EndingBox.SetActive(true);
         EndingText.gameObject.SetActive(true);
-        RestartButton.gameObject.SetActive(true);
+
+        // DỪNG TẤT CẢ NHẠC ĐANG CHẠY
+        MuteAllGameAudio(true);
+
+        // Phát nhạc ending
+        PlayEndingMusic();
+
+        if (!FullEndingTriggered && !isTimeOut)
+        {
+            RestartButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            RestartButton.gameObject.SetActive(false);
+        }
 
         if (pauseGame)
             Time.timeScale = 0f;
     }
 
+    private void PlayEndingMusic()
+    {
+        if (endingAudioSource == null) return;
+
+        AudioClip musicToPlay = null;
+
+        // NHẠC VUI: Full Ending
+        if (FullEndingTriggered)
+        {
+            musicToPlay = happyEndingMusic;
+        }
+        // NHẠC BUỒN: Tất cả ending còn lại
+        else
+        {
+            musicToPlay = sadEndingMusic;
+        }
+
+        if (musicToPlay != null)
+        {
+            endingAudioSource.clip = musicToPlay;
+            endingAudioSource.loop = true;
+            endingAudioSource.Play();
+        }
+    }
+
     // ===== ENDING CHECKS =====
     // Note: checkWrongEnding() đã bị xóa vì CaseFileUI tự handle WRONG ending
-    
+
     public void checkHalfEnding()
     {
         string[] halfEndingEvidence = new string[] { "Crack", "OpenWindow", "Rope" };
-        
+
         bool hasEnoughEvidence = true;
         foreach (string evidenceTag in halfEndingEvidence)
         {
-            if (!CaseFileUI.Instance.HasEvidence(evidenceTag)) 
-            { 
-                hasEnoughEvidence = false; 
-                break; 
+            if (!CaseFileUI.Instance.HasEvidence(evidenceTag))
+            {
+                hasEnoughEvidence = false;
+                break;
             }
         }
-        
-        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan",1) 
-                            && CaseFileUI.Instance.HasInformation("Tan",2);
-        bool mayCondition = CaseFileUI.Instance.HasInformation("May",1);
-        bool maiCondition = CaseFileUI.Instance.HasInformation("Mai",3);
-        
+
+        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 1)
+                            && CaseFileUI.Instance.HasInformation("Tan", 2);
+        bool mayCondition = CaseFileUI.Instance.HasInformation("May", 1);
+        bool maiCondition = CaseFileUI.Instance.HasInformation("Mai", 3);
+
         if (hasEnoughEvidence && tanCondition && mayCondition && maiCondition)
             HalfEndingTriggered = true;
     }
@@ -321,11 +364,11 @@ public class EndingManager : MonoBehaviour
                 break;
             }
         }
-        
-        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan",1) 
-                            && CaseFileUI.Instance.HasInformation("Tan",2);
-        bool mayCondition = CaseFileUI.Instance.HasInformation("May",1);
-        bool maiCondition = CaseFileUI.Instance.HasInformation("Mai",3);
+
+        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 1)
+                            && CaseFileUI.Instance.HasInformation("Tan", 2);
+        bool mayCondition = CaseFileUI.Instance.HasInformation("May", 1);
+        bool maiCondition = CaseFileUI.Instance.HasInformation("Mai", 3);
 
         if (hasAllEvidence && tanCondition && mayCondition && maiCondition)
             FullEndingTriggered = true;

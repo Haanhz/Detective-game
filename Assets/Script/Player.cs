@@ -192,6 +192,7 @@ public class Player : MonoBehaviour
             isInteracting = true;
             // Dừng thời gian
             Time.timeScale = 0f;
+            GameManager.Instance.audioSource.Stop(); 
 
             ScreenFader.Instance.FadeOut();
             yield return new WaitForSecondsRealtime(3f);
@@ -203,6 +204,7 @@ public class Player : MonoBehaviour
             yield return new WaitForSecondsRealtime(3f);
             // Tiếp tục thời gian
             Time.timeScale = 1f;
+            GameManager.Instance.audioSource.Play(); 
 
             PlayerMonologue.Instance.Say("What a good sleep!", onceOnly: false, id: "sleep");
 
