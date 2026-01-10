@@ -754,15 +754,15 @@ public void CloseCaseFile()
     {
         switch (evidenceTag)
         {
-            case "LivingCorner": return "Living Corner";
+            case "LivingCorner": return "Living corner in shed";
             case "Ultimatum": return "Ultimatum";
             case "HangPhone": return "Hang's Phone";
             case "HangNoteBook": return "Hang's Notebook";
-            case "Crack": return "Crack";
+            case "Crack": return "Crack outside attic";
             case "StrangeTable": return "Strange table";
-            case "OpenWindow": return "Open window";
-            case "Rope": return "Rope";
-            case "Limit1": return "Footprint";
+            case "OpenWindow": return "Open window in attic";
+            case "Rope": return "Rope in attic";
+            case "Limit1": return "Footprint in attic";
             case "Limit2": return "Hang the Ghost";
             case "Limit3": return "Mai's Diary";
             case "Limit4": return "Family Photo";
