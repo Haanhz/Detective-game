@@ -509,7 +509,7 @@ MonoBehaviour:
   videoPlayer: {fileID: 543063348}
   killedEndingClip: {fileID: 32900000, guid: 09d61fc2eda5dd54285f8a62c8503324, type: 3}
   exhaustedEndingClip: {fileID: 32900000, guid: 232a9f2c1a65df84b83dc41c23d1dabb, type: 3}
-  fullEndingClip: {fileID: 32900000, guid: 8c7ee6ce29da30344b8fb50de619b866, type: 3}
+  fullEndingClip: {fileID: 32900000, guid: e2c6bb7e6cb1c3747a40bcba00e544f2, type: 3}
   halfEndingClip: {fileID: 32900000, guid: 9c61bf84f92d7c944a762bd9955170e8, type: 3}
   WrongEndingClip: {fileID: 32900000, guid: 4635eb8d83adadb47bd5aa1b3a46fc65, type: 3}
   NobodyEndingClip: {fileID: 32900000, guid: 31a740fa6a456a7419f7b38636848dec, type: 3}
@@ -64918,7 +64918,7 @@ MonoBehaviour:
       I won\u2019t ever leave you alone again."
   - tagName: Limit4
     icon: {fileID: 1208040086343421634, guid: 414e08d0c9bdaea48876574598cfc68e, type: 3}
-    bigPortrait: {fileID: 3942584767413391639, guid: 41fe8fd229ec2e84baf93751cffd9f17, type: 3}
+    bigPortrait: {fileID: 7350326960114682327, guid: c03b2c087e854aa498e502a56506be4a, type: 3}
     description: Photo of a family of four. There is a little girl...so familiar...wait,
       is that May???
   - tagName: Limit5

@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.Video;
+using NUnit.Framework;
 
 public class EndingManager : MonoBehaviour
 {
@@ -33,8 +34,9 @@ public class EndingManager : MonoBehaviour
     private bool HalfEndingTriggered = false;
     private bool FullEndingTriggered = false;
     // WrongEndingTriggered đã xóa - CaseFileUI tự handle
-
+    
     private bool endingStarted = false;
+    private bool isTimeOut = false;
 
     public static bool IsKilledByBlack = false;
     public static bool IsDetectiveEnding = false;
@@ -64,18 +66,27 @@ public class EndingManager : MonoBehaviour
     void Update()
     {
         if (endingStarted) return;
-
-        if (chase.player.killed) 
+        if (GameManager.Instance.daysRemaining <= 0)
         {
+            isTimeOut = true;
             endingStarted = true;
             CleanupState();
-            ShowEnding(playerDead: chase.player.killed);
+            ShowEnding(playerDead: isTimeOut);
         } 
-        else if (chase.player.exhausted)
+        else 
         {
-            endingStarted = true;
-            CleanupState();
-            ShowEnding(playerDead: chase.player.exhausted);
+            if(chase.player.killed) 
+            {
+                endingStarted = true;
+                CleanupState();
+                ShowEnding(playerDead: chase.player.killed);
+            } 
+            else if (chase.player.exhausted)
+            {
+                endingStarted = true;
+                CleanupState();
+                ShowEnding(playerDead: chase.player.exhausted);
+            }
         }
     }
     
@@ -115,6 +126,11 @@ public class EndingManager : MonoBehaviour
         {
             resultText = "You collapsed from exhaustion!";
             selectedClip = exhaustedEndingClip;
+        }
+        else if (playerDead && isTimeOut)
+        {
+            resultText = "Out of time. Now you are the next victim";
+            selectedClip = killedEndingClip;
         }
         else
         {
