@@ -379,7 +379,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 24800153}
-  - component: {fileID: 24800152}
   - component: {fileID: 24800154}
   m_Layer: 0
   m_Name: 'EndingManager '
@@ -388,30 +387,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &24800152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 24800151}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbe5487cd8f9e97408e06d4af5c2c888, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainGameCanvas: {fileID: 446621275}
-  ui: {fileID: 1793907739}
-  EndingBox: {fileID: 1505798652}
-  EndingText: {fileID: 1280515650}
-  RestartButton: {fileID: 365729535}
-  videoPlayer: {fileID: 543063348}
-  killedEndingClip: {fileID: 32900000, guid: 09d61fc2eda5dd54285f8a62c8503324, type: 3}
-  exhaustedEndingClip: {fileID: 32900000, guid: 232a9f2c1a65df84b83dc41c23d1dabb, type: 3}
-  fullEndingClip: {fileID: 32900000, guid: 8c7ee6ce29da30344b8fb50de619b866, type: 3}
-  halfEndingClip: {fileID: 32900000, guid: 9c61bf84f92d7c944a762bd9955170e8, type: 3}
-  WrongEndingClip: {fileID: 32900000, guid: 4635eb8d83adadb47bd5aa1b3a46fc65, type: 3}
-  NobodyEndingClip: {fileID: 32900000, guid: 31a740fa6a456a7419f7b38636848dec, type: 3}
 --- !u!4 &24800153
 Transform:
   m_ObjectHideFlags: 0
@@ -16145,7 +16120,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1001529168}
-  - component: {fileID: 1001529167}
   - component: {fileID: 1001529169}
   m_Layer: 0
   m_Name: CaseFileManager
@@ -16154,30 +16128,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1001529167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1001529166}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fded2bfc6d50f34bbccef1730c5e14e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  caseFilePanel: {fileID: 1770185415}
-  evidenceGrid: {fileID: 1074810605}
-  evidenceCardPrefab: {fileID: 7738802632012695345, guid: a0e3170c1d431484ba0db647c72ddc9d, type: 3}
-  informationGrid: {fileID: 977603203}
-  informationCardPrefab: {fileID: 4662473587072114204, guid: abbce8c95a104854fb22dac347e6b6b2, type: 3}
-  selectedCountText: {fileID: 1570430367}
-  instructionText: {fileID: 1405588418}
-  submitButton: {fileID: 1495910314}
-  closeButton: {fileID: 2050729536}
-  submitButtonText: {fileID: 1256098989}
-  maxSelection: 15
-  minSelection: 1
 --- !u!4 &1001529168
 Transform:
   m_ObjectHideFlags: 0
@@ -60574,7 +60524,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 24800152}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EndingManager, Assembly-CSharp
         m_MethodName: ShowEnding
         m_Mode: 6
@@ -67605,7 +67555,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 24800152}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EndingManager, Assembly-CSharp
         m_MethodName: CleanupState
         m_Mode: 1
