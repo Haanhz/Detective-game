@@ -122,6 +122,7 @@ public class CaseFileUI : MonoBehaviour
             audioSource.Stop();
             audioSource.clip = accuseMusic;
             audioSource.loop = true;
+            audioSource.volume = 0.6f; 
             audioSource.Play();
         }
         accusationMode = true;

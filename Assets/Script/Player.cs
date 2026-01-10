@@ -186,35 +186,42 @@ public class Player : MonoBehaviour
     }
 
     private IEnumerator SleepCoroutine()
+{
+    if (GameManager.Instance.isNight)
     {
-        if (GameManager.Instance.isNight)
+        isInteracting = true;
+        
+        try
         {
-            isInteracting = true;
-            // Dừng thời gian
             Time.timeScale = 0f;
-            GameManager.Instance.audioSource.Stop(); 
-
+            GameManager.Instance.audioSource.Stop();
+            
             ScreenFader.Instance.FadeOut();
             yield return new WaitForSecondsRealtime(3f);
-
+            
             currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
             GameManager.Instance.ForceSkipNight();
-
+            
             ScreenFader.Instance.FadeIn();
             yield return new WaitForSecondsRealtime(3f);
-            // Tiếp tục thời gian
+            
             Time.timeScale = 1f;
-            GameManager.Instance.audioSource.Play(); 
-
+            GameManager.Instance.audioSource.Play();
+            
             PlayerMonologue.Instance.Say("What a good sleep!", onceOnly: false, id: "sleep");
-
-            isInteracting = false;
         }
-        else
+        finally
         {
-            PlayerMonologue.Instance.Say("I am not sleepy, better go investigate!", onceOnly: false, id: "not_sleep");
+            // Luôn chạy dù có lỗi hay không
+            isInteracting = false;
+            Time.timeScale = 1f; // Safety reset
         }
     }
+    else
+    {
+        PlayerMonologue.Instance.Say("I am not sleepy, better go investigate!", onceOnly: false, id: "not_sleep");
+    }
+}
 
     void CheckStaminaDeath()
     {

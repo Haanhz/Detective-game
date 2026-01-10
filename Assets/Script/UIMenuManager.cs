@@ -12,6 +12,7 @@ public class UIMenuManager : MonoBehaviour
     public GameObject profileContent;
     public GameObject inventoryContent;
     public GameObject noteContent; // THÊM MỚI: Content cho tab Note
+    public GameObject noteNotiImage;
 
     [Header("Buttons")]
     public Button menuButton;
@@ -22,6 +23,7 @@ public class UIMenuManager : MonoBehaviour
 
     [Header("Extra Buttons")]
     public Button backToTitleButton;
+    private bool hasReadNote = false;
 
     void Awake()
     {
@@ -42,12 +44,18 @@ public class UIMenuManager : MonoBehaviour
 
         if (backToTitleButton != null)
         backToTitleButton.onClick.AddListener(ReturnToStartMenu);
+        // THÊM ĐOẠN NÀY
+        if (noteNotiImage != null)
+        {
+            hasReadNote = PlayerPrefs.GetInt("HasReadNote", 0) == 1;
+            noteNotiImage.SetActive(!hasReadNote);
+        }
     }
 
     void OpenMenu()
     {
         menuPanel.SetActive(true);
-        ShowNote(); // Mặc định mở Profile
+        ShowInventory(); // Mặc định mở Profile
         Time.timeScale = 0f;
     }
 
@@ -86,12 +94,20 @@ public class UIMenuManager : MonoBehaviour
     {
         profileContent.SetActive(false);
         inventoryContent.SetActive(false);
-        noteContent.SetActive(true);  // Hiện tab Note
+        noteContent.SetActive(true);
 
         if (UIInventoryManager.Instance != null) UIInventoryManager.Instance.CloseInventory();
-
-        // Nếu bạn có Script quản lý Note (ví dụ NoteUI), hãy gọi hàm cập nhật tại đây tương tự Profile
-        // if (NoteUI.Instance != null) NoteUI.Instance.UpdateNoteList();
+        
+        // THÊM ĐOẠN NÀY
+        if (!hasReadNote)
+        {
+            hasReadNote = true;
+            PlayerPrefs.SetInt("HasReadNote", 1);
+            PlayerPrefs.Save();
+            
+            if (noteNotiImage != null)
+                noteNotiImage.SetActive(false);
+        }
     }
     public void ReturnToStartMenu()
     {
