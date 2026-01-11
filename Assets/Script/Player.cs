@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     [Header("Fridge Settings")]
     public float fridgeCooldown = 10f;
     private float lastEatTime = -100f;
+    [Header("Eating UI")]
+    public GameObject eatingText;
     public GameObject interactIndicator;
     public float detectionRange = 1.5f;
     public System.Collections.Generic.List<string> interactableTags = new System.Collections.Generic.List<string>
@@ -54,6 +56,7 @@ public class Player : MonoBehaviour
         currentStamina = maxStamina;
         animator = GetComponent<Animator>();
         if (interactIndicator != null) interactIndicator.SetActive(false);
+        if (eatingText != null) eatingText.SetActive(false);
     }
 
     void Update()
@@ -95,9 +98,7 @@ public class Player : MonoBehaviour
                 {
                     if (currentStamina < maxStamina)
                     {
-                        currentStamina = Mathf.Min(maxStamina, currentStamina + 5f);
-                        lastEatTime = Time.time;
-                        PlayerMonologue.Instance.Say("This food is so gooooood! I feel refreshing!", onceOnly: false, id: "eat");
+                        StartCoroutine(EatCoroutine());
                     }
                 }
                 else
@@ -140,7 +141,7 @@ public class Player : MonoBehaviour
 
         if (!moving)
         {
-            currentStamina += 0.01f * Time.deltaTime;
+            // currentStamina += 0.01f * Time.deltaTime;
             animator.SetBool("isWalking", false);
             animator.SetBool("isRunning", false);
         }
@@ -185,43 +186,72 @@ public class Player : MonoBehaviour
         }
     }
 
-    private IEnumerator SleepCoroutine()
-{
-    if (GameManager.Instance.isNight)
+    private IEnumerator EatCoroutine()
     {
         isInteracting = true;
-        
-        try
+
+        PlayerMonologue.Instance.Say("This food is so gooooood! I feel refreshing!", onceOnly: false, id: "eat");
+
+        if (eatingText != null) eatingText.SetActive(true);
+
+        float eatDuration = 10f;
+        float staminaToRecover = Mathf.Min(10f, maxStamina - currentStamina);
+        float elapsed = 0f;
+        float startStamina = currentStamina;
+
+        while (elapsed < eatDuration)
         {
+            elapsed += Time.deltaTime;
+            float t = elapsed / eatDuration;
+
+            currentStamina = Mathf.Lerp(startStamina, startStamina + staminaToRecover, t);
+            currentStamina = Mathf.Min(maxStamina, currentStamina);
+
+            yield return null;
+        }
+
+        currentStamina = Mathf.Min(maxStamina, startStamina + staminaToRecover);
+
+        if (eatingText != null) eatingText.SetActive(false);
+
+        PlayerMonologue.Instance.Say("Ahh! That was delicious!", onceOnly: false, id: "eat_finish");
+
+        lastEatTime = Time.time;
+        isInteracting = false;
+    }
+
+    private IEnumerator SleepCoroutine()
+    {
+        if (GameManager.Instance.isNight)
+        {
+            isInteracting = true;
+
+
             Time.timeScale = 0f;
             GameManager.Instance.audioSource.Stop();
-            
+
             ScreenFader.Instance.FadeOut();
             yield return new WaitForSecondsRealtime(3f);
-            
-            currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
+
+            currentStamina = Mathf.Min(maxStamina, currentStamina + 30f);
             GameManager.Instance.ForceSkipNight();
-            
+
             ScreenFader.Instance.FadeIn();
-            yield return new WaitForSecondsRealtime(3f);
-            
+            // yield return new WaitForSecondsRealtime(3f);
+
+            isInteracting = false;
             Time.timeScale = 1f;
             GameManager.Instance.audioSource.Play();
-            
+
             PlayerMonologue.Instance.Say("What a good sleep!", onceOnly: false, id: "sleep");
+
+
         }
-        finally
+        else
         {
-            // Luôn chạy dù có lỗi hay không
-            isInteracting = false;
-            Time.timeScale = 1f; // Safety reset
+            PlayerMonologue.Instance.Say("I am not sleepy, better go investigate!", onceOnly: false, id: "not_sleep");
         }
     }
-    else
-    {
-        PlayerMonologue.Instance.Say("I am not sleepy, better go investigate!", onceOnly: false, id: "not_sleep");
-    }
-}
 
     void CheckStaminaDeath()
     {
@@ -290,56 +320,56 @@ public class Player : MonoBehaviour
 
 
 
-  void CheckForInteractables()
-{
-    if (interactIndicator == null) return;
-
-    Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange);
-    bool isNear = false;
-
-    foreach (var hit in hits)
+    void CheckForInteractables()
     {
-        // Kiểm tra tag có trong danh sách không
-        if (interactableTags.Contains(hit.tag))
-        {
-            // Bỏ qua nếu sprite renderer bị ẩn
-            SpriteRenderer sr = hit.GetComponent<SpriteRenderer>();
-            if (sr != null && !sr.enabled)
-                continue;
+        if (interactIndicator == null) return;
 
-            // Với các tag đặc biệt (Bed, Fridge, NPC, Hide, Murder) → luôn hiện UI
-            if (hit.tag == "Bed" || hit.tag == "Fridge" || hit.tag == "NPC" || 
-                hit.tag == "Hide" || hit.tag == "Murder")
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange);
+        bool isNear = false;
+
+        foreach (var hit in hits)
+        {
+            // Kiểm tra tag có trong danh sách không
+            if (interactableTags.Contains(hit.tag))
             {
+                // Bỏ qua nếu sprite renderer bị ẩn
+                SpriteRenderer sr = hit.GetComponent<SpriteRenderer>();
+                if (sr != null && !sr.enabled)
+                    continue;
+
+                // Với các tag đặc biệt (Bed, Fridge, NPC, Hide, Murder) → luôn hiện UI
+                if (hit.tag == "Bed" || hit.tag == "Fridge" || hit.tag == "NPC" ||
+                    hit.tag == "Hide" || hit.tag == "Murder")
+                {
+                    isNear = true;
+                    break;
+                }
+
+                // Với evidence tags → kiểm tra xem đã nhặt chưa
+                if (EvidenceManager.Instance != null)
+                {
+                    // Nếu đã nhặt rồi thì bỏ qua
+                    if (EvidenceManager.Instance.HasEvidence(hit.tag))
+                        continue;
+
+                    if (EvidenceManager.Instance.permanentlyRemovedEvidence.Contains(hit.tag))
+                        continue;
+                }
+
+                // Nếu chưa nhặt hoặc không thuộc evidence → hiện UI
                 isNear = true;
                 break;
             }
+        }
 
-            // Với evidence tags → kiểm tra xem đã nhặt chưa
-            if (EvidenceManager.Instance != null)
-            {
-                // Nếu đã nhặt rồi thì bỏ qua
-                if (EvidenceManager.Instance.HasEvidence(hit.tag))
-                    continue;
-                
-                if (EvidenceManager.Instance.permanentlyRemovedEvidence.Contains(hit.tag))
-                    continue;
-            }
+        interactIndicator.SetActive(isNear);
 
-            // Nếu chưa nhặt hoặc không thuộc evidence → hiện UI
-            isNear = true;
-            break;
+        if (isNear)
+        {
+            interactIndicator.transform.localScale =
+                new Vector3(transform.localScale.x > 0 ? 1 : -1, 1, 1);
         }
     }
-
-    interactIndicator.SetActive(isNear);
-
-    if (isNear)
-    {
-        interactIndicator.transform.localScale =
-            new Vector3(transform.localScale.x > 0 ? 1 : -1, 1, 1);
-    }
-}
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
