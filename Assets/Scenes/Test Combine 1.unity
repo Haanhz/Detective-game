@@ -407,7 +407,7 @@ MonoBehaviour:
   videoPlayer: {fileID: 543063348}
   killedEndingClip: {fileID: 32900000, guid: 09d61fc2eda5dd54285f8a62c8503324, type: 3}
   exhaustedEndingClip: {fileID: 32900000, guid: 232a9f2c1a65df84b83dc41c23d1dabb, type: 3}
-  fullEndingClip: {fileID: 32900000, guid: e2c6bb7e6cb1c3747a40bcba00e544f2, type: 3}
+  fullEndingClip: {fileID: 32900000, guid: 2a62e4f3b31d3ae4c9e9e11c9f086ec9, type: 3}
   halfEndingClip: {fileID: 32900000, guid: 9c61bf84f92d7c944a762bd9955170e8, type: 3}
   WrongEndingClip: {fileID: 32900000, guid: 4635eb8d83adadb47bd5aa1b3a46fc65, type: 3}
   NobodyEndingClip: {fileID: 32900000, guid: 31a740fa6a456a7419f7b38636848dec, type: 3}
@@ -12216,6 +12216,7 @@ MonoBehaviour:
   profileContent: {fileID: 699027740}
   inventoryContent: {fileID: 833901743}
   noteContent: {fileID: 1634521506}
+  noteNotiImage: {fileID: 0}
   menuButton: {fileID: 1332214231}
   closeButton: {fileID: 1881411026}
   profileTabButton: {fileID: 1488555683}
