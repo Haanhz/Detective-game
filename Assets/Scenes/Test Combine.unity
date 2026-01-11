@@ -11071,7 +11071,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 58.07519, y: -4.172684, z: -0.085952654, w: 3.33815}
+  m_margin: {x: 43.517773, y: -4.172684, z: -0.085952654, w: 3.33815}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -12028,7 +12028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 44.2, y: -51.8}
+  m_AnchoredPosition: {x: 44.2, y: -50}
   m_SizeDelta: {x: 400, y: 107.05}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &702368360
@@ -13220,7 +13220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 12.4, y: -52}
+  m_AnchoredPosition: {x: 12.57, y: -50}
   m_SizeDelta: {x: 400, y: 107.05}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &828895268
@@ -66468,8 +66468,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 916974065
-  m_SortingLayer: 7
+  m_SortingLayerID: -200729111
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 2594804212466293643, guid: 5e29b50814aca454380fd411c3c322f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
