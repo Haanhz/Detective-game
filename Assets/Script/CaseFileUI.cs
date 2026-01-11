@@ -74,7 +74,7 @@ public class CaseFileUI : MonoBehaviour
             optionalEvidence = new string[] { "Limit1" },
             wrongEndings = new string[] {"HangPhone", "HangNoteBook", "Tan-0", "Tan-2","Mai-1","Mai-2"  },
             correctResponse = "That doesn't prove anything, if you say so, where is the murder weapon now?",
-            wrongResponse = "Ridiculous! That doesn't prove I went in there!"
+            wrongResponse = "Ridiculous! I can't believe you'd accuse me based on this!"
         },
         new AccusationPhase
         {

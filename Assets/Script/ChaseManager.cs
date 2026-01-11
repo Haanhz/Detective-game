@@ -53,10 +53,10 @@ public class ChaseManager : MonoBehaviour
 
         target = player.transform;
         EndChase();
-        
+
         GameManager.Instance.OnNightStart += OnNightStart;
         GameManager.Instance.OnDayStart += OnDayStart;
-        
+
         StartCoroutine(CheckAppear());
         StartCoroutine(CalculateProbAppear());
     }
@@ -71,7 +71,7 @@ public class ChaseManager : MonoBehaviour
     {
         StopAllCoroutines();
         if (rb) rb.linearVelocity = Vector2.zero;
-        
+
         if (blackAnimator)
         {
             blackAnimator.SetFloat("MoveX", 0);
@@ -80,7 +80,7 @@ public class ChaseManager : MonoBehaviour
 
         currentState = State.EndChase;
         EndChase();
-        
+
         StartCoroutine(CheckAppear());
         StartCoroutine(CalculateProbAppear());
     }
@@ -99,9 +99,7 @@ public class ChaseManager : MonoBehaviour
 
         switch (currentState)
         {
-            case State.SpawnBlack:
-                SpawnBlack();
-                break;
+            // ✅ XÓA case SpawnBlack vì chỉ cần gọi 1 lần
             case State.Chase:
                 Chase();
                 break;
@@ -111,19 +109,19 @@ public class ChaseManager : MonoBehaviour
                 break;
         }
     }
-    void StopChaseMusic()
-{
-    if (audioSource && audioSource.isPlaying)
-    {
-        audioSource.Stop();
-        audioSource.clip = null;
-    }
-    if (GameManager.Instance)
-    {
-        GameManager.Instance.ResumeNightMusic();
-    }
-}
 
+    void StopChaseMusic()
+    {
+        if (audioSource && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+            audioSource.clip = null;
+        }
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.ResumeNightMusic();
+        }
+    }
 
     IEnumerator CalculateProbAppear()
     {
@@ -137,7 +135,7 @@ public class ChaseManager : MonoBehaviour
             }
 
             timeAtNight += Time.deltaTime;
-            probAppear = 0.1f;
+            probAppear = 0.2f;
             yield return null;
         }
     }
@@ -150,84 +148,90 @@ public class ChaseManager : MonoBehaviour
         {
             yield return waitTime;
             if (!GameManager.Instance.isNight) continue;
-            
+
             if (currentState == State.EndChase && !blackSpawned)
             {
                 if (Random.value < probAppear)
                 {
-                    currentState = State.SpawnBlack;
+                    // ✅ Gọi SpawnBlack() trực tiếp
+                    SpawnBlack();
                 }
             }
         }
     }
 
-    // void SpawnBlack()
-    // {
-    //     if (!blackSpawned)
-    //     {
-    //         timer = 0f;
-    //         Vector3 playerPos = target.position;
-    //         float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-    //         Vector3 direction = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0).normalized;
-    //         Vector3 offset = direction * spawnDistance;
-            
-    //         black.transform.position = playerPos + offset;
-    //         black.SetActive(true);
-    //         blackSpawned = true;
-            
-    //         if(blackAnimator) blackAnimator.ResetTrigger("Kill");
-    //         if (audioSource != null && chaseMusic != null && audioSource.isPlaying)
-    //     {
-    //         audioSource.Stop();   
-    //         audioSource.clip = chaseMusic;
-    //         audioSource.loop = true;
-    //         audioSource.Play();
-    //     }
-    //     }
-
-
-    //     timer += Time.deltaTime;
-    //     if (timer >= chaseDelay)
-    //     {
-    //         timer = 0f;
-    //         currentState = State.Chase;
-    //     }
-    // }
-
     void SpawnBlack()
     {
         if (blackSpawned) return;
 
-        MapTransition[] transitions = FindObjectsByType<MapTransition>(FindObjectsSortMode.None);
-        if (transitions.Length == 0) return;
-
         Transform playerTf = player.transform;
 
-        MapTransition closest = null;
-        float minDist = Mathf.Infinity;
+        // ✅ Lấy hướng từ Animator của Player
+        Vector2 playerFacing = Vector2.down; // Default
 
-        foreach (var tr in transitions)
+        if (player.animator != null)
         {
-            float dist = Vector2.Distance(tr.transform.position, playerTf.position);
-            if (dist < 2.5f) continue;
+            float lastX = player.animator.GetFloat("LastInputX");
+            float lastY = player.animator.GetFloat("LastInputY");
 
-            if (dist < minDist)
+            if (lastX != 0 || lastY != 0)
             {
-                minDist = dist;
-                closest = tr;
+                playerFacing = new Vector2(lastX, lastY).normalized;
+            }
+            else
+            {
+                float inputX = player.animator.GetFloat("InputX");
+                float inputY = player.animator.GetFloat("InputY");
+                if (inputX != 0 || inputY != 0)
+                {
+                    playerFacing = new Vector2(inputX, inputY).normalized;
+                }
             }
         }
 
-        if (closest == null)
-            closest = transitions[Random.Range(0, transitions.Length)];
+        // ✅ Spawn NGƯỢC hướng player đang nhìn, cách 2f
+        Vector2 spawnDirection = -playerFacing;
+        Vector3 spawnPos = playerTf.position + (Vector3)(spawnDirection * 3f);
 
-        black.transform.position = closest.transform.position;
+        // ✅ CHECK VA CHẠM - nếu có tường phía sau → spawn bên cạnh
+        RaycastHit2D hit = Physics2D.Raycast(playerTf.position, spawnDirection, 2f);
+        
+        if (hit.collider != null && !hit.collider.CompareTag("Player"))
+        {
+            // Thử spawn bên cạnh thay vì phía sau
+            Vector2[] altDirections = {
+                new Vector2(-spawnDirection.y, spawnDirection.x),  // Vuông góc phải
+                new Vector2(spawnDirection.y, -spawnDirection.x)   // Vuông góc trái
+            };
+            
+            bool foundSpot = false;
+            foreach (var altDir in altDirections)
+            {
+                RaycastHit2D altHit = Physics2D.Raycast(playerTf.position, altDir, 2f);
+                if (altHit.collider == null || altHit.collider.CompareTag("Player"))
+                {
+                    spawnPos = playerTf.position + (Vector3)(altDir * 2f);
+                    foundSpot = true;
+                    break;
+                }
+            }
+            
+            // Nếu tất cả hướng đều bị chặn → spawn random
+            if (!foundSpot)
+            {
+                float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+                Vector2 randomDir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+                spawnPos = playerTf.position + (Vector3)(randomDir * 2f);
+            }
+        }
+
+        black.transform.position = spawnPos;
         black.SetActive(true);
         blackSpawned = true;
 
         if (rb) rb.linearVelocity = Vector2.zero;
 
-        // 👁️ đứng yên nhìn player
+        // 👁️ Black nhìn về phía player
         Vector2 lookDir = (playerTf.position - black.transform.position).normalized;
         if (blackAnimator)
         {
@@ -235,7 +239,7 @@ public class ChaseManager : MonoBehaviour
             blackAnimator.SetFloat("MoveY", lookDir.y);
         }
 
-        // Nhạc chase (chưa cần gấp, có thể bật sau)
+        // 🎵 Nhạc chase
         if (audioSource && chaseMusic)
         {
             audioSource.Stop();
@@ -255,7 +259,6 @@ public class ChaseManager : MonoBehaviour
         currentState = State.Chase;
     }
 
-    // Hàm kiểm tra vật cản bằng Raycast
     void Chase()
     {
         float distanceToPlayer = Vector3.Distance(black.transform.position, target.position);
@@ -293,8 +296,8 @@ public class ChaseManager : MonoBehaviour
             }
             else
             {
-                // NẾU CẢ 2 BỊ CHẶN: Thử "lách" bằng cách đi ngược lại một chút hoặc đứng yên
-                finalDir = Vector2.zero; 
+                // NẾU CẢ 2 BỊ CHẶN: đứng yên
+                finalDir = Vector2.zero;
             }
         }
 
@@ -302,7 +305,7 @@ public class ChaseManager : MonoBehaviour
 
         // Cập nhật hiển thị
         black.transform.rotation = Quaternion.identity;
-        if (finalDir.x != 0) 
+        if (finalDir.x != 0)
         {
             black.transform.localScale = new Vector3(finalDir.x > 0 ? 1 : -1, 1, 1);
         }
@@ -322,25 +325,25 @@ public class ChaseManager : MonoBehaviour
             currentState = State.EndChase;
         }
     }
+
     bool IsPathBlocked(Vector2 dir)
     {
         if (dir == Vector2.zero) return false;
-        float checkDistance = 0.6f; 
-        // Dùng LayerMask để chỉ check va chạm với Tường (Layer Default hoặc Tilemap)
+        float checkDistance = 0.6f;
         Vector2 rayStart = (Vector2)black.transform.position + (dir * 0.2f);
         RaycastHit2D hit = Physics2D.Raycast(rayStart, dir, checkDistance);
-        
+
         if (hit.collider != null && !hit.collider.CompareTag("Player") && hit.collider.gameObject != black)
         {
-            return true; 
+            return true;
         }
         return false;
     }
-    
+
     IEnumerator KillProcess()
     {
-        yield return new WaitForSeconds(0.5f); 
-        
+        yield return new WaitForSeconds(0.5f);
+
         player.killed = true;
         player.gameObject.SetActive(false);
         Debug.Log("You died by animation!");

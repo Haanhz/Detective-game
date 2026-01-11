@@ -233,7 +233,7 @@ public class Player : MonoBehaviour
             ScreenFader.Instance.FadeOut();
             yield return new WaitForSecondsRealtime(3f);
 
-            currentStamina = Mathf.Min(maxStamina, currentStamina + 30f);
+            currentStamina = Mathf.Min(maxStamina, currentStamina + 40f);
             GameManager.Instance.ForceSkipNight();
 
             ScreenFader.Instance.FadeIn();

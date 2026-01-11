@@ -243,7 +243,7 @@ public class EndingManager : MonoBehaviour
 
         MuteAllGameAudio(false);
 
-        yield return new WaitForSeconds(0.3f);
+       // yield return new WaitForSeconds(0.3f);
 
         DisplayEndingUI(pauseGame);
     }
@@ -352,7 +352,7 @@ public class EndingManager : MonoBehaviour
     {
         string[] fullEndingEvidence = new string[]
         {
-            "Limit1","Limit2","Limit3","Limit4","Limit5","Limit6","OpenWindow","Rope","Crack"
+            "Limit2","Limit3","Limit4","Limit5","Limit6","OpenWindow","Rope","Crack"
         };
 
         bool hasAllEvidence = true;
