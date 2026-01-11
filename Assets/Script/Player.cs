@@ -3,7 +3,8 @@ using System.Collections;
 using System.Threading;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UIElements;
+// using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
     private float lastEatTime = -100f;
     [Header("Eating UI")]
     public GameObject eatingText;
+    public Image eatingProgressCircle;
     public GameObject interactIndicator;
     public float detectionRange = 1.5f;
     public System.Collections.Generic.List<string> interactableTags = new System.Collections.Generic.List<string>
@@ -57,6 +59,8 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         if (interactIndicator != null) interactIndicator.SetActive(false);
         if (eatingText != null) eatingText.SetActive(false);
+        if (eatingProgressCircle != null)
+        eatingProgressCircle.gameObject.SetActive(false);
     }
 
     void Update()
@@ -194,6 +198,13 @@ public class Player : MonoBehaviour
 
         if (eatingText != null) eatingText.SetActive(true);
 
+        // ✅ HIỆN VÒNG TRÒN LOADING
+        if (eatingProgressCircle != null)
+        {
+            eatingProgressCircle.gameObject.SetActive(true);
+            eatingProgressCircle.fillAmount = 1f; // Bắt đầu từ đầy
+        }
+
         float eatDuration = 10f;
         float staminaToRecover = Mathf.Min(10f, maxStamina - currentStamina);
         float elapsed = 0f;
@@ -204,6 +215,12 @@ public class Player : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / eatDuration;
 
+            // ✅ CẬP NHẬT VÒNG TRÒN (GIẢM DẦN TỪ 1 → 0)
+            if (eatingProgressCircle != null)
+            {
+                eatingProgressCircle.fillAmount = 1f - t; // Quay ngược từ 1 → 0
+            }
+
             currentStamina = Mathf.Lerp(startStamina, startStamina + staminaToRecover, t);
             currentStamina = Mathf.Min(maxStamina, currentStamina);
 
@@ -213,6 +230,12 @@ public class Player : MonoBehaviour
         currentStamina = Mathf.Min(maxStamina, startStamina + staminaToRecover);
 
         if (eatingText != null) eatingText.SetActive(false);
+
+        // ✅ ẨN VÒNG TRÒN
+        if (eatingProgressCircle != null)
+        {
+            eatingProgressCircle.gameObject.SetActive(false);
+        }
 
         PlayerMonologue.Instance.Say("Ahh! That was delicious!", onceOnly: false, id: "eat_finish");
 
