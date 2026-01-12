@@ -6342,20 +6342,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2403b60925236544bac84465d2d52e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: 'Hang went to the villa to investigate haunted stories and a closed case
-    from 10 years ago. She was found dead in the shed with hanging marks on her neck.
-    I have 7 days to find the truth.
-
-    WASD: MOVE
+  content: 'WASD: MOVE
 
     SHIFT: RUN
 
     F: INTERACT
 
-    V:
-    UV LIGHT
+    V: UV LIGHT
 
-'
+    Sleep/
+    eat to restore stamina'
   interactRange: 1
 --- !u!212 &365244794
 SpriteRenderer:
