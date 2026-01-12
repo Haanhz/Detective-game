@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
-    
+
     private static bool isFirstTimeSession = true;
 
     public AudioSource audioSource;
@@ -34,17 +34,17 @@ public class UIManager : MonoBehaviour
     public Button replayButton;
 
     [Header("Start + Cutscene")]
-    public GameObject startPanel;           
-    public Button startButton;              
-    public Button continueButton;          
-    public GameObject cutscenePanel;        
-    public TextMeshProUGUI cutsceneText;    
+    public GameObject startPanel;
+    public Button startButton;
+    public Button continueButton;
+    public GameObject cutscenePanel;
+    public TextMeshProUGUI cutsceneText;
     public GameObject menuButtonObject;
     public float textSpeed = 0.03f;
 
     [Header("Radial Progress UI")]
-    public Image dayProgressImage;   
-    public Image nightProgressImage; 
+    public Image dayProgressImage;
+    public Image nightProgressImage;
 
     private bool gameStarted = false;
     private bool canReplay = false;
@@ -63,9 +63,9 @@ public class UIManager : MonoBehaviour
         if (isFirstTimeSession)
         {
             Debug.Log("First time opening game in this session. Clearing all data...");
-            PlayerPrefs.DeleteAll(); 
+            PlayerPrefs.DeleteAll();
             PlayerPrefs.Save();
-            isFirstTimeSession = false; 
+            isFirstTimeSession = false;
         }
     }
 
@@ -93,7 +93,7 @@ public class UIManager : MonoBehaviour
         if (continueButton != null)
         {
             bool hasSaved = PlayerPrefs.GetInt("HasSavedGame", 0) == 1;
-            continueButton.gameObject.SetActive(hasSaved); 
+            continueButton.gameObject.SetActive(hasSaved);
             continueButton.onClick.RemoveAllListeners();
             continueButton.onClick.AddListener(OnContinuePressed);
         }
@@ -109,7 +109,7 @@ public class UIManager : MonoBehaviour
         if (isLoadingSave)
         {
             isLoadingSave = false; // Reset cờ load
-            
+
             // Xử lý nạp dữ liệu
             if (chase.player != null) SaveSystem.LoadAll(chase.player.gameObject);
 
@@ -124,12 +124,12 @@ public class UIManager : MonoBehaviour
 
             // Ẩn panel và bắt đầu chơi ngay
             if (startPanel != null) startPanel.SetActive(false);
-            
+
             // Kiểm tra hiển thị thông báo trừ ngày nếu cần
             if (PlayerPrefs.GetInt("ShowDayDeduction", 0) == 1)
             {
                 StartCoroutine(ShowDayDeductionDelayed());
-                PlayerPrefs.SetInt("ShowDayDeduction", 0); 
+                PlayerPrefs.SetInt("ShowDayDeduction", 0);
             }
 
             StartGameplay();
@@ -138,14 +138,14 @@ public class UIManager : MonoBehaviour
         }
         else if (PlayerPrefs.GetInt("IsNewGameFlag", 0) == 1)
         {
-            PlayerPrefs.SetInt("IsNewGameFlag", 0); 
+            PlayerPrefs.SetInt("IsNewGameFlag", 0);
             PlayerPrefs.Save();
 
             if (chase.player != null)
                 chase.player.transform.position = new Vector2(-17.58f, -30.6f);
 
             if (startPanel != null) startPanel.SetActive(false);
-            StartCoroutine(PlayCutscene()); 
+            StartCoroutine(PlayCutscene());
             return;
         }
 
@@ -194,7 +194,7 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        if (!gameStarted) return; 
+        if (!gameStarted) return;
 
         UpdateDayRemain();
         UpdateStamina();
@@ -205,7 +205,7 @@ public class UIManager : MonoBehaviour
     void OnStartPressed()
     {
         PlayerPrefs.DeleteAll();
-        PlayerPrefs.SetInt("IsNewGameFlag", 1); 
+        PlayerPrefs.SetInt("IsNewGameFlag", 1);
         PlayerPrefs.Save();
 
         isLoadingSave = false;
@@ -216,8 +216,8 @@ public class UIManager : MonoBehaviour
 
     void OnContinuePressed()
     {
-        isLoadingSave = true; 
-        Time.timeScale = 1f; 
+        isLoadingSave = true;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -275,17 +275,17 @@ public class UIManager : MonoBehaviour
     {
         gameStarted = true;
         Time.timeScale = 1f; // Đảm bảo thời gian chạy để người chơi di chuyển được
-        if(GameManager.Instance != null) GameManager.Instance.StartDay();
+        if (GameManager.Instance != null) GameManager.Instance.StartDay();
 
-        if(dayRemainText != null) dayRemainText.gameObject.SetActive(true);
-        if(staminaSlider != null) staminaSlider.gameObject.SetActive(true);
+        if (dayRemainText != null) dayRemainText.gameObject.SetActive(true);
+        if (staminaSlider != null) staminaSlider.gameObject.SetActive(true);
         if (menuButtonObject != null) menuButtonObject.SetActive(true);
 
         if (replayButton != null) replayButton.gameObject.SetActive(false);
         canReplay = false;
     }
 
-    void UpdateDayRemain() { if(gm != null) dayRemainText.text = $"{gm.daysRemaining}"; }
+    void UpdateDayRemain() { if (gm != null) dayRemainText.text = $"{gm.daysRemaining}"; }
 
     void UpdateStamina()
     {
@@ -319,7 +319,7 @@ public class UIManager : MonoBehaviour
         if (gm.isNight)
         {
             if (dayProgressImage != null) dayProgressImage.gameObject.SetActive(false);
-            if (nightProgressImage != null) 
+            if (nightProgressImage != null)
             {
                 nightProgressImage.gameObject.SetActive(true);
                 nightProgressImage.fillAmount = currentFill;
@@ -328,7 +328,7 @@ public class UIManager : MonoBehaviour
         else
         {
             if (nightProgressImage != null) nightProgressImage.gameObject.SetActive(false);
-            if (dayProgressImage != null) 
+            if (dayProgressImage != null)
             {
                 dayProgressImage.gameObject.SetActive(true);
                 dayProgressImage.fillAmount = currentFill;
@@ -377,7 +377,7 @@ public class UIManager : MonoBehaviour
         }
 
         PlayerPrefs.SetInt("ShowDayDeduction", shouldShowDayDeduction ? 1 : 0);
-        PlayerPrefs.SetInt("HasSavedGame", 1); 
+        PlayerPrefs.SetInt("HasSavedGame", 1);
         PlayerPrefs.Save();
 
         isLoadingSave = true; // Cờ này quan trọng để Start() biết cần nạp lại dữ liệu sau khi load scene
@@ -397,4 +397,34 @@ public class UIManager : MonoBehaviour
         notePanel.SetActive(false);
 
     }
+    void LateLoadNPCStage()
+    {
+        NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
+        Debug.Log($"[LateLoad] Found {allNPCs.Length} NPCs to load");
+
+        if (allNPCs.Length == 0)
+        {
+            Debug.LogError("[LateLoad] NO NPCs FOUND! They might not be spawned yet!");
+            return;
+        }
+
+        foreach (NPC npc in allNPCs)
+        {
+            string stageKey = "NPCStage_" + npc.npcName;
+            int savedStage = PlayerPrefs.GetInt(stageKey, 0);
+            npc.dialogueStage = savedStage;
+            Debug.Log($"[LateLoad] {npc.npcName}: Loaded stage={savedStage}");
+
+            // NẠP LẠI TRẠNG THÁI ĐÃ ĐỌC
+            for (int i = 0; i < npc.conditionalBlocks.Count; i++)
+            {
+                string key = "NPCCond_" + npc.npcName + "_" + i;
+                bool savedHasRead = PlayerPrefs.GetInt(key, 0) == 1;
+                npc.conditionalBlocks[i].hasRead = savedHasRead;
+                Debug.Log($"[LateLoad] {npc.npcName} block[{i}]: hasRead={savedHasRead}");
+            }
+        }
+    }
+
+
 }

@@ -42,15 +42,17 @@ public static class SaveSystem
 
         // 5. Stage NPC
         NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
+        Debug.Log($"[SaveSystem] Found {allNPCs.Length} NPCs to save");
         foreach (NPC npc in allNPCs)
         {
             PlayerPrefs.SetInt("NPCStage_" + npc.npcName, npc.dialogueStage);
-            
+            Debug.Log($"[SaveSystem] Saved {npc.npcName}: stage={npc.dialogueStage}");
             // Lưu biến hasRead của từng block điều kiện
             for (int i = 0; i < npc.conditionalBlocks.Count; i++)
             {
                 string key = "NPCCond_" + npc.npcName + "_" + i;
                 PlayerPrefs.SetInt(key, npc.conditionalBlocks[i].hasRead ? 1 : 0);
+                Debug.Log($"[SaveSystem] Saved {npc.npcName} block[{i}]: hasRead={npc.conditionalBlocks[i].hasRead}");
             }
         }
 
@@ -139,18 +141,18 @@ public static class SaveSystem
         SyncDictionaryToProfile(3, DialogueManager.Instance.May);
 
         // 5. TẢI TRẠNG THÁI TỪNG NPC
-        NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
-        foreach (NPC npc in allNPCs)
-        {
-            npc.dialogueStage = PlayerPrefs.GetInt("NPCStage_" + npc.npcName, 0);
+        // NPC[] allNPCs = Object.FindObjectsByType<NPC>(FindObjectsSortMode.None);
+        // foreach (NPC npc in allNPCs)
+        // {
+        //     npc.dialogueStage = PlayerPrefs.GetInt("NPCStage_" + npc.npcName, 0);
             
-            // NẠP LẠI TRẠNG THÁI ĐÃ ĐỌC
-            for (int i = 0; i < npc.conditionalBlocks.Count; i++)
-            {
-                string key = "NPCCond_" + npc.npcName + "_" + i;
-                npc.conditionalBlocks[i].hasRead = PlayerPrefs.GetInt(key, 0) == 1;
-            }
-        }
+        //     // NẠP LẠI TRẠNG THÁI ĐÃ ĐỌC
+        //     for (int i = 0; i < npc.conditionalBlocks.Count; i++)
+        //     {
+        //         string key = "NPCCond_" + npc.npcName + "_" + i;
+        //         npc.conditionalBlocks[i].hasRead = PlayerPrefs.GetInt(key, 0) == 1;
+        //     }
+        // }
     }
 
     private static void SyncDictionaryToProfile(int charIndex, Dictionary<int, string> dict)

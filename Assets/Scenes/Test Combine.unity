@@ -6352,7 +6352,7 @@ MonoBehaviour:
 
     Sleep/
     eat to restore stamina'
-  interactRange: 1
+  interactRange: 1.5
 --- !u!212 &365244794
 SpriteRenderer:
   m_ObjectHideFlags: 0
