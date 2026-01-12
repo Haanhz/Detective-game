@@ -389,12 +389,12 @@ public class UIManager : MonoBehaviour
     {
         notePanel.SetActive(true);
         noteText.text = content;
-        Time.timeScale = 0f;
+
     }
 
     public void CloseNote()
     {
         notePanel.SetActive(false);
-        Time.timeScale = 1f;
+
     }
 }

@@ -117,6 +117,7 @@ public class CaseFileUI : MonoBehaviour
     
     public void StartAccusation(NPC npc)
     {
+        Time.timeScale = 0f;
         if (audioSource != null && accuseMusic != null)
         {
             audioSource.Stop();

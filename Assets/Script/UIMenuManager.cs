@@ -56,13 +56,11 @@ public class UIMenuManager : MonoBehaviour
     {
         menuPanel.SetActive(true);
         ShowInventory(); // Mặc định mở Profile
-        Time.timeScale = 0f;
     }
 
     void CloseMenu()
     {
         menuPanel.SetActive(false);
-        Time.timeScale = 1f;
         if(UIInventoryManager.Instance != null) UIInventoryManager.Instance.CloseInventory();
     }
 

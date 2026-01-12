@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    PlayerMonologue.Instance.Say("I can not eat anymore!", onceOnly: false, id: "not_eat");
+                    PlayerMonologue.Instance.Say("Better take a break before eating again!", onceOnly: false, id: "not_eat");
                 }
             }
             else if (foundBed)
@@ -209,7 +209,7 @@ public class Player : MonoBehaviour
         }
 
         float eatDuration = 10f;
-        float staminaToRecover = Mathf.Min(10f, maxStamina - currentStamina);
+        float staminaToRecover = Mathf.Min(15f, maxStamina - currentStamina);
         float elapsed = 0f;
         float startStamina = currentStamina;
 
@@ -269,7 +269,7 @@ public class Player : MonoBehaviour
             Time.timeScale = 1f;
             GameManager.Instance.audioSource.Play();
 
-            PlayerMonologue.Instance.Say("What a good sleep!", onceOnly: false, id: "sleep");
+            PlayerMonologue.Instance.Say("What a good sleep, I feel energized!", onceOnly: false, id: "sleep");
 
 
         }

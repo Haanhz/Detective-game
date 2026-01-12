@@ -27,6 +27,7 @@ TagManager:
   - SangStuff
   - AtticDoor
   - BeginDoor
+  - Note
   layers:
   - Default
   - TransparentFX
