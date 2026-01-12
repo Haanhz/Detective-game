@@ -12033,7 +12033,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &699027741
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13528,7 +13528,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &833901744
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14033,15 +14033,11 @@ MonoBehaviour:
     - speaker: 1
       text: Yeah... ... ... But ... you are ...
     - speaker: 0
-      text: 'Oh sorry, my name is Tan I live in the house there.
-
-        I already
-        know about it. Earlier after talking to Mr. Sang... Poor girl.'
+      text: Oh sorry, my name is Tan I live in the house there. I already know about
+        it. Earlier after talking to Mr. Sang... Poor girl.
     - speaker: 1
-      text: 'It seems like you and she are pretty close, huh?
-
-        Do you remember
-        the last time you saw her?'
+      text: It seems like you and she are pretty close, huh? Do you remember the
+        last time you saw her?
     - speaker: 0
       text: 'Hmmm......about a week ago, I had an argument with her because Hang
         refused to let me see the documents. '
@@ -15002,7 +14998,8 @@ MonoBehaviour:
       text: I don't know if it is because what she is investigating here. Is this
         villa really HAUNTED?
     - speaker: 0
-      text: There is also a mark on her neck, you know, a HANGING MARK...
+      text: There is also a mark on her neck, you know, a HANGING MARK...but I didn't
+        see any rope...
     - speaker: 1
       text: ...
     - speaker: 1
@@ -15023,8 +15020,8 @@ MonoBehaviour:
     id: 
     lines:
     - speaker: 0
-      text: Why the SHED though, I wonder what did Hang do there, and the hanging
-        mark, but I dont see any rope
+      text: "This house isn\u2019t safe at night....That's what I feel. I know you\u2019re
+        a detective, but if you see anything strange, better run for your life."
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -15032,7 +15029,9 @@ MonoBehaviour:
     hasRead: 0
     targetNPC: Sang
     infoKey: 1
-    infoValue: No rope at the scene
+    infoValue: "\"This house isn\u2019t safe at night....That's what I feel. I know
+      you\u2019re a detective, but if you see anything strange, better run for your
+      life.\""
   dialogueStage: 0
   lockDialogueStage: 0
   conditionalBlocks:
@@ -60048,7 +60047,8 @@ MonoBehaviour:
     id: 
     lines:
     - speaker: 0
-      text: Why did she die???
+      text: Why did she die??? Why the shed??? What did she do there??? Hanging mark?
+        Is that a suicide???
     requiredEvidenceTags: []
     requiredNPC: 
     requiredKeys: 
@@ -65455,13 +65455,13 @@ MonoBehaviour:
   - tagName: LivingCorner
     icon: {fileID: 3140520385987112788, guid: 92e54f194798c8b4aa96c5c5b651d618, type: 3}
     bigPortrait: {fileID: -1455096403836856330, guid: 1a52dc1e61a75534c81bf4d222177c56, type: 3}
-    description: Why is a small living setup found inside the shed, hidden behind
-      stacked logs, as if someone deliberately tried to conceal it? It may be necessary
-      to return tonight and examine the area using UV light.
+    description: No rope at the scene...But why is there a small living setup inside
+      the shed, hidden behind stacked logs, as if someone deliberately tried to conceal
+      it? It may be necessary to return tonight and examine the area using UV light.
   - tagName: Ultimatum
     icon: {fileID: 1183933322365787975, guid: 3b5e65a3ccac2444bada17410e4f74fd, type: 3}
     bigPortrait: {fileID: 4980393042394730227, guid: a70bd4ed05aec014f91eaaf5b50e3e17, type: 3}
-    description: YOU ARE BEING WATCHED
+    description: YOU ARE BEING WATCHED, BEWARE OF THE DARKNESS
   - tagName: HangNoteBook
     icon: {fileID: -3389989595311229600, guid: d6f02b8040b467b47b6dd5cdfa6a164c, type: 3}
     bigPortrait: {fileID: -3369390543426049443, guid: cd1d5cb859a890947afd4efa79d5ca92, type: 3}

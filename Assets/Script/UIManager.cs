@@ -352,6 +352,12 @@ public class UIManager : MonoBehaviour
 
         if (chase.player.killed || chase.player.exhausted)
         {
+            // ← Xử lý stamina cho trường hợp chết trong game
+            if (chase.player.exhausted)
+            {
+                // Chết do cạn stamina → Replay với 50% max
+                chase.player.currentStamina = chase.player.maxStamina * 0.5f;
+            }
             if (gm.isNight && EvidenceManager.Instance != null)
                 EvidenceManager.Instance.RevertNightlyEvidence();
 

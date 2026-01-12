@@ -55,7 +55,10 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        currentStamina = maxStamina;
+        if (PlayerPrefs.GetInt("HasSavedGame", 0) == 0)
+        {
+            currentStamina = maxStamina;
+        }
         animator = GetComponent<Animator>();
         if (interactIndicator != null) interactIndicator.SetActive(false);
         if (eatingText != null) eatingText.SetActive(false);

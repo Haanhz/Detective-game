@@ -28,6 +28,10 @@ public static class SaveSystem
         if (player != null) {
             PlayerPrefs.SetFloat("PlayerX", player.transform.position.x);
             PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
+            var playerScript = player.GetComponent<Player>();
+            if (playerScript != null) {
+                PlayerPrefs.SetFloat("PlayerStamina", playerScript.currentStamina);
+                }
         }
 
         // 4. Lưu Dictionary hội thoại
@@ -102,6 +106,10 @@ public static class SaveSystem
         // 3. Tải Vị trí
         if (player != null) {
             player.transform.position = new Vector2(PlayerPrefs.GetFloat("PlayerX"), PlayerPrefs.GetFloat("PlayerY"));
+            var playerScript = player.GetComponent<Player>();
+            if (playerScript != null) {
+                playerScript.currentStamina = PlayerPrefs.GetFloat("PlayerStamina", playerScript.currentStamina);
+            }
         }
 
         string savedRoom = PlayerPrefs.GetString("SavedRoom", "LivingRoom");
