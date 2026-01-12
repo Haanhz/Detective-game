@@ -8,8 +8,6 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
     
-    // Biến static để kiểm tra xem đây có phải là lần đầu tiên chạy code trong phiên này không
-    // Biến này sẽ reset về true mỗi khi bạn tắt hẳn Game và mở lại (exe/app)
     private static bool isFirstTimeSession = true;
 
     public AudioSource audioSource;
@@ -59,39 +57,33 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        // Mặc định dừng thời gian khi khởi tạo UI
         Time.timeScale = 0f;
 
-        // KIỂM TRA LẦN ĐẦU MỞ GAME TRONG PHIÊN (SESSION) NÀY
         if (isFirstTimeSession)
         {
             Debug.Log("First time opening game in this session. Clearing all data...");
-            PlayerPrefs.DeleteAll(); // Xóa sạch PlayerPrefs bao gồm HasSavedGame
+            PlayerPrefs.DeleteAll(); 
             PlayerPrefs.Save();
-            isFirstTimeSession = false; // Đánh dấu đã qua bước kiểm tra đầu tiên
+            isFirstTimeSession = false; 
         }
     }
 
     void Start()
     {
         // 1. Khởi tạo cơ bản
-        if (PlayerPrefs.GetInt("ShowDayDeduction", 0) == 1)
-        {
-            StartCoroutine(ShowDayDeductionDelayed());
-            PlayerPrefs.SetInt("ShowDayDeduction", 0); 
-        }
-
         if (staminaSlider != null && staminaSlider.fillRect != null)
         {
             staminaFill = staminaSlider.fillRect.GetComponent<Image>();
         }
 
-        // 2. Thiết lập Menu mặc định
+        // 2. Thiết lập Menu mặc định (Ẩn các UI gameplay trước)
         if (dayRemainText != null) dayRemainText.gameObject.SetActive(false);
         if (staminaSlider != null) staminaSlider.gameObject.SetActive(false);
         if (menuButtonObject != null) menuButtonObject.SetActive(false);
         if (cutscenePanel != null) cutscenePanel.SetActive(false);
 
-        // Gán lại sự kiện nút bấm
+        // Gán sự kiện nút bấm
         if (startButton != null)
         {
             startButton.onClick.RemoveAllListeners();
@@ -100,7 +92,6 @@ public class UIManager : MonoBehaviour
 
         if (continueButton != null)
         {
-            // Kiểm tra trạng thái lưu sau khi đã xử lý DeleteAll ở Awake
             bool hasSaved = PlayerPrefs.GetInt("HasSavedGame", 0) == 1;
             continueButton.gameObject.SetActive(hasSaved); 
             continueButton.onClick.RemoveAllListeners();
@@ -114,10 +105,12 @@ public class UIManager : MonoBehaviour
             replayButton.onClick.AddListener(ReplayScene);
         }
 
-        // 3. XỬ LÝ LOGIC NẠP GAME
+        // 3. XỬ LÝ LOGIC NẠP GAME (Ưu tiên kiểm tra load trước)
         if (isLoadingSave)
         {
-            isLoadingSave = false;
+            isLoadingSave = false; // Reset cờ load
+            
+            // Xử lý nạp dữ liệu
             if (chase.player != null) SaveSystem.LoadAll(chase.player.gameObject);
 
             if (EvidenceManager.Instance != null)
@@ -129,7 +122,16 @@ public class UIManager : MonoBehaviour
 
             if (ProfileUI.Instance != null) ProfileUI.Instance.UpdateUI();
 
-            startPanel.SetActive(false);
+            // Ẩn panel và bắt đầu chơi ngay
+            if (startPanel != null) startPanel.SetActive(false);
+            
+            // Kiểm tra hiển thị thông báo trừ ngày nếu cần
+            if (PlayerPrefs.GetInt("ShowDayDeduction", 0) == 1)
+            {
+                StartCoroutine(ShowDayDeductionDelayed());
+                PlayerPrefs.SetInt("ShowDayDeduction", 0); 
+            }
+
             StartGameplay();
             Invoke("LateLoadNPCStage", 0.1f);
             return;
@@ -142,14 +144,15 @@ public class UIManager : MonoBehaviour
             if (chase.player != null)
                 chase.player.transform.position = new Vector2(-17.58f, -30.6f);
 
-            startPanel.SetActive(false);
+            if (startPanel != null) startPanel.SetActive(false);
             StartCoroutine(PlayCutscene()); 
             return;
         }
 
-        // 4. TRẠNG THÁI CHỜ Ở MENU CHÍNH
-        if (startPanel != null && startPanel.activeSelf)
+        // 4. TRẠNG THÁI CHỜ Ở MENU CHÍNH (Nếu không load/new game)
+        if (startPanel != null)
         {
+            startPanel.SetActive(true);
             Time.timeScale = 0f;
         }
 
@@ -201,7 +204,6 @@ public class UIManager : MonoBehaviour
 
     void OnStartPressed()
     {
-        // Khi bấm Start (New Game), dọn dẹp mọi thứ cũ
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("IsNewGameFlag", 1); 
         PlayerPrefs.Save();
@@ -214,8 +216,8 @@ public class UIManager : MonoBehaviour
 
     void OnContinuePressed()
     {
-        Time.timeScale = 1f; 
         isLoadingSave = true; 
+        Time.timeScale = 1f; 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -272,23 +274,22 @@ public class UIManager : MonoBehaviour
     void StartGameplay()
     {
         gameStarted = true;
-        Time.timeScale = 1f;
-        GameManager.Instance.StartDay();
+        Time.timeScale = 1f; // Đảm bảo thời gian chạy để người chơi di chuyển được
+        if(GameManager.Instance != null) GameManager.Instance.StartDay();
 
-        dayRemainText.gameObject.SetActive(true);
-        staminaSlider.gameObject.SetActive(true);
+        if(dayRemainText != null) dayRemainText.gameObject.SetActive(true);
+        if(staminaSlider != null) staminaSlider.gameObject.SetActive(true);
         if (menuButtonObject != null) menuButtonObject.SetActive(true);
 
         if (replayButton != null) replayButton.gameObject.SetActive(false);
         canReplay = false;
     }
 
-    // --- CÁC HÀM UI GAMEPLAY KHÁC GIỮ NGUYÊN ---
-    void UpdateDayRemain() { dayRemainText.text = $"{gm.daysRemaining}"; }
+    void UpdateDayRemain() { if(gm != null) dayRemainText.text = $"{gm.daysRemaining}"; }
 
     void UpdateStamina()
     {
-        if (chase.player == null) return;
+        if (chase.player == null || staminaSlider == null) return;
         staminaSlider.maxValue = chase.player.maxStamina;
         staminaSlider.value = chase.player.currentStamina;
         float pct = chase.player.currentStamina / chase.player.maxStamina;
@@ -297,6 +298,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator FlashStaminaBar()
     {
+        if (staminaFill == null) yield break;
         isFlashing = true;
         for (int i = 0; i < 6; i++)
         {
@@ -369,10 +371,10 @@ public class UIManager : MonoBehaviour
         }
 
         PlayerPrefs.SetInt("ShowDayDeduction", shouldShowDayDeduction ? 1 : 0);
-        PlayerPrefs.SetInt("HasSavedGame", 1); // Đánh dấu có file lưu sau khi chết/qua ngày
+        PlayerPrefs.SetInt("HasSavedGame", 1); 
         PlayerPrefs.Save();
 
-        isLoadingSave = true;
+        isLoadingSave = true; // Cờ này quan trọng để Start() biết cần nạp lại dữ liệu sau khi load scene
         if (replayButton != null) replayButton.gameObject.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
