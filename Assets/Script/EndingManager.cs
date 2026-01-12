@@ -22,12 +22,14 @@ public class EndingManager : MonoBehaviour
 
     [Header("Cutscene Settings")]
     public VideoPlayer videoPlayer;
-    public VideoClip killedEndingClip;
-    public VideoClip exhaustedEndingClip;
-    public VideoClip fullEndingClip;
-    public VideoClip halfEndingClip;
-    public VideoClip WrongEndingClip;
-    public VideoClip NobodyEndingClip;
+
+    [Header("Video File Names (Include .mp4)")]
+    public string killedEndingName = "Killed.mp4";
+    public string exhaustedEndingName = "Exhausted.mp4";
+    public string fullEndingName = "True_End.004.mp4";
+    public string halfEndingName = "HE_03.mp4";
+    public string wrongEndingName = "Wrong_02.mp4";
+    public string nobodyEndingName = "Noone.mp4";
 
     private ChaseManager chase => ChaseManager.instance;
     private GameManager GameEnd => GameManager.Instance;
@@ -37,7 +39,6 @@ public class EndingManager : MonoBehaviour
 
     private bool HalfEndingTriggered = false;
     private bool FullEndingTriggered = false;
-    // WrongEndingTriggered đã xóa - CaseFileUI tự handle
 
     private bool endingStarted = false;
     private bool isTimeOut = false;
@@ -63,7 +64,7 @@ public class EndingManager : MonoBehaviour
         if (videoPlayer != null)
         {
             videoPlayer.playOnAwake = false;
-            videoPlayer.clip = null;
+            videoPlayer.source = VideoSource.Url; // Thiết lập mặc định dùng URL cho WebGL
         }
     }
 
@@ -108,7 +109,7 @@ public class EndingManager : MonoBehaviour
     public void ShowEnding(bool playerDead = false)
     {
         IsDetectiveEnding = false;
-        VideoClip selectedClip = null;
+        string selectedVideoName = ""; // Thay đổi từ Clip sang Name
         string resultText = "";
 
         if (playerDead)
@@ -124,21 +125,20 @@ public class EndingManager : MonoBehaviour
         {
             IsKilledByBlack = true;
             resultText = "You died in the chase! The killer took all the items you collected during the night!";
-            selectedClip = killedEndingClip;
+            selectedVideoName = killedEndingName;
         }
         else if (playerDead && chase.player.exhausted)
         {
             resultText = "You collapsed from exhaustion!";
-            selectedClip = exhaustedEndingClip;
+            selectedVideoName = exhaustedEndingName;
         }
         else if (playerDead && isTimeOut)
         {
             resultText = "Out of time. Now you are the next victim";
-            selectedClip = killedEndingClip;
+            selectedVideoName = killedEndingName;
         }
         else
         {
-            // Chỉ check FULL và HALF thôi (WRONG và NOBODY đã được handle bởi CaseFileUI)
             checkFullEnding();
             if (!FullEndingTriggered) checkHalfEnding();
 
@@ -147,26 +147,25 @@ public class EndingManager : MonoBehaviour
             if (FullEndingTriggered && chooseRightMurderer)
             {
                 resultText = "Congratulations! You've uncovered the full truth.";
-                selectedClip = fullEndingClip;
+                selectedVideoName = fullEndingName;
             }
             else if (HalfEndingTriggered && chooseRightMurderer)
             {
                 resultText = "You've found a piece, but the whole truth remains hidden.";
-                selectedClip = halfEndingClip;
+                selectedVideoName = halfEndingName;
             }
             else
             {
-                // Fallback - không đủ evidence cho HALF
                 resultText = "Nobody will ever believe you.";
-                selectedClip = NobodyEndingClip;
+                selectedVideoName = nobodyEndingName;
             }
         }
 
         EndingText.text = resultText;
 
-        if (selectedClip != null && videoPlayer != null)
+        if (!string.IsNullOrEmpty(selectedVideoName) && videoPlayer != null)
         {
-            StartCoroutine(PlayVideoThenShowUI(selectedClip, playerDead));
+            StartCoroutine(PlayVideoThenShowUI(selectedVideoName, playerDead));
         }
         else
         {
@@ -174,21 +173,19 @@ public class EndingManager : MonoBehaviour
         }
     }
 
-    // ===== FORCED ENDING METHODS (Called from CaseFileUI) =====
-
     public void ShowWrongEnding()
     {
         IsDetectiveEnding = true;
         endingStarted = true;
 
         string resultText = "Hmm...you're not much of a detective, are you?";
-        VideoClip selectedClip = WrongEndingClip;
+        string selectedVideoName = wrongEndingName;
 
         EndingText.text = resultText;
 
-        if (selectedClip != null && videoPlayer != null)
+        if (!string.IsNullOrEmpty(selectedVideoName) && videoPlayer != null)
         {
-            StartCoroutine(PlayVideoThenShowUI(selectedClip, false));
+            StartCoroutine(PlayVideoThenShowUI(selectedVideoName, false));
         }
         else
         {
@@ -202,13 +199,13 @@ public class EndingManager : MonoBehaviour
         endingStarted = true;
 
         string resultText = "Nobody will ever believe you.";
-        VideoClip selectedClip = NobodyEndingClip;
+        string selectedVideoName = nobodyEndingName;
 
         EndingText.text = resultText;
 
-        if (selectedClip != null && videoPlayer != null)
+        if (!string.IsNullOrEmpty(selectedVideoName) && videoPlayer != null)
         {
-            StartCoroutine(PlayVideoThenShowUI(selectedClip, false));
+            StartCoroutine(PlayVideoThenShowUI(selectedVideoName, false));
         }
         else
         {
@@ -218,20 +215,27 @@ public class EndingManager : MonoBehaviour
 
     // ===== VIDEO & UI HANDLING =====
 
-    private System.Collections.IEnumerator PlayVideoThenShowUI(VideoClip clip, bool pauseGame)
+    private System.Collections.IEnumerator PlayVideoThenShowUI(string fileName, bool pauseGame)
     {
         MuteAllGameAudio(true);
 
         if (mainGameCanvas != null) mainGameCanvas.enabled = false;
         if (ui != null) ui.enabled = false;
 
-        videoPlayer.clip = clip;
+        // Xử lý đường dẫn cho WebGL
+        string videoPath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
+        videoPlayer.source = VideoSource.Url;
+        videoPlayer.url = videoPath;
+        
         videoPlayer.Prepare();
 
         while (!videoPlayer.isPrepared)
             yield return null;
 
         videoPlayer.Play();
+
+        // Chờ một frame để isPlaying cập nhật đúng
+        yield return null;
 
         while (videoPlayer.isPlaying)
             yield return null;
@@ -242,9 +246,6 @@ public class EndingManager : MonoBehaviour
         if (ui != null) ui.enabled = true;
 
         MuteAllGameAudio(false);
-
-       // yield return new WaitForSeconds(0.3f);
-
         DisplayEndingUI(pauseGame);
     }
 
@@ -265,10 +266,6 @@ public class EndingManager : MonoBehaviour
         }
         else
         {
-            // foreach (AudioSource source in activeAudioSources)
-            // {
-            //     if (source != null) source.UnPause();
-            // }
             activeAudioSources.Clear();
         }
     }
@@ -277,11 +274,7 @@ public class EndingManager : MonoBehaviour
     {
         EndingBox.SetActive(true);
         EndingText.gameObject.SetActive(true);
-
-        // DỪNG TẤT CẢ NHẠC ĐANG CHẠY
         MuteAllGameAudio(true);
-
-        // Phát nhạc ending
         PlayEndingMusic();
 
         if (!FullEndingTriggered && !isTimeOut)
@@ -300,19 +293,7 @@ public class EndingManager : MonoBehaviour
     private void PlayEndingMusic()
     {
         if (endingAudioSource == null) return;
-
-        AudioClip musicToPlay = null;
-
-        // NHẠC VUI: Full Ending
-        if (FullEndingTriggered)
-        {
-            musicToPlay = happyEndingMusic;
-        }
-        // NHẠC BUỒN: Tất cả ending còn lại
-        else
-        {
-            musicToPlay = sadEndingMusic;
-        }
+        AudioClip musicToPlay = FullEndingTriggered ? happyEndingMusic : sadEndingMusic;
 
         if (musicToPlay != null)
         {
@@ -322,13 +303,9 @@ public class EndingManager : MonoBehaviour
         }
     }
 
-    // ===== ENDING CHECKS =====
-    // Note: checkWrongEnding() đã bị xóa vì CaseFileUI tự handle WRONG ending
-
     public void checkHalfEnding()
     {
         string[] halfEndingEvidence = new string[] { "Crack", "OpenWindow", "Rope" };
-
         bool hasEnoughEvidence = true;
         foreach (string evidenceTag in halfEndingEvidence)
         {
@@ -339,8 +316,7 @@ public class EndingManager : MonoBehaviour
             }
         }
 
-        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 1)
-                            && CaseFileUI.Instance.HasInformation("Tan", 2);
+        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 1) && CaseFileUI.Instance.HasInformation("Tan", 2);
         bool mayCondition = CaseFileUI.Instance.HasInformation("May", 1);
         bool maiCondition = CaseFileUI.Instance.HasInformation("Mai", 3);
 
@@ -350,11 +326,7 @@ public class EndingManager : MonoBehaviour
 
     public void checkFullEnding()
     {
-        string[] fullEndingEvidence = new string[]
-        {
-            "Limit2","Limit3","Limit4","Limit5","Limit6","OpenWindow","Rope","Crack"
-        };
-
+        string[] fullEndingEvidence = new string[] { "Limit2","Limit3","Limit4","Limit5","Limit6","OpenWindow","Rope","Crack" };
         bool hasAllEvidence = true;
         foreach (string evidenceTag in fullEndingEvidence)
         {
@@ -365,8 +337,7 @@ public class EndingManager : MonoBehaviour
             }
         }
 
-        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 1)
-                            && CaseFileUI.Instance.HasInformation("Tan", 2);
+        bool tanCondition = CaseFileUI.Instance.HasInformation("Tan", 1) && CaseFileUI.Instance.HasInformation("Tan", 2);
         bool mayCondition = CaseFileUI.Instance.HasInformation("May", 1);
         bool maiCondition = CaseFileUI.Instance.HasInformation("Mai", 3);
 
