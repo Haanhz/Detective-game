@@ -256,6 +256,26 @@ public class GameManager : MonoBehaviour
         StartDay();
     }
 
+    public void ForceSkipDay()
+    {
+        if (isNight) return;
+        StopAllCoroutines();
+        isCountingDown = false;
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
+        // daysRemaining--;
+        // StartCoroutine(ShowDayDeduction());
+        // OnDayEnded?.Invoke();
+        // if (daysRemaining <= 0)
+        // {
+        //     gameEnded = true;
+        //     // Dừng countdown nếu đang chạy
+        //     StopAllCoroutines();
+        //     if (countdownText != null) countdownText.gameObject.SetActive(false);
+        //     return;
+        // }
+        StartNight();
+    }
+
     void SetNPCActive(bool active)
     {
         foreach (var npc in allNPCs)

@@ -3,8 +3,8 @@ using System.Collections;
 using System.Threading;
 using JetBrains.Annotations;
 using UnityEngine;
-// using UnityEngine.UIElements;
 using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -12,11 +12,15 @@ public class Player : MonoBehaviour
     [Header("Fridge Settings")]
     public float fridgeCooldown = 10f;
     private float lastEatTime = -100f;
+    [Header("Sleep Settings")]
+    public float sleepCooldown = 90f;
+    private float lastSleepTime = -100f;
     [Header("Eating UI")]
     public GameObject eatingText;
     public Image eatingProgressCircle;
     public GameObject interactIndicator;
     public float detectionRange = 1.5f;
+
     public System.Collections.Generic.List<string> interactableTags = new System.Collections.Generic.List<string>
     {
         "LivingCorner", "Ultimatum", "HangPhone", "HangNoteBook",
@@ -63,7 +67,8 @@ public class Player : MonoBehaviour
         if (interactIndicator != null) interactIndicator.SetActive(false);
         if (eatingText != null) eatingText.SetActive(false);
         if (eatingProgressCircle != null)
-        eatingProgressCircle.gameObject.SetActive(false);
+            eatingProgressCircle.gameObject.SetActive(false);
+
     }
 
     void Update()
@@ -79,7 +84,6 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            // Check xem có Fridge hoặc Bed trong range không
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange);
 
             bool foundFridge = false;
@@ -115,7 +119,15 @@ public class Player : MonoBehaviour
             }
             else if (foundBed)
             {
-                StartCoroutine(SleepCoroutine());
+                // ✅ KIỂM TRA COOLDOWN
+                if (Time.time >= lastSleepTime + sleepCooldown)
+                {
+                    StartCoroutine(AskToSleep());
+                }
+                else
+                {
+                    PlayerMonologue.Instance.Say($"I'm not tired yet. Better go investigating!", onceOnly: false, id: "sleep_cooldown");
+                }
             }
             else
             {
@@ -148,7 +160,6 @@ public class Player : MonoBehaviour
 
         if (!moving)
         {
-            // currentStamina += 0.01f * Time.deltaTime;
             animator.SetBool("isWalking", false);
             animator.SetBool("isRunning", false);
         }
@@ -201,11 +212,10 @@ public class Player : MonoBehaviour
 
         if (eatingText != null) eatingText.SetActive(true);
 
-        // ✅ HIỆN VÒNG TRÒN LOADING
         if (eatingProgressCircle != null)
         {
             eatingProgressCircle.gameObject.SetActive(true);
-            eatingProgressCircle.fillAmount = 1f; // Bắt đầu từ đầy
+            eatingProgressCircle.fillAmount = 1f;
         }
 
         float eatDuration = 10f;
@@ -218,10 +228,9 @@ public class Player : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / eatDuration;
 
-            // ✅ CẬP NHẬT VÒNG TRÒN (GIẢM DẦN TỪ 1 → 0)
             if (eatingProgressCircle != null)
             {
-                eatingProgressCircle.fillAmount = 1f - t; // Quay ngược từ 1 → 0
+                eatingProgressCircle.fillAmount = 1f - t;
             }
 
             currentStamina = Mathf.Lerp(startStamina, startStamina + staminaToRecover, t);
@@ -234,7 +243,6 @@ public class Player : MonoBehaviour
 
         if (eatingText != null) eatingText.SetActive(false);
 
-        // ✅ ẨN VÒNG TRÒN
         if (eatingProgressCircle != null)
         {
             eatingProgressCircle.gameObject.SetActive(false);
@@ -246,37 +254,95 @@ public class Player : MonoBehaviour
         isInteracting = false;
     }
 
+    // ✅ HỎI PLAYER CÓ MUỐN NGỦ KHÔNG (CHỈ HỎI BAN NGÀY)
+    // ✅ HỎI PLAYER CÓ MUỐN NGỦ KHÔNG (CHỈ HỎI BAN NGÀY)
+private IEnumerator AskToSleep()
+{
+    isInteracting = true;
+
+    // ✅ NẾU LÀ ĐÊM → NGỦ LUÔN, KHÔNG HỎI
+    if (GameManager.Instance.isNight)
+    {
+        yield return StartCoroutine(SleepCoroutine());
+        yield break;
+    }
+
+    // ✅ NẾU LÀ BAN NGÀY → HỎI TRƯỚC KHI NGỦ
+    string question = "It's still morning. Should I take a nap and skip to night? (Press Y/N)";
+
+    // ✅ HIỂN THỊ CÂU HỎI (KHÔNG TỰ TẮT)
+    PlayerMonologue.Instance.AskQuestion(question);
+
+    // Đợi player nhấn Y hoặc N
+    bool choiceMade = false;
+    bool chooseYes = false;
+
+    while (!choiceMade)
+    {
+        // ✅ NẾU NHẤN F → HIỆN LẠI CÂU HỎI
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            PlayerMonologue.Instance.AskQuestion(question);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            choiceMade = true;
+            chooseYes = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.N))
+        {
+            choiceMade = true;
+            chooseYes = false;
+        }
+
+        yield return null;
+    }
+
+    // ✅ TẮT MONOLOGUE SAU KHI CHỌN
+    PlayerMonologue.Instance.Hide();
+
+    // Xử lý lựa chọn
+    if (chooseYes)
+    {
+        yield return StartCoroutine(SleepCoroutine());
+    }
+    else
+    {
+        PlayerMonologue.Instance.Say("Better go investigating!", onceOnly: false, id: "not_sleepy");
+        isInteracting = false;
+    }
+}
     private IEnumerator SleepCoroutine()
     {
+        Time.timeScale = 0f;
+        GameManager.Instance.audioSource.Stop();
+
+        ScreenFader.Instance.FadeOut();
+        yield return new WaitForSecondsRealtime(3f);
+
+
         if (GameManager.Instance.isNight)
         {
-            isInteracting = true;
-
-
-            Time.timeScale = 0f;
-            GameManager.Instance.audioSource.Stop();
-
-            ScreenFader.Instance.FadeOut();
-            yield return new WaitForSecondsRealtime(3f);
-
-            currentStamina = Mathf.Min(maxStamina, currentStamina + 40f);
             GameManager.Instance.ForceSkipNight();
-
-            ScreenFader.Instance.FadeIn();
-            // yield return new WaitForSecondsRealtime(3f);
-
-            isInteracting = false;
-            Time.timeScale = 1f;
-            GameManager.Instance.audioSource.Play();
-
-            PlayerMonologue.Instance.Say("What a good sleep, I feel energized!", onceOnly: false, id: "sleep");
-
-
+            currentStamina = Mathf.Min(maxStamina, currentStamina + 40f);
         }
         else
         {
-            PlayerMonologue.Instance.Say("I am not sleepy, better go investigate!", onceOnly: false, id: "not_sleep");
+            GameManager.Instance.ForceSkipDay();
+            currentStamina = Mathf.Min(maxStamina, currentStamina + 20f);
         }
+
+        ScreenFader.Instance.FadeIn();
+
+        isInteracting = false;
+        Time.timeScale = 1f;
+        GameManager.Instance.audioSource.Play();
+
+        // ✅ CẬP NHẬT THỜI GIAN NGỦ
+        lastSleepTime = Time.time;
+
+        PlayerMonologue.Instance.Say("What a good sleep, I feel energized!", onceOnly: false, id: "sleep");
     }
 
     void CheckStaminaDeath()
@@ -344,8 +410,6 @@ public class Player : MonoBehaviour
         return horizontal != 0 || vertical != 0;
     }
 
-
-
     void CheckForInteractables()
     {
         if (interactIndicator == null) return;
@@ -355,15 +419,12 @@ public class Player : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            // Kiểm tra tag có trong danh sách không
             if (interactableTags.Contains(hit.tag))
             {
-                // Bỏ qua nếu sprite renderer bị ẩn
                 SpriteRenderer sr = hit.GetComponent<SpriteRenderer>();
                 if (sr != null && !sr.enabled)
                     continue;
 
-                // Với các tag đặc biệt (Bed, Fridge, NPC, Hide, Murder) → luôn hiện UI
                 if (hit.tag == "Bed" || hit.tag == "Fridge" || hit.tag == "NPC" ||
                     hit.tag == "Hide" || hit.tag == "Murder")
                 {
@@ -371,10 +432,8 @@ public class Player : MonoBehaviour
                     break;
                 }
 
-                // Với evidence tags → kiểm tra xem đã nhặt chưa
                 if (EvidenceManager.Instance != null)
                 {
-                    // Nếu đã nhặt rồi thì bỏ qua
                     if (EvidenceManager.Instance.HasEvidence(hit.tag))
                         continue;
 
@@ -382,7 +441,6 @@ public class Player : MonoBehaviour
                         continue;
                 }
 
-                // Nếu chưa nhặt hoặc không thuộc evidence → hiện UI
                 isNear = true;
                 break;
             }
@@ -396,6 +454,7 @@ public class Player : MonoBehaviour
                 new Vector3(transform.localScale.x > 0 ? 1 : -1, 1, 1);
         }
     }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

@@ -38,7 +38,7 @@ public class PlayerMonologue : MonoBehaviour
     }
 
     /// <summary>
-    /// Nói 1 dòng
+    /// Nói 1 dòng (tự động tắt sau displayTime)
     /// </summary>
     public void Say(string text, bool onceOnly = false, string id = "")
     {
@@ -54,16 +54,48 @@ public class PlayerMonologue : MonoBehaviour
         currentCoroutine = StartCoroutine(ShowDialogue(text));
     }
 
+    /// <summary>
+    /// ✅ HÀM MỚI: Hiển thị câu hỏi mãi mãi (không tự tắt)
+    /// </summary>
+    public void AskQuestion(string text)
+    {
+        if (currentCoroutine != null)
+            StopCoroutine(currentCoroutine);
+        
+        currentCoroutine = StartCoroutine(ShowPersistentDialogue(text));
+    }
+
+    /// <summary>
+    /// ✅ TẮT MONOLOGUE THỦ CÔNG
+    /// </summary>
+    public void Hide()
+    {
+        if (currentCoroutine != null)
+            StopCoroutine(currentCoroutine);
+        
+        if (dialogueText != null)
+            dialogueText.text = "";
+        if (nameText != null)
+            nameText.text = "";
+        if (avatarImage != null)
+            avatarImage.gameObject.SetActive(false);
+        
+        dialogueBox.SetActive(false);
+    }
+
     private IEnumerator ShowDialogue(string text)
     {
         dialogueBox.SetActive(true);
-        // Set name và avatar
+        
         if (nameText != null)
             nameText.text = playerName;
         
         if (avatarImage != null && playerPortrait != null)
+        {
             avatarImage.sprite = playerPortrait;
             avatarImage.gameObject.SetActive(true);
+        }
+        
         dialogueText.text = "";
 
         // Gõ chữ
@@ -75,15 +107,44 @@ public class PlayerMonologue : MonoBehaviour
 
         // Chờ rồi ẩn
         yield return new WaitForSeconds(displayTime);
+        
         if (dialogueText != null)
             dialogueText.text = "";
         if (nameText != null)
             nameText.text = "";
-        
         if (avatarImage != null)
             avatarImage.gameObject.SetActive(false);
         
         dialogueBox.SetActive(false);
+    }
+
+    /// <summary>
+    /// ✅ HIỂN THỊ VĨNH VIỄN (KHÔNG TỰ TẮT)
+    /// </summary>
+    private IEnumerator ShowPersistentDialogue(string text)
+    {
+        dialogueBox.SetActive(true);
+        
+        if (nameText != null)
+            nameText.text = playerName;
+        
+        if (avatarImage != null && playerPortrait != null)
+        {
+            avatarImage.sprite = playerPortrait;
+            avatarImage.gameObject.SetActive(true);
+        }
+        
+        dialogueText.text = "";
+
+        // Gõ chữ
+        foreach (char c in text)
+        {
+            dialogueText.text += c;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        // ✅ KHÔNG TỰ TẮT, CHỜ MÃI MÃI CHO ĐẾN KHI GỌI Hide()
+        // Không có yield return WaitForSeconds hay SetActive(false)
     }
 
     /// <summary>
