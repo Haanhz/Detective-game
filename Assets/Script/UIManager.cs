@@ -274,15 +274,30 @@ public class UIManager : MonoBehaviour
     void StartGameplay()
     {
         gameStarted = true;
-        Time.timeScale = 1f; // Đảm bảo thời gian chạy để người chơi di chuyển được
-        if (GameManager.Instance != null) GameManager.Instance.StartDay();
+        Time.timeScale = 1f;
 
+        if (GameManager.Instance != null)
+        {
+            // Kiểm tra nếu đang là ban đêm thì không gọi StartDay() (vì StartDay sẽ reset về ban ngày)
+            if (GameManager.Instance.isNight)
+            {
+                // Thiết lập môi trường ban đêm mà không reset timer/days
+                GameManager.Instance.environmentLight.color = new Color(31f / 255f, 31f / 255f, 61f / 255f);
+                GameManager.Instance.ResumeNightMusic();
+                // Cần đảm bảo NPC được ẩn nếu là ban đêm
+                GameManager.Instance.SetNPCActive(false);
+                // Bạn có thể cần public hàm SetNPCActive trong GameManager để gọi ở đây
+            }
+            else
+            {
+                GameManager.Instance.StartDay();
+            }
+        }
+
+        // Hiển thị UI gameplay
         if (dayRemainText != null) dayRemainText.gameObject.SetActive(true);
         if (staminaSlider != null) staminaSlider.gameObject.SetActive(true);
         if (menuButtonObject != null) menuButtonObject.SetActive(true);
-
-        if (replayButton != null) replayButton.gameObject.SetActive(false);
-        canReplay = false;
     }
 
     void UpdateDayRemain() { if (gm != null) dayRemainText.text = $"{gm.daysRemaining}"; }

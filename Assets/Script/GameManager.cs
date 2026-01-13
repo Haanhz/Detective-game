@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
         if (countdownText != null) countdownText.gameObject.SetActive(false);
     }
 
+
     void Update()
     {
         // DỪNG THỜI GIAN KHI GAME KẾT THÚC
@@ -276,7 +277,7 @@ public class GameManager : MonoBehaviour
         StartNight();
     }
 
-    void SetNPCActive(bool active)
+    public void SetNPCActive(bool active)
     {
         foreach (var npc in allNPCs)
         {

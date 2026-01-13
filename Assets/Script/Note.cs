@@ -31,6 +31,7 @@ public class Note : MonoBehaviour
             isNoteOpen = false;
         }
     }
+    
 }
 
     void OnDrawGizmosSelected()

@@ -62,6 +62,9 @@ public static class SaveSystem
 
         PlayerPrefs.SetInt("HasSavedGame", 1);
         PlayerPrefs.Save();
+
+        // Lưu trạng thái ngày/đêm (0 là ngày, 1 là đêm)
+        PlayerPrefs.SetInt("IsNight", GameManager.Instance.isNight ? 1 : 0);
     }
 
     public static void LoadAll(GameObject player)
@@ -153,6 +156,9 @@ public static class SaveSystem
         //         npc.conditionalBlocks[i].hasRead = PlayerPrefs.GetInt(key, 0) == 1;
         //     }
         // }
+
+        // Tải trạng thái ngày/đêm
+        GameManager.Instance.isNight = PlayerPrefs.GetInt("IsNight", 0) == 1;
     }
 
     private static void SyncDictionaryToProfile(int charIndex, Dictionary<int, string> dict)

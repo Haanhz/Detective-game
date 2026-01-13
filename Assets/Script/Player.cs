@@ -268,7 +268,7 @@ private IEnumerator AskToSleep()
     }
 
     // ✅ NẾU LÀ BAN NGÀY → HỎI TRƯỚC KHI NGỦ
-    string question = "It's still morning. Should I take a nap and skip to night? (Press Y/N)";
+    string question = "It's still morning. Should I take a nap and skip to the night? (Press Y/N)";
 
     // ✅ HIỂN THỊ CÂU HỎI (KHÔNG TỰ TẮT)
     PlayerMonologue.Instance.AskQuestion(question);
