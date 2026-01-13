@@ -70033,6 +70033,24 @@ MonoBehaviour:
   chaseDelay: 2
   blackSpawned: 0
   spawnIdleTime: 1.5
+  spawnPoints:
+  - {fileID: 1607359268}
+  - {fileID: 1515048076}
+  - {fileID: 2090142162}
+  - {fileID: 1100785427}
+  - {fileID: 178645040}
+  - {fileID: 1635522576}
+  - {fileID: 1159576793}
+  - {fileID: 660191043}
+  - {fileID: 1707864330}
+  - {fileID: 710233116}
+  - {fileID: 2009114219}
+  - {fileID: 485790441}
+  - {fileID: 601990621}
+  - {fileID: 1719384554}
+  - {fileID: 4593617}
+  - {fileID: 850940774}
+  maxSpawnDistance: 10
 --- !u!4 &1885482877
 Transform:
   m_ObjectHideFlags: 0

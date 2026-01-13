@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ChaseManager : MonoBehaviour
@@ -160,13 +161,192 @@ public class ChaseManager : MonoBehaviour
         }
     }
 
+    // void SpawnBlack()
+    // {
+    //     if (blackSpawned) return;
+
+    //     Transform playerTf = player.transform;
+
+    //     // ✅ Lấy hướng từ Animator của Player
+    //     Vector2 playerFacing = Vector2.down; // Default
+
+    //     if (player.animator != null)
+    //     {
+    //         float lastX = player.animator.GetFloat("LastInputX");
+    //         float lastY = player.animator.GetFloat("LastInputY");
+
+    //         if (lastX != 0 || lastY != 0)
+    //         {
+    //             playerFacing = new Vector2(lastX, lastY).normalized;
+    //         }
+    //         else
+    //         {
+    //             float inputX = player.animator.GetFloat("InputX");
+    //             float inputY = player.animator.GetFloat("InputY");
+    //             if (inputX != 0 || inputY != 0)
+    //             {
+    //                 playerFacing = new Vector2(inputX, inputY).normalized;
+    //             }
+    //         }
+    //     }
+
+    //     // ✅ Spawn NGƯỢC hướng player đang nhìn, cách 2f
+    //     Vector2 spawnDirection = -playerFacing;
+    //     Vector3 spawnPos = playerTf.position + (Vector3)(spawnDirection * 3f);
+
+    //     // ✅ CHECK VA CHẠM - nếu có tường phía sau → spawn bên cạnh
+    //     RaycastHit2D hit = Physics2D.Raycast(playerTf.position, spawnDirection, 2f);
+
+    //     if (hit.collider != null && !hit.collider.CompareTag("Player"))
+    //     {
+    //         // Thử spawn bên cạnh thay vì phía sau
+    //         Vector2[] altDirections = {
+    //             new Vector2(-spawnDirection.y, spawnDirection.x),  // Vuông góc phải
+    //             new Vector2(spawnDirection.y, -spawnDirection.x)   // Vuông góc trái
+    //         };
+
+    //         bool foundSpot = false;
+    //         foreach (var altDir in altDirections)
+    //         {
+    //             RaycastHit2D altHit = Physics2D.Raycast(playerTf.position, altDir, 2f);
+    //             if (altHit.collider == null || altHit.collider.CompareTag("Player"))
+    //             {
+    //                 spawnPos = playerTf.position + (Vector3)(altDir * 2f);
+    //                 foundSpot = true;
+    //                 break;
+    //             }
+    //         }
+
+    //         // Nếu tất cả hướng đều bị chặn → spawn random
+    //         if (!foundSpot)
+    //         {
+    //             float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+    //             Vector2 randomDir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+    //             spawnPos = playerTf.position + (Vector3)(randomDir * 2f);
+    //         }
+    //     }
+
+    //     black.transform.position = spawnPos;
+    //     black.SetActive(true);
+    //     blackSpawned = true;
+
+    //     if (rb) rb.linearVelocity = Vector2.zero;
+
+    //     // 👁️ Black nhìn về phía player
+    //     Vector2 lookDir = (playerTf.position - black.transform.position).normalized;
+    //     if (blackAnimator)
+    //     {
+    //         blackAnimator.SetFloat("MoveX", lookDir.x);
+    //         blackAnimator.SetFloat("MoveY", lookDir.y);
+    //     }
+
+    //     // 🎵 Nhạc chase
+    //     if (audioSource && chaseMusic)
+    //     {
+    //         audioSource.Stop();
+    //         audioSource.clip = chaseMusic;
+    //         audioSource.loop = true;
+    //         audioSource.Play();
+    //     }
+
+    //     currentState = State.SpawnBlack;
+    //     StartCoroutine(SpawnDelayThenChase());
+    // }
+    // ✅ Thêm biến này vào class
+    public List<Transform> spawnPoints = new List<Transform>(); // Gán trong Inspector
+    public float maxSpawnDistance = 10f; // Khoảng cách tối đa để chọn spawn point
+    public float minSpawnDistance = 3f;
     void SpawnBlack()
     {
         if (blackSpawned) return;
 
         Transform playerTf = player.transform;
+        Vector3 spawnPos = playerTf.position;
 
-        // ✅ Lấy hướng từ Animator của Player
+        // ✅ PRIORITY 1: Spawn ở telepoint an toàn
+        if (spawnPoints != null && spawnPoints.Count > 0)
+        {
+            List<Transform> validPoints = new List<Transform>();
+
+            foreach (Transform point in spawnPoints)
+            {
+                if (point == null) continue;
+
+                float distance = Vector2.Distance(playerTf.position, point.position);
+
+                // ✅ CHECK: Phải trong khoảng MIN và MAX
+                if (distance >= minSpawnDistance && distance <= maxSpawnDistance)
+                {
+                    // Check tường chặn
+                    Vector2 direction = (point.position - playerTf.position).normalized;
+                    RaycastHit2D hit = Physics2D.Raycast(playerTf.position, direction, distance);
+
+                    if (hit.collider == null || hit.collider.CompareTag("Player"))
+                    {
+                        validPoints.Add(point);
+                    }
+                }
+            }
+
+            if (validPoints.Count > 0)
+            {
+                Transform chosenPoint = validPoints[Random.Range(0, validPoints.Count)];
+                spawnPos = chosenPoint.position;
+                Debug.Log($"Spawned at telepoint: {chosenPoint.name}");
+            }
+            else
+            {
+                Debug.Log("No valid spawn points (too close or too far), using fallback");
+                spawnPos = GetFallbackSpawnPosition(playerTf);
+            }
+        }
+        else
+        {
+            Debug.Log("No spawn points configured, using fallback method");
+            spawnPos = GetFallbackSpawnPosition(playerTf);
+        }
+
+        // ✅ SAFETY CHECK CUỐI: Nếu spawn pos quá gần player → delay spawn
+        float finalDistance = Vector2.Distance(playerTf.position, spawnPos);
+        if (finalDistance < minSpawnDistance)
+        {
+            Debug.LogWarning($"Spawn position too close ({finalDistance:F1}m), aborting spawn");
+            blackSpawned = false; // Reset để thử lại lần sau
+            return;
+        }
+
+        // Spawn Black
+        black.transform.position = spawnPos;
+        black.SetActive(true);
+        blackSpawned = true;
+
+        if (rb) rb.linearVelocity = Vector2.zero;
+
+        // 👁️ Black nhìn về phía player
+        // 👁️ Black nhìn về phía player (ĐẢO NGƯỢC)
+        Vector2 lookDir = (black.transform.position - playerTf.position).normalized; // ✅ Đổi chiều
+        if (blackAnimator)
+        {
+            blackAnimator.SetFloat("MoveX", lookDir.x);
+            blackAnimator.SetFloat("MoveY", lookDir.y);
+        }
+
+        // 🎵 Nhạc chase
+        if (audioSource && chaseMusic)
+        {
+            audioSource.Stop();
+            audioSource.clip = chaseMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
+        currentState = State.SpawnBlack;
+        StartCoroutine(SpawnDelayThenChase());
+    }
+
+    // ✅ Tách logic cũ thành hàm fallback
+    Vector3 GetFallbackSpawnPosition(Transform playerTf)
+    {
         Vector2 playerFacing = Vector2.down; // Default
 
         if (player.animator != null)
@@ -189,21 +369,18 @@ public class ChaseManager : MonoBehaviour
             }
         }
 
-        // ✅ Spawn NGƯỢC hướng player đang nhìn, cách 2f
         Vector2 spawnDirection = -playerFacing;
         Vector3 spawnPos = playerTf.position + (Vector3)(spawnDirection * 3f);
 
-        // ✅ CHECK VA CHẠM - nếu có tường phía sau → spawn bên cạnh
         RaycastHit2D hit = Physics2D.Raycast(playerTf.position, spawnDirection, 2f);
-        
+
         if (hit.collider != null && !hit.collider.CompareTag("Player"))
         {
-            // Thử spawn bên cạnh thay vì phía sau
             Vector2[] altDirections = {
-                new Vector2(-spawnDirection.y, spawnDirection.x),  // Vuông góc phải
-                new Vector2(spawnDirection.y, -spawnDirection.x)   // Vuông góc trái
-            };
-            
+            new Vector2(-spawnDirection.y, spawnDirection.x),
+            new Vector2(spawnDirection.y, -spawnDirection.x)
+        };
+
             bool foundSpot = false;
             foreach (var altDir in altDirections)
             {
@@ -215,8 +392,7 @@ public class ChaseManager : MonoBehaviour
                     break;
                 }
             }
-            
-            // Nếu tất cả hướng đều bị chặn → spawn random
+
             if (!foundSpot)
             {
                 float rad = Random.Range(0f, 360f) * Mathf.Deg2Rad;
@@ -225,31 +401,7 @@ public class ChaseManager : MonoBehaviour
             }
         }
 
-        black.transform.position = spawnPos;
-        black.SetActive(true);
-        blackSpawned = true;
-
-        if (rb) rb.linearVelocity = Vector2.zero;
-
-        // 👁️ Black nhìn về phía player
-        Vector2 lookDir = (playerTf.position - black.transform.position).normalized;
-        if (blackAnimator)
-        {
-            blackAnimator.SetFloat("MoveX", lookDir.x);
-            blackAnimator.SetFloat("MoveY", lookDir.y);
-        }
-
-        // 🎵 Nhạc chase
-        if (audioSource && chaseMusic)
-        {
-            audioSource.Stop();
-            audioSource.clip = chaseMusic;
-            audioSource.loop = true;
-            audioSource.Play();
-        }
-
-        currentState = State.SpawnBlack;
-        StartCoroutine(SpawnDelayThenChase());
+        return spawnPos;
     }
 
     IEnumerator SpawnDelayThenChase()
